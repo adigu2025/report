@@ -11,7 +11,10 @@
   --border-strong:#b0ada5;--text:#1a1917;--text-muted:#6b6860;--text-faint:#9e9b94;
   --accent:#1a4d8f;--warn:#7c4a00;--warn-light:#fff3e0;
   --danger:#8b1a1a;--danger-light:#fdecea;--ok:#1a5c2e;--ok-light:#eaf4ed;
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  /* 字型後備：Google Fonts 載不到（離線／院內網路）時仍可讀 */
+  --mono:'IBM Plex Mono','Cascadia Mono',Consolas,'Noto Sans Mono CJK TC',monospace;
+  --sans:'IBM Plex Sans','Noto Sans TC','Microsoft JhengHei','PingFang TC',
+    -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
@@ -280,6 +283,72 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .ind-tag.sel{background:var(--ok-light);color:var(--ok);border-color:#a8d5b5}
 .ind-free{width:100%;font-family:var(--sans);font-size:12px;padding:5px 8px;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--text);outline:none;height:28px}
 .ind-free:focus{border-color:var(--accent);background:#fff}
+
+/* ── 欄位說明文字（取代 placeholder） ───────── */
+.fh{font-size:11px;color:var(--text-faint);margin-top:3px;line-height:1.5}
+
+/* ── 首頁左下角改版日期 ─────────────────────── */
+.cover{position:relative}
+.app-revision{position:absolute;left:24px;bottom:18px;font-size:12px;
+  color:var(--text-faint);opacity:.75;font-family:var(--mono);letter-spacing:.04em}
+
+/* ── 未完成報告還原提示 ─────────────────────── */
+.restore-bar{display:none;position:fixed;top:52px;left:0;right:0;z-index:190;
+  align-items:center;gap:12px;padding:9px 18px;background:var(--warn-light);
+  border-bottom:1px solid var(--border-strong);font-size:13px;color:var(--warn)}
+.restore-bar.on{display:flex}
+.restore-bar .rb-msg{flex:1;line-height:1.5}
+.restore-bar button{font-family:var(--mono);font-size:12px;padding:5px 13px;border-radius:3px;
+  cursor:pointer;border:1px solid var(--border-strong);background:#fff;color:var(--text)}
+.restore-bar button.rb-go{background:var(--warn);color:#fff;border-color:var(--warn)}
+
+/* ── 鍵盤操作焦點 ───────────────────────────── */
+.ftag:focus-visible,.ind-tag:focus-visible,.nav-item:focus-visible,
+.sec-head:focus-visible,.tc:focus-visible,.dmitem:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── 平板與手機 ─────────────────────────────── */
+@media (max-width:1024px){
+  .main-content{padding:20px 18px}
+  .pt-bar{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:820px){
+  .topnav{padding:0 12px;overflow-x:auto}
+  .nav-brand{margin-right:12px;font-size:11px}
+  .tool-layout{display:block}
+  .sidebar{position:static;height:auto;width:auto;
+    display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px}
+  .sb-head{padding:0;border-bottom:none;flex:1 1 100%}
+  .nav-list{display:flex;flex-wrap:wrap;gap:4px;padding:0;flex:1 1 100%}
+  .nav-item{padding:6px 10px;border-left:none;border-radius:3px;background:rgba(255,255,255,.06)}
+  .nav-item.active{border-left:none}
+  .sb-foot{display:flex;gap:8px;padding:0;border-top:none;flex:1 1 100%}
+  .btn-gen,.btn-clr{margin-bottom:0}
+  .cover h1{font-size:30px;margin-bottom:36px}
+  .app-revision{position:static;margin-top:28px;text-align:center}
+}
+@media (max-width:560px){
+  .pt-bar{grid-template-columns:1fr}
+  .tool-cards{grid-template-columns:1fr}
+}
+
+/* ── 列印：只印報告本文，不印介面 ───────────── */
+@media print{
+  /* margin:0 是為了讓瀏覽器不要自動加頁首頁尾，紙張留白改由 .report-out 負責 */
+  @page{margin:0;size:A4}
+  .topnav,.sidebar,.restore-bar,.ind-bar,.pt-bar,.app-revision,
+  .btn-gen,.btn-clr,.btn-copy,.sec-chev,.deploy-banner{display:none !important}
+  body{background:#fff;font-size:12px;margin:0}
+  .page{padding-top:0}
+  .page:not(.visible){display:none}
+  .main-content{padding:0;overflow:visible}
+  .main-content>.section{display:none !important}
+  .report-out{display:block !important;margin:0;border:none;border-radius:0;
+    padding:16mm 14mm;box-shadow:none}
+  .rep-head{background:#fff;color:#000;padding:0 0 6px 0;border-bottom:1px solid #000}
+  .rep-content{border:none;min-height:0;background:#fff;padding:8px 0 0 0;
+    white-space:pre-wrap;font-size:12px;line-height:1.6;resize:none;overflow:visible}
+}
 </style>
 </head>
 <body>
@@ -322,6 +391,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   <button class="nav-home" onclick="showCover()"><span style="font-size:1.5em;line-height:1">⌂</span> HOME</button>
 </nav>
 
+<div class="restore-bar" id="restore-bar">
+  <span class="rb-msg" id="rb-msg"></span>
+  <button class="rb-go" onclick="draftRestore()">繼續編輯</button>
+  <button onclick="draftDiscard()">捨棄</button>
+</div>
+
 <div class="page visible" id="page-cover">
   <div class="cover">
     <div class="cover-eye" style="font-size:12px">YT Lin · Gastroenterology &amp; Hepatology</div>
@@ -363,7 +438,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <div class="tc-arr">→</div>
       </div>
     </div>
-    <div class="cover-ft">AI-POWERED · STRUCTURED REPORTS · CLAUDE API</div>
+    <div class="cover-ft">STRUCTURED REPORTS · 全部在本機瀏覽器產生，病人資料不會上傳</div>
+    <div class="app-revision" id="app-revision"></div>
   </div>
 </div>
 
@@ -381,7 +457,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" id="abd-gbtn" onclick="abdGenerate()"><span id="abd-bi">▶</span><span id="abd-bt">GENERATE REPORT</span></button>
-      <button class="btn-clr" onclick="abdClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="abdClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -405,7 +481,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <span class="ind-tag" data-val="abdominal mass" onclick="indTag(this)">Abdominal mass</span>
         <span class="ind-tag" data-val="tumor marker elevation" onclick="indTag(this)">Tumor marker ↑</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-abd" oninput="abdAutoPreview()" placeholder="其他適應症 free text…">
+      <input class="ind-free" type="text" id="ind-free-abd" oninput="abdAutoPreview()"><div class="fh">其他適應症 free text…</div>
     </div>
     <!-- LIVER -->
     <div class="section open" id="asec-liver">
@@ -474,7 +550,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           </div>
 
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-liver" oninput="abdAutoPreview()" placeholder="e.g. 2.1cm hyperechoic nodule at S6..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-liver" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. 2.1cm hyperechoic nodule at S6...</div></div>
       </div>
     </div>
     <!-- GALLBLADDER -->
@@ -513,7 +589,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="intrahepatic bile duct dilatation" data-lvl="danger" onclick="aTagMutexOrg(this,'gb','CBD within normal limits')">IHBD dilatation</span>
           <span class="ftag" data-val="choledocholithiasis" data-lvl="danger" onclick="aTagMutexOrg(this,'gb','CBD within normal limits')">Choledocholithiasis</span>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-gb" oninput="abdAutoPreview()" placeholder="e.g. CBD 8mm with distal stone..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-gb" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. CBD 8mm with distal stone...</div></div>
       </div>
     </div>
     <!-- PANCREAS -->
@@ -539,7 +615,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-pan" oninput="abdAutoPreview()" placeholder="e.g. 2.5cm hypoechoic mass at pancreatic head, MPD 5mm..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-pan" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. 2.5cm hypoechoic mass at pancreatic head, MPD 5mm...</div></div>
       </div>
     </div>
     <!-- SPLEEN -->
@@ -556,7 +632,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <div id="Splcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcalc-list"></div><button onclick="abdSimplePlusAdd('Splcalc')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" data-val="splenic infarction" data-lvl="danger" onclick="aTagMutexOrg(this,'spl','spleen normal in size and echotexture')">Infarction</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()" placeholder="e.g. Spleen 14cm, homogeneous..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. Spleen 14cm, homogeneous...</div></div>
       </div>
     </div>
     <!-- KIDNEYS -->
@@ -587,7 +663,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <div id="Lkmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkmass-list"></div><button onclick="abdSimplePlusAdd('Lkmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" data-val="left kidney small (chronic renal disease)" data-lvl="warn" onclick="aTagMutexOrg(this,'kid','left kidney unremarkable')">Small kidney</span>
         </div>
-        <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()" placeholder="e.g. bilateral small renal cysts..."></textarea></div>
+        <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. bilateral small renal cysts...</div></div>
       </div>
     </div>
     <!-- OTHERS -->
@@ -604,7 +680,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="limited study due to overlying bowel gas" data-lvl="warn" onclick="aTag(this,'aoth')">Limited (gas)</span>
           <span class="ftag" data-val="limited study due to body habitus" data-lvl="warn" onclick="aTag(this,'aoth')">Limited (habitus)</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-aoth" oninput="abdAutoPreview()" placeholder="e.g. small perihepatic ascites..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-aoth" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. small perihepatic ascites...</div></div>
       </div>
     </div>
     <!-- RECOMMENDATION -->
@@ -620,10 +696,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="Liver cirrhosis surveillance: repeat ultrasound and AFP in 6 months." data-lvl="warn" onclick="abdRecoTag(this)">Cirrhosis surveillance</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="abdRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="aot-areco" oninput="abdAutoPreview()" placeholder="其他建議…" rows="2"></textarea></div>
+        <div class="ot-field"><label>Free text</label><textarea id="aot-areco" oninput="abdAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
-    <div class="report-out" id="abd-rpt"><div class="rep-head"><span>ABDOMINAL ULTRASOUND REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('abd-rtxt')">⧉ COPY</button></span></div><textarea class="rep-content" id="abd-rtxt" spellcheck="false"></textarea></div>
+    <div class="report-out" id="abd-rpt"><div class="rep-head"><span>ABDOMINAL ULTRASOUND REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('abd-rtxt')">⧉ COPY</button>&nbsp;<button class="btn-copy" onclick="printRpt('abd-rtxt')">⎙ PRINT</button></span></div><textarea class="rep-content" id="abd-rtxt" spellcheck="false"></textarea></div>
   </main>
 </div>
 </div>
@@ -639,7 +715,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" id="thy-gbtn" onclick="thyGenerate()"><span id="thy-bi">▶</span><span id="thy-bt">GENERATE REPORT</span></button>
-      <button class="btn-clr" onclick="thyClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="thyClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -661,7 +737,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <span class="ind-tag" data-val="goiter evaluation" onclick="indTag(this)">Goiter eval</span>
         <span class="ind-tag" data-val="suspected thyroiditis" onclick="indTag(this)">Thyroiditis</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-thy" oninput="thyAutoPreview()" placeholder="其他適應症 free text…">
+      <input class="ind-free" type="text" id="ind-free-thy" oninput="thyAutoPreview()"><div class="fh">其他適應症 free text…</div>
     </div>
     <!-- THYROID GLAND -->
     <div class="section open" id="tsec-gland">
@@ -685,7 +761,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <button onclick="thyCystAdd()" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
           </div>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="tot-gland" oninput="thyAutoPreview()" placeholder="e.g. bilateral thyroid lobes symmetric, isthmus 3mm..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="tot-gland" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. bilateral thyroid lobes symmetric, isthmus 3mm...</div></div>
       </div>
     </div>
     <!-- NODULE SCORING -->
@@ -717,7 +793,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="lymph node calcification" data-lvl="danger" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Node calcification</span>
           <span class="ftag" data-val="cystic changes in cervical lymph node" data-lvl="danger" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Cystic changes</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="tot-lymph" oninput="thyAutoPreview()" placeholder="e.g. level III right cervical node 1.2cm..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="tot-lymph" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. level III right cervical node 1.2cm...</div></div>
       </div>
     </div>
     <!-- RECOMMENDATION -->
@@ -731,10 +807,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="FNA biopsy recommended per ACR TI-RADS guideline based on nodule size and category. Clinical correlation advised." data-lvl="warn" onclick="thyRecoTag(this)">FNA biopsy</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="thyRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="tot-treco" oninput="thyAutoPreview()" placeholder="其他建議…" rows="2"></textarea></div>
+        <div class="ot-field"><label>Free text</label><textarea id="tot-treco" oninput="thyAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
-    <div class="report-out" id="thy-rpt"><div class="rep-head"><span>THYROID ULTRASOUND REPORT (TI-RADS)&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('thy-rtxt')">⧉ COPY</button></span></div><textarea class="rep-content" id="thy-rtxt" spellcheck="false"></textarea></div>
+    <div class="report-out" id="thy-rpt"><div class="rep-head"><span>THYROID ULTRASOUND REPORT (TI-RADS)&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('thy-rtxt')">⧉ COPY</button>&nbsp;<button class="btn-copy" onclick="printRpt('thy-rtxt')">⎙ PRINT</button></span></div><textarea class="rep-content" id="thy-rtxt" spellcheck="false"></textarea></div>
   </main>
 </div>
 </div>
@@ -751,7 +827,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" id="car-gbtn" onclick="carGenerate()"><span id="car-bi">▶</span><span id="car-bt">GENERATE REPORT</span></button>
-      <button class="btn-clr" onclick="carClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="carClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -776,7 +852,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <span class="ind-tag" data-val="carotid bruit" onclick="indTag(this)">Carotid bruit</span>
         <span class="ind-tag" data-val="post-stenting follow-up" onclick="indTag(this)">Post-stenting F/U</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-car" oninput="carAutoPreview()" placeholder="其他適應症 free text…">
+      <input class="ind-free" type="text" id="ind-free-car" oninput="carAutoPreview()"><div class="fh">其他適應症 free text…</div>
     </div>
 
     <!-- IMT -->
@@ -794,25 +870,25 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <div class="imt-grid">
           <div class="imt-box">
             <label>R-CCA IMT</label>
-            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" placeholder="—" id="imt-rcca" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
+            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" id="imt-rcca" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
             <div class="imt-indicator" id="ind-rcca"></div>
             <div class="imt-hint" id="hint-rcca"></div>
           </div>
           <div class="imt-box">
             <label>L-CCA IMT</label>
-            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" placeholder="—" id="imt-lcca" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
+            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" id="imt-lcca" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
             <div class="imt-indicator" id="ind-lcca"></div>
             <div class="imt-hint" id="hint-lcca"></div>
           </div>
           <div class="imt-box">
             <label>R-ICA IMT</label>
-            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" placeholder="—" id="imt-rica" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
+            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" id="imt-rica" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
             <div class="imt-indicator" id="ind-rica"></div>
             <div class="imt-hint" id="hint-rica"></div>
           </div>
           <div class="imt-box">
             <label>L-ICA IMT</label>
-            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" placeholder="—" id="imt-lica" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
+            <div class="imt-input-wrap"><input type="number" step="0.01" min="0" max="5" id="imt-lica" oninput="imtUpdate()"><span class="imt-unit">mm</span></div>
             <div class="imt-indicator" id="ind-lica"></div>
             <div class="imt-hint" id="hint-lica"></div>
           </div>
@@ -834,7 +910,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="asymmetric IMT (right > left)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="cTagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric R&gt;L</span>
           <span class="ftag" data-val="asymmetric IMT (left > right)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="cTagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric L&gt;R</span>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-imt" oninput="carAutoPreview()" placeholder="e.g. diffuse intimal thickening of bilateral CCA..."></textarea></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-imt" oninput="carAutoPreview()"></textarea><div class="fh">e.g. diffuse intimal thickening of bilateral CCA...</div></div>
       </div>
     </div>
 
@@ -866,7 +942,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-plaque" oninput="carAutoPreview()" placeholder="e.g. multiple calcified plaques at bilateral carotid bifurcation..."></textarea></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-plaque" oninput="carAutoPreview()"></textarea><div class="fh">e.g. multiple calcified plaques at bilateral carotid bifurcation...</div></div>
       </div>
     </div>
 
@@ -898,7 +974,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="dampened waveform" data-lvl="danger" data-org="flow" onclick="cTag(this,'flow')">Dampened waveform</span>
           <span class="ftag" data-val="reversed flow" data-lvl="danger" data-org="flow" onclick="cTag(this,'flow')">Reversed flow</span>
         </div></div>
-        <div class="ot-field"><label>PSV / EDV values</label><textarea id="cot-flow" oninput="carAutoPreview()" placeholder="e.g. R-ICA PSV 180 cm/s, EDV 60 cm/s, ICA/CCA ratio 3.2..."></textarea></div>
+        <div class="ot-field"><label>PSV / EDV values</label><textarea id="cot-flow" oninput="carAutoPreview()"></textarea><div class="fh">e.g. R-ICA PSV 180 cm/s, EDV 60 cm/s, ICA/CCA ratio 3.2...</div></div>
       </div>
     </div>
 
@@ -917,7 +993,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="right vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">R not visualized</span>
           <span class="ftag" data-val="left vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">L not visualized</span>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-vert" oninput="carAutoPreview()" placeholder="e.g. right VA PSV 45 cm/s, normal triphasic waveform..."></textarea></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-vert" oninput="carAutoPreview()"></textarea><div class="fh">e.g. right VA PSV 45 cm/s, normal triphasic waveform...</div></div>
       </div>
     </div>
 
@@ -932,10 +1008,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="Cardiovascular risk factor modification recommended (lipid management, blood pressure control, lifestyle modification)." data-lvl="ok" onclick="carRecoTag(this)">CV risk modification</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="carRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="cot-creco2" oninput="carAutoPreview()" placeholder="其他建議…" rows="2"></textarea></div>
+        <div class="ot-field"><label>Free text</label><textarea id="cot-creco2" oninput="carAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
-    <div class="report-out" id="car-rpt"><div class="rep-head"><span>CAROTID ULTRASOUND REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('car-rtxt')">⧉ COPY</button></span></div><textarea class="rep-content" id="car-rtxt" spellcheck="false"></textarea></div>
+    <div class="report-out" id="car-rpt"><div class="rep-head"><span>CAROTID ULTRASOUND REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('car-rtxt')">⧉ COPY</button>&nbsp;<button class="btn-copy" onclick="printRpt('car-rtxt')">⎙ PRINT</button></span></div><textarea class="rep-content" id="car-rtxt" spellcheck="false"></textarea></div>
   </main>
 </div>
 </div>
@@ -956,7 +1032,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" id="egd-gbtn" onclick="egdGenerate()"><span id="egd-bi">▶</span><span id="egd-bt">GENERATE REPORT</span></button>
-      <button class="btn-clr" onclick="egdClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="egdClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -982,7 +1058,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <span class="ind-tag" data-val="dysphagia evaluation" onclick="indTag(this)">Dysphagia eval</span>
         <span class="ind-tag" data-val="Barrett's esophagus surveillance" onclick="indTag(this)">Barrett's surveillance</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-egd" oninput="egdAutoPreview()" placeholder="其他適應症 free text…">
+      <input class="ind-free" type="text" id="ind-free-egd" oninput="egdAutoPreview()"><div class="fh">其他適應症 free text…</div>
     </div>
 
     <!-- 00 PREPARATION -->
@@ -1048,7 +1124,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" id="ftag-esophx-btn" data-val="" data-lvl="warn" onclick="toggleEsophxPanel()">s/p esophagectomy</span>
           <div id="esophx-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">Status post partial esophagectomy with suture stitches retention and anastomosis site at
-              <input id="esophx-cm" type="text" placeholder="__" oninput="updateEsophxVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor.
+              <input id="esophx-cm" type="text" oninput="updateEsophxVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor.
             </span>
           </div>
 
@@ -1109,16 +1185,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
             <div id="eca-sub-semi" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">One semi-circumferential ulcerative lesion with easy contact bleeding at
-                <input id="eca-loc1" type="text" placeholder="location" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
+                <input id="eca-loc1" type="text" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
             </div>
             <div id="eca-sub-adv" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:1.8;">Long segment, ulcerative, punch-out esophageal tumor occupying 75% of the circumference, extending from
-                <input id="eca-cm1" type="text" placeholder="__" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, cause lumen stenosis at
-                <input id="eca-cm2" type="text" placeholder="__" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level, s/p biopsy</span>
+                <input id="eca-cm1" type="text" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, cause lumen stenosis at
+                <input id="eca-cm2" type="text" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level, s/p biopsy</span>
             </div>
             <div id="eca-sub-steno" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">Stenotic esophageal tumor at
-                <input id="eca-loc3" type="text" placeholder="__" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor, scope could not pass, s/p biopsy</span>
+                <input id="eca-loc3" type="text" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor, scope could not pass, s/p biopsy</span>
             </div>
           </div>
 
@@ -1126,8 +1202,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" id="ftag-inlet-btn" data-val="" data-lvl="warn" onclick="toggleInletPanel()">Cervical inlet patch</span>
           <div id="inlet-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">
-              <input id="inlet-cm1" type="text" placeholder="__" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm salmon-colored mucosa patch at
-              <input id="inlet-cm2" type="text" placeholder="__" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, favor ectopic gastric mucosa.
+              <input id="inlet-cm1" type="text" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm salmon-colored mucosa patch at
+              <input id="inlet-cm2" type="text" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, favor ectopic gastric mucosa.
             </span>
           </div>
 
@@ -1183,7 +1259,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           </div>
 
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-esoph" oninput="egdAutoPreview()" placeholder="e.g. whitish plaques at mid-esophagus..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-esoph" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. whitish plaques at mid-esophagus...</div></div>
       </div>
     </div>
 
@@ -1199,16 +1275,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" id="ftag-esem-btn" data-val="" data-lvl="danger" onclick="toggleEsemPanel()">ESEM</span>
           <div id="esem-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="line-height:2.2;">
-              The hiatus diaphragmaticus is at <input id="esem-hd" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The gastroesophageal junction is at <input id="esem-gej" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The displacement of squamocolumnar junction is at <input id="esem-scj" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The most proximal circumferential extent of suspect columnar metaplasia is at <input id="esem-prox" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
+              The hiatus diaphragmaticus is at <input id="esem-hd" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
+              The gastroesophageal junction is at <input id="esem-gej" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
+              The displacement of squamocolumnar junction is at <input id="esem-scj" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
+              The most proximal circumferential extent of suspect columnar metaplasia is at <input id="esem-prox" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
               Biopsy was taken under NBI guidance.
             </div>
             <div style="margin-top:8px;font-size:11px;font-weight:500;color:var(--danger);">Prague classification:</div>
             <div style="line-height:2.2;margin-top:4px;">
-              C <input id="esem-c" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
-              M <input id="esem-m" type="text" placeholder="__" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
+              C <input id="esem-c" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
+              M <input id="esem-m" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
             </div>
           </div>
         </div></div>
@@ -1219,7 +1295,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag sel-ok" data-val="cardia closes well" data-lvl="ok" data-group="ej-cardia" onclick="eTagEx(this,'ej','ej-cardia')">Cardia closes well</span>
           <span class="ftag" data-val="cardia does not close completely" data-lvl="warn" data-group="ej-cardia" onclick="eTagEx(this,'ej','ej-cardia')">Cardia incomplete closure</span>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()" placeholder="e.g. 2cm hiatal hernia with bile reflux..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. 2cm hiatal hernia with bile reflux...</div></div>
       </div>
     </div>
 
@@ -1284,16 +1360,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
             <div id="gca-sub-semi" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">One semi-circumferential ulcerative lesion with easy contact bleeding at
-                <input id="gca-loc1" type="text" placeholder="location" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
+                <input id="gca-loc1" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
             </div>
             <div id="gca-sub-adv" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:1.8;">Large ulcerative mass with irregular border at
-                <input id="gca-loc2" type="text" placeholder="location" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect advanced gastric cancer, s/p biopsy</span>
+                <input id="gca-loc2" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect advanced gastric cancer, s/p biopsy</span>
             </div>
             <div id="gca-sub-inf" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">One
-                <input id="ginf-cm" type="text" placeholder="__" oninput="updateGcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm mucosal lesion with fold convergence and central depression at
-                <input id="ginf-loc" type="text" placeholder="__" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect malignancy Borrmann type 3, s/p biopsy</span>
+                <input id="ginf-cm" type="text" oninput="updateGcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm mucosal lesion with fold convergence and central depression at
+                <input id="ginf-loc" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect malignancy Borrmann type 3, s/p biopsy</span>
             </div>
           </div>
 
@@ -1309,7 +1385,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <!-- Angiodysplastic sub-panel -->
             <div id="vasc-angio-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">Round reddish mucosal vasculature lesions at
-                <input id="angio-loc" type="text" placeholder="__" oninput="updateAngioVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect angiodysplastic lesion.
+                <input id="angio-loc" type="text" oninput="updateAngioVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect angiodysplastic lesion.
               </span>
             </div>
             <!-- Gastric varices sub-panel -->
@@ -1326,7 +1402,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <!-- Giant rugae sub-panel -->
             <div id="vasc-rugae-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
               <span style="line-height:2;">Giant gastric rugae over
-                <input id="rugae-loc" type="text" placeholder="__" oninput="updateRugaeVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;"> was noted under full insufflation, r/o infiltrative disease, s/p biopsy.
+                <input id="rugae-loc" type="text" oninput="updateRugaeVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;"> was noted under full insufflation, r/o infiltrative disease, s/p biopsy.
               </span>
             </div>
             <!-- GAVE sub-panel -->
@@ -1337,7 +1413,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" id="ftag-xanth-btn" data-val="" data-lvl="warn" onclick="toggleXanthPanel()">Xanthoma</span>
           <div id="xanth-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">Small
-              <input id="xanth-cm" type="text" placeholder="__" oninput="updateXanthVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm yellow nodules in the gastric fundus, s/p biopsy.
+              <input id="xanth-cm" type="text" oninput="updateXanthVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm yellow nodules in the gastric fundus, s/p biopsy.
             </span>
           </div>
           <span class="ftag" data-val="Snake-skin like mucosal pattern over antrum and low body." data-lvl="warn" onclick="eTag(this,'stomach')">Portal hypertensive gastropathy</span>
@@ -1351,7 +1427,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
           </div>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-stomach" oninput="egdAutoPreview()" placeholder="e.g. 1.2cm flat elevated lesion at lesser curvature of body..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-stomach" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. 1.2cm flat elevated lesion at lesser curvature of body...</div></div>
       </div>
     </div>
 
@@ -1395,7 +1471,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 
           <span class="ftag" data-val="A diverticulum was noted near major papilla (with food stasis inside), favor juxtapapillary diverticulum." data-lvl="ok" data-label="Juxtapapillary diverticulum (JPDD)" onclick="eTagMutexOrg(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">JPDD</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-duo" oninput="egdAutoPreview()" placeholder="e.g. active ulcer 8mm at anterior wall of duodenal bulb..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-duo" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. active ulcer 8mm at anterior wall of duodenal bulb...</div></div>
       </div>
     </div>
 
@@ -1456,7 +1532,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <div style="line-height:2;">Count of band(s): <input id="eband-n" type="text" value="3" oninput="updateEband()" style="width:32px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px"></div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings / Notes</label><textarea id="eot-eoth" oninput="egdAutoPreview()" placeholder="e.g. CLO test result: positive. Pathology pending..."></textarea></div>
+        <div class="ot-field"><label>Other findings / Notes</label><textarea id="eot-eoth" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. CLO test result: positive. Pathology pending...</div></div>
       </div>
     </div>
 
@@ -1472,11 +1548,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="Barrett's esophagus surveillance endoscopy recommended per guidelines." data-lvl="warn" onclick="eTag(this,'ereco')">Barrett's surveillance</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="eTag(this,'ereco')">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="eot-ereco" oninput="egdAutoPreview()" placeholder="其他建議…" rows="2"></textarea></div>
+        <div class="ot-field"><label>Free text</label><textarea id="eot-ereco" oninput="egdAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
 
-    <div class="report-out vis" id="egd-rpt"><div class="rep-head"><span>EGD REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('egd-rtxt')">⧉ COPY</button></span></div><textarea class="rep-content" id="egd-rtxt" spellcheck="false" placeholder="點選上方片語後按 GENERATE REPORT 產生報告…"></textarea></div>
+    <div class="report-out vis" id="egd-rpt"><div class="rep-head"><span>EGD REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('egd-rtxt')">⧉ COPY</button>&nbsp;<button class="btn-copy" onclick="printRpt('egd-rtxt')">⎙ PRINT</button></span></div><textarea class="rep-content" id="egd-rtxt" spellcheck="false"></textarea></div>
   </main>
 </div>
 </div>
@@ -1496,7 +1572,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" id="cfs-gbtn" onclick="cfsGenerate()"><span id="cfs-bi">▶</span><span id="cfs-bt">GENERATE REPORT</span></button>
-      <button class="btn-clr" onclick="cfsClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="cfsClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -1522,7 +1598,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <span class="ind-tag" data-val="IBD follow-up" onclick="indTag(this)">IBD follow-up</span>
         <span class="ind-tag" data-val="family history of colorectal cancer" onclick="indTag(this)">Family Hx CRC</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-cfs" oninput="cfsAutoPreview()" placeholder="其他適應症 free text…">
+      <input class="ind-free" type="text" id="ind-free-cfs" oninput="cfsAutoPreview()"><div class="fh">其他適應症 free text…</div>
     </div>
 
     <!-- 00 PREPARATION -->
@@ -1571,7 +1647,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <span class="ftag" id="cfs-ins-des" data-ins="descending colon" onclick="cfsSetInsLevel(this,'descending colon')">Descending colon</span>
             <span class="ftag" id="cfs-ins-sig" data-ins="sigmoid colon" onclick="cfsSetInsLevel(this,'sigmoid colon')">Sigmoid colon</span>
             <span style="display:flex;align-items:center;gap:4px">
-              <input type="number" id="cfs-ins-cm" min="1" max="180" placeholder="—"
+              <input type="number" id="cfs-ins-cm" min="1" max="180"
                 style="width:52px;height:28px;font-family:var(--mono);font-size:13px;text-align:center;padding:0 4px;border:1px solid var(--border);border-radius:3px;background:var(--bg);outline:none"
                 oninput="cfsInsLevelCmInput()">
               <span style="font-family:var(--mono);font-size:10px;color:var(--text-faint)">cm level</span>
@@ -1617,7 +1693,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="stricture of terminal ileum" data-lvl="danger" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Stricture</span>
           <span class="ftag" data-val="backwash ileitis" data-lvl="warn" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Backwash ileitis</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-term" oninput="cfsAutoPreview()" placeholder="e.g. multiple aphthous ulcers at TI, Crohn's disease suspected..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-term" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. multiple aphthous ulcers at TI, Crohn's disease suspected...</div></div>
       </div>
     </div>
 
@@ -1684,7 +1760,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           </div>
         </div></div>
 
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-colon" oninput="cfsAutoPreview()" placeholder="e.g. multiple sigmoid diverticula without signs of active inflammation..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-colon" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. multiple sigmoid diverticula without signs of active inflammation...</div></div>
       </div>
     </div>
 
@@ -1747,7 +1823,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             <div id="rmal-panels"></div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-rectum" oninput="cfsAutoPreview()" placeholder="e.g. grade 2 internal hemorrhoids with contact bleeding..."></textarea></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-rectum" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. grade 2 internal hemorrhoids with contact bleeding...</div></div>
       </div>
     </div>
 
@@ -1796,7 +1872,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Notes</label><textarea id="cot-polyp" oninput="cfsAutoPreview()" placeholder="e.g. 8mm sessile polyp at sigmoid, removed by cold snare..."></textarea></div>
+        <div class="ot-field"><label>Notes</label><textarea id="cot-polyp" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. 8mm sessile polyp at sigmoid, removed by cold snare...</div></div>
       </div>
     </div>
 
@@ -1811,11 +1887,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <span class="ftag" data-val="High-risk lesion(s) identified. Repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">High-risk lesion – repeat CFS 1 yr</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="cfTag(this,'creco')">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" placeholder="其他建議…" rows="2"></textarea></div>
+        <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
 
-    <div class="report-out vis" id="cfs-rpt"><div class="rep-head"><span>COLONOSCOPY REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('cfs-rtxt')">⧉ COPY</button></span></div><textarea class="rep-content" id="cfs-rtxt" spellcheck="false" placeholder="點選上方片語後按 GENERATE REPORT 產生報告…"></textarea></div>
+    <div class="report-out vis" id="cfs-rpt"><div class="rep-head"><span>COLONOSCOPY REPORT&nbsp;&nbsp;<button class="btn-copy" onclick="copyRpt('cfs-rtxt')">⧉ COPY</button>&nbsp;<button class="btn-copy" onclick="printRpt('cfs-rtxt')">⎙ PRINT</button></span></div><textarea class="rep-content" id="cfs-rtxt" spellcheck="false"></textarea></div>
   </main>
 </div>
 </div>
@@ -1831,6 +1907,18 @@ function ptBarToggle(prefix){
   else if(prefix==='egd') egdAutoPreview();
   else if(prefix==='cfs') cfsAutoPreview();
 }
+/* 換病人時一律清掉病人欄位。七個工具共用同一個實作，避免行為不一致。 */
+function clearPatientBar(prefix){
+  ['-n','-id'].forEach(function(sfx){
+    var el=document.getElementById(prefix+sfx); if(el) el.value='';
+  });
+  var d=document.getElementById(prefix+'-d');
+  if(d) d.value=new Date().toISOString().split('T')[0];
+  var doc=document.getElementById(prefix+'-doc');
+  if(doc) doc.value='林彥廷';
+  var chk=document.getElementById(prefix+'-ptchk');
+  if(chk && chk.checked){chk.checked=false; ptBarToggle(prefix);}
+}
 function indTag(el){
   el.classList.toggle('sel');
     abdAutoPreview(); thyAutoPreview(); carAutoPreview(); egdAutoPreview(); cfsAutoPreview();
@@ -1842,10 +1930,13 @@ function getIndication(prefix){
 }
 function toggleDD(){document.getElementById('dd').classList.toggle('open')}
 document.addEventListener('click',e=>{if(!e.target.closest('#dd'))document.getElementById('dd').classList.remove('open')})
+var currentTool='cover';
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible','with-banner'));
   document.getElementById('page-'+id).classList.add('visible');
   document.getElementById('dd').classList.remove('open');
+  currentTool=id;
+  window.scrollTo(0,0);
 }
 function showCover(){showPage('cover')}
 function showTool(id){showPage(id)}
@@ -2385,7 +2476,7 @@ function abdPlusRender(id){
     return '<div style="margin-bottom:8px;padding:5px 7px;background:var(--surface2);border:1px solid var(--border);border-radius:3px">'
       +echoRow
       +'<div style="display:flex;align-items:center;gap:4px">'
-      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" placeholder="description" oninput="abdPlusChange(\''+id+'\','+i+',\'note\',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" oninput="abdPlusChange(\''+id+'\','+i+',\'note\',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
       +'<button onclick="abdPlusRemove(\''+id+'\','+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>'
       +'</div></div>';
   }).join('');
@@ -2467,7 +2558,7 @@ function abdPlusRenderSimple(id){
   var ph=placeholders[id]||'';
   el.innerHTML=abdPlusItems[id].map(function(item,i){
     return '<div style="margin-bottom:6px;display:flex;align-items:center;gap:4px;">'
-      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" placeholder="'+ph+'" oninput="abdSimpleNoteChange(\''+id+'\','+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" oninput="abdSimpleNoteChange(\''+id+'\','+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
       +(abdPlusItems[id].length>1?'<button onclick="abdSimplePlusRemove(\''+id+'\','+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>':'')
       +'</div>';
   }).join('');
@@ -2589,7 +2680,7 @@ function gbStoneRender(){
     return '<div style="margin-bottom:8px;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:4px">'
       +'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px">'+typeBtns+'</div>'
       +'<div style="display:flex;align-items:center;gap:4px">'
-      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" placeholder="'+selOpt.def+'" oninput="gbStoneNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" oninput="gbStoneNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
       +(gbStoneItems.length>1?'<button onclick="gbStoneRemove('+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>':'')
       +'</div></div>';
   }).join('');
@@ -2785,7 +2876,7 @@ function gbPolyRender(){
     return '<div style="margin-bottom:8px;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:4px">'
       +'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px">'+typeBtns+'</div>'
       +'<div style="display:flex;align-items:center;gap:4px">'
-      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" placeholder="'+placeholder+'" oninput="gbPolyNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" oninput="gbPolyNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
       +(gbPolyItems.length>1?'<button onclick="gbPolyRemove('+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>':'')
       +'</div></div>';
   }).join('');
@@ -2974,6 +3065,9 @@ function abdClear(){
   abdRecoSel=[];
   var st=document.getElementById('ast-areco');if(st){st.textContent='—';st.className='sec-status';}
   document.getElementById('abd-rpt').classList.remove('vis');
+  var rt=document.getElementById('abd-rtxt');if(rt)rt.value='';
+  clearPatientBar('abd');
+  draftClear();
 }
 function abdCollect(){
   const lb={liver:'Liver',gb:'Gallbladder & Bile Duct',pan:'Pancreas',spl:'Spleen',kid:'Kidneys',aoth:'Others'};
@@ -3024,7 +3118,6 @@ function abdCollect(){
 }
 function abdGenerate(){
   const b=document.getElementById('abd-gbtn'),bi=document.getElementById('abd-bi'),bt=document.getElementById('abd-bt');
-  b.disabled=true;bi.textContent='…';bt.textContent='GENERATING...';
   const chk=document.getElementById('abd-ptchk').checked;
   const n=chk?document.getElementById('abd-n').value.trim():'',d=chk?document.getElementById('abd-d').value||'':'',doc=chk?document.getElementById('abd-doc').value.trim():'';
   const indication=getIndication('abd');
@@ -3033,7 +3126,8 @@ function abdGenerate(){
   const text = localAbdReport(n, d, doc, indication, abdCollect());
   te.value=text;
   oe.scrollIntoView({behavior:'smooth',block:'start'});
-  b.disabled=false;bi.textContent='▶';bt.textContent='GENERATE REPORT';
+  bi.textContent='✓';bt.textContent='DONE';
+  setTimeout(function(){bi.textContent='▶';bt.textContent='GENERATE REPORT';},1200);
 }
 
 // THYROID (TI-RADS)
@@ -3123,7 +3217,7 @@ function thyCystRender(){
   var el=gEl('thycyst-list');if(!el)return;
   el.innerHTML=thyCystItems.map(function(item,i){
     return '<div style="margin-bottom:6px;display:flex;align-items:center;gap:4px;">'
-      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" placeholder="e.g. 1.2cm, right lobe" oninput="thyCystNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.note||'').replace(/"/g,'&quot;')+'" oninput="thyCystNoteChange('+i+',this.value)" style="flex:1;font-size:11px;padding:3px 6px;border:1px solid var(--border);border-radius:3px;">'
       +(thyCystItems.length>1?'<button onclick="thyCystRemove('+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>':'')
       +'</div>';
   }).join('');
@@ -3233,8 +3327,8 @@ function tRenderPanels(){
           ${['right lobe upper','right lobe mid','right lobe lower','left lobe upper','left lobe mid','left lobe lower','isthmus'].map(l=>`<option ${n.loc===l?'selected':''}>${l}<\/option>`).join('')}
         <\/select>
       <\/div>
-      <div class="pt-field"><label>Size (cm)<\/label>
-        <input type="text" placeholder="e.g. 1.2×0.8" value="${n.size||''}" onchange="tNods[${ni}].size=this.value;thyAutoPreview()">
+      <div class="pt-field"><label>Size cm (W×H)<\/label>
+        <input type="text" value="${n.size||''}" onchange="tNods[${ni}].size=this.value;thyAutoPreview()">
       <\/div>
       <div class="pt-field"><label>Score / Category<\/label>
         <div style="height:29px;display:flex;align-items:center;font-family:var(--mono);font-size:13px;font-weight:500">${tiScore(n.sc)}pts → ${tiCat(tiScore(n.sc)).l}<\/div>
@@ -3250,7 +3344,7 @@ function tRenderPanels(){
       ${Object.entries(tiF).map(([k,f])=>{const o=f.opts.find(x=>x.v===n.sc[k]);return`<div class="sc-box"><span class="sl">${f.label.slice(0,5).toUpperCase()}<\/span><span class="sv" style="font-size:14px">${o?o.p:'—'}<\/span><\/div>`}).join('')}
       <div class="ti-cat-info"><div class="tl">${tiCat(tiScore(n.sc)).l}<\/div><div class="td">${tiCat(tiScore(n.sc)).d}<\/div><\/div>
     <\/div>
-    <div class="ot-field"><label>Additional notes<\/label><textarea placeholder="vascularity, halo..." onchange="tNods[${ni}].notes=this.value;thyAutoPreview()">${n.notes||''}<\/textarea><\/div>
+    <div class="ot-field"><label>Additional notes<\/label><textarea onchange="tNods[${ni}].notes=this.value;thyAutoPreview()">${n.notes||''}<\/textarea><\/div>
     ${tNods.length>1?`<button onclick="tRemNod(${ni})" style="margin-top:6px;padding:3px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕ Remove nodule ${ni+1}<\/button>`:''}
   <\/div>`).join('');
 }
@@ -3284,6 +3378,9 @@ function thyClear(){
   clrCls(gEl('ftag-thycyst-btn'));var tl=gEl('thycyst-list');if(tl)tl.innerHTML='';
   var st=document.getElementById('tst-treco');if(st){st.textContent='—';st.className='sec-status';}
   document.getElementById('thy-rpt').classList.remove('vis');
+  var rt=document.getElementById('thy-rtxt');if(rt)rt.value='';
+  clearPatientBar('thy');
+  draftClear();
 }
 function thyCollect(){
   const gRaw=Object.keys(tS.gland).filter(k=>k!=='__THYCYST__');
@@ -3306,7 +3403,6 @@ function thyCollect(){
 }
 function thyGenerate(){
   const b=document.getElementById('thy-gbtn'),bi=document.getElementById('thy-bi'),bt=document.getElementById('thy-bt');
-  b.disabled=true;bi.textContent='…';bt.textContent='GENERATING...';
   const chk=document.getElementById('thy-ptchk').checked;
   const n=chk?document.getElementById('thy-n').value.trim():'',d=chk?document.getElementById('thy-d').value||'':'',doc=chk?document.getElementById('thy-doc').value.trim():'';
   const indication=getIndication('thy');
@@ -3315,7 +3411,8 @@ function thyGenerate(){
   const text = localThyReport(n, d, doc, indication, thyCollect());
   te.value=text;
   oe.scrollIntoView({behavior:'smooth',block:'start'});
-  b.disabled=false;bi.textContent='▶';bt.textContent='GENERATE REPORT';
+  bi.textContent='✓';bt.textContent='DONE';
+  setTimeout(function(){bi.textContent='▶';bt.textContent='GENERATE REPORT';},1200);
 }
 
 // CAROTID ULTRASOUND
@@ -3503,7 +3600,7 @@ function renderPlaqueTable(){
         <option ${p.side==='Left'?'selected':''}>Left<\/option>
         <option ${p.side==='Bilateral'?'selected':''}>Bilateral<\/option>
       <\/select><\/td>
-      <td><input type="text" placeholder="e.g. 8×3" value="${p.size||''}" onchange="cPlaques[${i}].size=this.value;carAutoPreview()"><\/td>
+      <td><input type="text" value="${p.size||''}" onchange="cPlaques[${i}].size=this.value;carAutoPreview()"><\/td>
       <td><select onchange="cPlaques[${i}].echo=this.value;carAutoPreview()">
         <option value="">—<\/option>
         <option ${p.echo==='Soft/hypoechoic'?'selected':''}>Soft/hypoechoic<\/option>
@@ -3544,6 +3641,9 @@ function carClear(){
   carRecoSel=[];
   var st=document.getElementById('cst-creco2');if(st){st.textContent='—';st.className='sec-status';}
   document.getElementById('car-rpt').classList.remove('vis');
+  var rt=document.getElementById('car-rtxt');if(rt)rt.value='';
+  clearPatientBar('car');
+  draftClear();
 }
 
 function carCollect(){
@@ -3575,7 +3675,6 @@ function carCollect(){
 
 function carGenerate(){
   const b=document.getElementById('car-gbtn'),bi=document.getElementById('car-bi'),bt=document.getElementById('car-bt');
-  b.disabled=true;bi.textContent='…';bt.textContent='GENERATING...';
   const chk=document.getElementById('car-ptchk').checked;
   const n=chk?document.getElementById('car-n').value.trim():'',d=chk?document.getElementById('car-d').value||'':'',doc=chk?document.getElementById('car-doc').value.trim():'';
   const indication=getIndication('car');
@@ -3584,7 +3683,8 @@ function carGenerate(){
   const text = localCarReport(n, d, doc, indication, carCollect());
   te.value=text;
   oe.scrollIntoView({behavior:'smooth',block:'start'});
-  b.disabled=false;bi.textContent='▶';bt.textContent='GENERATE REPORT';
+  bi.textContent='✓';bt.textContent='DONE';
+  setTimeout(function(){bi.textContent='▶';bt.textContent='GENERATE REPORT';},1200);
 }
 
 function _doCopy(text, onOk, onFail) {
@@ -3659,6 +3759,7 @@ function opdClear() {
   });
   const temp = document.getElementById('opd-temp'); if(temp) temp.value = '';
   const hint = document.getElementById('opd-temp-hint'); if(hint) hint.textContent = '';
+  draftClear();
 }
 
 // TOOL 05 — CERT
@@ -3737,6 +3838,7 @@ function certClear() {
   certInitDate();
   certRenderDx();
   certRenderOrder();
+  draftClear();
 }
 
 // TOOL 04 — OPD NOTE
@@ -4048,9 +4150,9 @@ function papilRender(){
   el.innerHTML=papilItems.map(function(item,i){
     return '<div style="margin-bottom:6px;display:flex;align-items:center;flex-wrap:wrap;gap:4px;">'
       +'<span style="font-size:11px;">One</span>'
-      +'<input type="text" value="'+(item.cm||'')+'" placeholder="__" oninput="papilField('+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.cm||'')+'" oninput="papilField('+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;">'
       +'<span style="font-size:11px;">cm whitish wart-like polyp at esophagus,</span>'
-      +'<input type="text" value="'+(item.lv||'')+'" placeholder="__" oninput="papilField('+i+',\'lv\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;">'
+      +'<input type="text" value="'+(item.lv||'')+'" oninput="papilField('+i+',\'lv\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;">'
       +'<span style="font-size:11px;">cm from incisor, favor papilloma, s/p biopsy.</span>'
       +(papilItems.length>1?'<button onclick="papilRemove('+i+')" style="padding:1px 6px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕</button>':'')
       +'</div>';
@@ -4338,11 +4440,11 @@ function egdMlRender(id){
   panelsEl.innerHTML=st.lesions.map(function(l,i){
     var body='';
     if(isSml){
-      body='<div style="line-height:2;margin-top:4px;">Size: <input type="text" placeholder="__" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'</div>'
+      body='<div style="line-height:2;margin-top:4px;">Size: <input type="text" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'</div>'
         +'<div style="margin-top:6px;font-size:11px;font-weight:500;color:var(--text-muted)">Procedure:</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+smlProcs.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="egdMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px">'+p.label+'</span>';}).join('')+'</div>';
     } else if(isEml){
-      body='<div style="line-height:2;margin-top:4px;">Size: <input type="text" placeholder="__" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'Level: <input type="text" placeholder="__" value="'+(l.cm2||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm2\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm from incisor</div>'
+      body='<div style="line-height:2;margin-top:4px;">Size: <input type="text" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'Level: <input type="text" value="'+(l.cm2||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm2\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm from incisor</div>'
         +'<div style="margin-top:6px;font-size:11px;font-weight:500;color:var(--text-muted)">Procedure:</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+colonUlcerProcs.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="egdMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px">'+p.label+'</span>';}).join('')+'</div>';
     } else {
@@ -4354,7 +4456,7 @@ function egdMlRender(id){
       var procRow=procList.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="egdMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px;margin-bottom:3px">'+p.label+'</span>';}).join('');
       body='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px">'+gradeRow+'</div>'
         +descTxt
-        +'<div style="line-height:2;margin-top:5px;">Size: <input type="text" placeholder="__" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'</div>'
+        +'<div style="line-height:2;margin-top:5px;">Size: <input type="text" value="'+(l.cm||'')+'" oninput="egdMlSetField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+buildLocHtml(l)+'</div>'
         +'<div style="margin-top:6px;font-size:11px;font-weight:500;color:var(--text-muted)">Procedure:</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+procRow+'</div>';
     }
@@ -4955,13 +5057,12 @@ function egdClear() {
     var ot=gEl('eot-'+g); if(ot) ot.value='';
     egdUpdStatus(g);
   });
-  ['egd-n','egd-id','egd-d','egd-doc'].forEach(function(id){var e=gEl(id);if(e)e.value='';});
   document.querySelectorAll('#ind-bar-egd .ind-tag').forEach(function(t){t.classList.remove('sel');});
   var f=gEl('ind-free-egd'); if(f) f.value='';
   var out=gEl('egd-rtxt'); if(out) out.value='';
-  var chk=gEl('egd-ptchk'); if(chk){chk.checked=false;ptBarToggle('egd');}
   egdInit();
-  var doc=gEl('egd-doc'); if(doc) doc.value='林彥廷';
+  clearPatientBar('egd');
+  draftClear();
 }
 function egdGenerate() {
   egdAutoPreview();
@@ -5201,9 +5302,9 @@ function cMlRender(id){
     if(cfg.type==='sml'){
       // Submucosal: size + location + biopsy
       var locHtml=isRectum
-        ? '<input type="text" value="'+(l.loc||'').replace(/"/g,'&quot;')+'" placeholder="at rectum" oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">'
+        ? '<input type="text" value="'+(l.loc||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">'
         : '<select oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px"><option value="">Location</option>'+colonLocs.map(function(loc){return '<option value="'+loc+'"'+(l.loc===loc?' selected':'')+'>'+loc+'</option>';}).join('')+'</select>';
-      body='<div style="line-height:2;font-size:11px;margin-bottom:5px;">Size: <input type="text" value="'+(l.cm||'').replace(/"/g,'&quot;')+'" placeholder="__" oninput="cMlField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px">cm'+locHtml+'</div>'
+      body='<div style="line-height:2;font-size:11px;margin-bottom:5px;">Size: <input type="text" value="'+(l.cm||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px">cm'+locHtml+'</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+smlProcs.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="cMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px">'+p.label+'</span>';}).join('')+'</div>';
     } else {
       // Malignancy: Paris + NICE + size + location + proc
@@ -5212,12 +5313,12 @@ function cMlRender(id){
       var procRow=colonProcs.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="cMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px;margin-bottom:3px">'+p.label+'</span>';}).join('');
       var desc=parisOpts.find(function(o){return o.g===l.grade;});
       var locHtml2=isRectum
-        ? '<input type="text" value="'+(l.loc||'').replace(/"/g,'&quot;')+'" placeholder="at rectum" oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">'
+        ? '<input type="text" value="'+(l.loc||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">'
         : '<select oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px"><option value="">Location</option>'+colonLocs.map(function(loc){return '<option value="'+loc+'"'+(l.loc===loc?' selected':'')+'>'+loc+'</option>';}).join('')+'</select>';
       body='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px">'+gradeRow+'</div>'
         +(desc?'<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">'+(desc.shortDesc||desc.desc)+'</div>':'')
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">'+niceRow+'</div>'
-        +'<div style="line-height:2;font-size:11px;margin-bottom:4px">Size: <input type="text" value="'+(l.cm||'').replace(/"/g,'&quot;')+'" placeholder="__" oninput="cMlField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px">cm'+locHtml2+'</div>'
+        +'<div style="line-height:2;font-size:11px;margin-bottom:4px">Size: <input type="text" value="'+(l.cm||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px">cm'+locHtml2+'</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px">'+procRow+'</div>';
     }
     return '<div class="nodule-panel '+(i===st.activeIdx?'active':'')+'">'+body
@@ -5506,7 +5607,7 @@ function colonRenderPanel(id,state,opts,color,setFieldFn,toggleProcFn,removeFn,s
       +'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px">'+gradeOpts+'</div>'
       +descTxt
       +niceRow
-      +'<div style="line-height:2;margin-top:5px;">Size: <input type="text" placeholder="__" value="'+(l.cm||'')+'" oninput="'+setFieldFn+'(\'cm\',this.value,'+i+')" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+locOpts+'</div>'
+      +'<div style="line-height:2;margin-top:5px;">Size: <input type="text" value="'+(l.cm||'')+'" oninput="'+setFieldFn+'(\'cm\',this.value,'+i+')" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">cm'+locOpts+'</div>'
       +'<div style="margin-top:6px;font-size:11px;font-weight:500;color:var(--text-muted)">Procedure:</div>'
       +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'+procOpts+'</div>'
       +(state.lesions.length>1?'<button onclick="'+removeFn+'('+i+')" style="margin-top:6px;padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">✕ Remove</button>':'')
@@ -5906,11 +6007,9 @@ function cfsClear() {
     var ot = document.getElementById('cot-'+g); if(ot) ot.value='';
     cfsUpdStatus(g);
   });
-  ['cfs-n','cfs-id','cfs-d','cfs-doc'].forEach(function(id){ var el=document.getElementById(id); if(el)el.value=''; });
   document.querySelectorAll('#ind-bar-cfs .ind-tag').forEach(function(t){ t.classList.remove('sel'); });
   var f=document.getElementById('ind-free-cfs'); if(f) f.value='';
   var out = document.getElementById('cfs-rtxt'); if(out) out.value='';
-  var chk=document.getElementById('cfs-ptchk'); if(chk){chk.checked=false; ptBarToggle('cfs');}
   // Reset insertion level & timing
   cfsInsLevel = '';
   ['cfs-ins-ti','cfs-ins-cec','cfs-ins-asc','cfs-ins-tc','cfs-ins-des','cfs-ins-sig'].forEach(function(id){
@@ -5921,7 +6020,8 @@ function cfsClear() {
   var it=document.getElementById('cfs-ins-time'); if(it)it.value='';
   var wt=document.getElementById('cfs-wd-time'); if(wt)wt.value='';
   cfsInit();  // re-applies defaults including cecum + times
-  var doc=document.getElementById('cfs-doc'); if(doc) doc.value='林彥廷';
+  clearPatientBar('cfs');
+  draftClear();
 }
 function cfsGenerate() {
   cfsAutoPreview();
@@ -6001,7 +6101,7 @@ function cfsGenerate() {
         <!-- Output -->
         <div class="report-out vis" id="cert-dx-rpt" style="margin-top:16px">
           <div class="rep-head"><span>診斷欄位內容&nbsp;&nbsp;<button class="btn-copy" onclick="certCopyField('cert-dx-text',this)">⧉ COPY</button></span></div>
-          <textarea class="rep-content" id="cert-dx-text" spellcheck="false" placeholder="點選上方片語自動帶入，或直接在此輸入…" style="min-height:0;height:81px;resize:vertical;font-size:14px"></textarea>
+          <textarea class="rep-content" id="cert-dx-text" spellcheck="false" style="min-height:0;height:81px;resize:vertical;font-size:14px"></textarea>
         </div>
       </div>
     </div>
@@ -6046,7 +6146,7 @@ function cfsGenerate() {
         <!-- Output -->
         <div class="report-out vis" id="cert-order-rpt" style="margin-top:16px">
           <div class="rep-head"><span>醫囑欄位內容&nbsp;&nbsp;<button class="btn-copy" onclick="certCopyField('cert-order-text',this)">⧉ COPY</button></span></div>
-          <textarea class="rep-content" id="cert-order-text" spellcheck="false" placeholder="點選上方片語自動帶入，或直接在此輸入…" style="min-height:0;height:101px;resize:vertical;font-size:14px"></textarea>
+          <textarea class="rep-content" id="cert-order-text" spellcheck="false" style="min-height:0;height:101px;resize:vertical;font-size:14px"></textarea>
         </div>
       </div>
     </div>
@@ -6066,7 +6166,7 @@ function cfsGenerate() {
     </nav>
     <div class="sb-foot">
       <button class="btn-gen" onclick="opdGenNote()"><span id="opd-gen-icon">▶</span> <span id="opd-gen-txt">GENERATE NOTE</span></button>
-      <button class="btn-clr" onclick="opdClear()">✕ CLEAR ALL</button>
+      <button class="btn-clr" onclick="opdClear()">✕ 下一位病人</button>
     </div>
   </aside>
   <main class="main-content">
@@ -6099,7 +6199,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:6px">
           <label>Free text</label>
-          <textarea id="opd-s-free" placeholder="其他症狀補充…" rows="2" style="min-height:40px" oninput="opdUpdStatus('s');opdAutoPreview()"></textarea>
+          <textarea id="opd-s-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('s');opdAutoPreview()"></textarea><div class="fh">其他症狀補充…</div>
         </div>
       </div>
     </div>
@@ -6135,7 +6235,7 @@ function cfsGenerate() {
         <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap">
           <span style="font-family:var(--mono);font-size:10px;color:var(--text-faint);letter-spacing:.08em">BODY TEMP</span>
           <div style="display:flex;align-items:center;gap:4px">
-            <input type="number" step="0.1" min="34" max="42" id="opd-temp" placeholder="—"
+            <input type="number" step="0.1" min="34" max="42" id="opd-temp"
               style="width:64px;height:28px;font-family:var(--mono);font-size:13px;text-align:center;
                      padding:0 4px;border:1px solid var(--border);border-radius:3px;background:var(--bg);outline:none"
               oninput="opdUpdStatus('o');opdAutoPreview()">
@@ -6145,7 +6245,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:8px">
           <label>Free text</label>
-          <textarea id="opd-o-free" placeholder="其他理學檢查補充…" rows="2" style="min-height:40px" oninput="opdUpdStatus('o');opdAutoPreview()"></textarea>
+          <textarea id="opd-o-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('o');opdAutoPreview()"></textarea><div class="fh">其他理學檢查補充…</div>
         </div>
       </div>
     </div>
@@ -6180,7 +6280,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:6px">
           <label>Free text</label>
-          <textarea id="opd-p-free" placeholder="其他處置補充…" rows="2" style="min-height:40px" oninput="opdUpdStatus('p');opdAutoPreview()"></textarea>
+          <textarea id="opd-p-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('p');opdAutoPreview()"></textarea><div class="fh">其他處置補充…</div>
         </div>
       </div>
     </div>
@@ -6188,13 +6288,260 @@ function cfsGenerate() {
     <!-- OUTPUT NOTE -->
     <div class="report-out vis" id="opd-sec-out" style="margin-top:4px">
       <div class="rep-head"><span>OPD STRUCTURED NOTE&nbsp;&nbsp;<button class="btn-copy" id="opd-copy-btn" onclick="opdCopyNote()">⧉ COPY</button></span></div>
-      <textarea class="rep-content" id="opd-note-out" spellcheck="false"
-        placeholder="點選上方片語後按 GENERATE NOTE，或選完後即時預覽…"></textarea>
+      <textarea class="rep-content" id="opd-note-out" spellcheck="false"></textarea>
     </div>
 
   </main>
 </div>
 </div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   改版日期 · 草稿自動存檔 · 鍵盤操作 · 離線快取
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── 最後改版日期 ──────────────────────────────────────────────
+   每次改版請一併更新這一行，會顯示在首頁左下角。
+   同時當作草稿的版本戳記：版本一變，舊草稿一律不還原。 */
+var APP_REVISION = '2026-09-11';
+function renderAppRevision(){
+  var el=document.getElementById('app-revision');
+  if(el) el.textContent='最後改版：'+APP_REVISION;
+}
+
+/* ── 草稿自動存檔 ──────────────────────────────────────────────
+   只寫進這台電腦的 localStorage，不會上傳。
+   重新整理或分頁被關掉後，開啟時「詢問」是否還原，絕不自動帶入，
+   避免把上一位病人的內容接到下一位身上。 */
+var DRAFT_KEY='ytlin-clinical-draft-v1';
+var DRAFT_TTL=12*60*60*1000;   // 超過 12 小時的草稿直接捨棄
+
+var TOOL_NAMES={abd:'腹部超音波',thy:'甲狀腺超音波',car:'頸動脈超音波',
+  egd:'上消化道內視鏡',cfs:'大腸鏡',opd:'門診病歷',cert:'診斷書',cover:'首頁'};
+
+/* 會變動的狀態變數。設定表（aDef、tiF、egdMlCfg…）不需要存，
+   它們含有函式，也無法 JSON 序列化。 */
+var DRAFT_OBJ=['abdRecoSel','thyRecoSel','carRecoSel','aS','abdPlusItems',
+  'gbStoneItems','gbPolyItems','tS','tNods','thyCystItems','cS','cPlaques',
+  'certDxSel','certOrderSel','opdSel','egdSel','egdSelText','papilItems',
+  'egdMlState','vascSel','incompReasons','ehemoOpts','cfsSel','hemoSel',
+  'cMlState','cpolypState','culcerState','rulcerState','rpolypState',
+  'cincompReasons','chemoOpts','cfsPolypLabels'];
+var DRAFT_PRIM=['gbCholType','panitisType','fattyGrade','tActiveN','cHasPlaq',
+  'kodsiGrade','laGrade','varicesForm','causticGrade','ecaType','eatypType',
+  'candLoc','hcmvLoc','kodsiGradeC','spopType','egdSpopActive','oGastType',
+  'gcaType','gvarType','rutResult','cfsInsLevel','ccolitisGrade',
+  'ccolitisIschemic','ccolitisDiverti','efbTool','cfbTool','currentTool'];
+
+function draftGet(n){ try{ return eval(n); }catch(e){ return undefined; } }
+function draftPut(n,v){
+  try{ window.__draftTmp=v; eval(n+'=window.__draftTmp'); }catch(e){}
+  window.__draftTmp=null;
+}
+/* const 宣告的物件不能重新指派，改成原地替換內容 */
+function draftPutObj(n,v){
+  var cur=draftGet(n);
+  if(Array.isArray(cur)&&Array.isArray(v)){
+    cur.length=0; for(var i=0;i<v.length;i++) cur.push(v[i]); return;
+  }
+  if(cur&&typeof cur==='object'&&v&&typeof v==='object'){
+    Object.keys(cur).forEach(function(k){ delete cur[k]; });
+    Object.assign(cur,v); return;
+  }
+  draftPut(n,v);
+}
+
+/* 把使用者當下輸入的值寫回 HTML 屬性，這樣 outerHTML 才留得住 */
+function draftSyncAttrs(){
+  document.querySelectorAll('.page input,.page textarea,.page select').forEach(function(el){
+    if(el.type==='checkbox'||el.type==='radio'){
+      if(el.checked) el.setAttribute('checked',''); else el.removeAttribute('checked');
+    }else if(el.tagName==='SELECT'){
+      Array.prototype.forEach.call(el.options,function(o){
+        if(o.selected) o.setAttribute('selected',''); else o.removeAttribute('selected');
+      });
+    }else if(el.tagName==='TEXTAREA'){
+      el.textContent=el.value;
+    }else{
+      el.setAttribute('value', el.value==null?'':el.value);
+    }
+  });
+}
+function draftPagesHTML(){
+  return Array.prototype.map.call(document.querySelectorAll('.page'),
+    function(p){ return p.outerHTML; }).join('');
+}
+
+var draftTimer=null, draftDirty=false, draftPending=null, draftPaused=false;
+
+function draftSave(){
+  if(draftPaused) return;
+  try{
+    draftSyncAttrs();
+    var st={};
+    DRAFT_OBJ.concat(DRAFT_PRIM).forEach(function(n){
+      var v=draftGet(n);
+      if(v!==undefined) st[n]=v;
+    });
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      rev:APP_REVISION, ts:Date.now(), tool:currentTool,
+      html:draftPagesHTML(), state:st
+    }));
+  }catch(e){ /* 容量不足或無痕模式：放棄存檔，不影響操作 */ }
+}
+function draftTouch(){
+  if(draftPaused) return;
+  draftDirty=true;
+  if(draftTimer) return;
+  draftTimer=setTimeout(function(){
+    draftTimer=null;
+    if(draftDirty){ draftDirty=false; draftSave(); }
+  },1200);
+}
+function draftClear(){
+  draftDirty=false;
+  if(draftTimer){ clearTimeout(draftTimer); draftTimer=null; }
+  try{ localStorage.removeItem(DRAFT_KEY); }catch(e){}
+}
+function draftHideBar(){
+  var bar=document.getElementById('restore-bar');
+  if(bar) bar.classList.remove('on');
+  document.body.style.paddingTop='';
+}
+function draftDiscard(){
+  draftPending=null;
+  draftHideBar();
+  draftClear();
+}
+function draftPeek(){
+  try{
+    var raw=localStorage.getItem(DRAFT_KEY);
+    if(!raw) return null;
+    var d=JSON.parse(raw);
+    if(!d || d.rev!==APP_REVISION) return null;     // 改版後舊草稿不還原
+    if(Date.now()-d.ts>DRAFT_TTL) return null;      // 太舊的草稿不還原
+    if(!d.html || d.tool==='cover') return null;    // 停在首頁沒填東西
+    return d;
+  }catch(e){ return null; }
+}
+function draftOffer(){
+  draftPending=draftPeek();
+  if(!draftPending){ draftClear(); return; }
+  var t=new Date(draftPending.ts), p=function(x){ return x<10?'0'+x:''+x; };
+  var when=p(t.getMonth()+1)+'／'+p(t.getDate())+' '+p(t.getHours())+'：'+p(t.getMinutes());
+  var msg=document.getElementById('rb-msg');
+  if(msg) msg.textContent='偵測到未完成的報告：'+(TOOL_NAMES[draftPending.tool]||draftPending.tool)
+    +'，'+when+' 存檔。請先確認是同一位病人，再按「繼續編輯」。';
+  var bar=document.getElementById('restore-bar');
+  if(bar) bar.classList.add('on');
+  document.body.style.paddingTop='40px';
+}
+function draftRestore(){
+  if(!draftPending) return;
+  var d=draftPending;
+  draftPaused=true;
+  try{
+    var pages=document.querySelectorAll('.page');
+    var anchor=pages[pages.length-1];
+    var holder=document.createElement('div');
+    holder.innerHTML=d.html;
+    var frag=document.createDocumentFragment();
+    while(holder.firstChild) frag.appendChild(holder.firstChild);
+    anchor.parentNode.insertBefore(frag, anchor.nextSibling);
+    Array.prototype.forEach.call(pages,function(p){ p.parentNode.removeChild(p); });
+
+    DRAFT_OBJ.forEach(function(n){ if(n in d.state) draftPutObj(n,d.state[n]); });
+    DRAFT_PRIM.forEach(function(n){ if(n in d.state) draftPut(n,d.state[n]); });
+
+    stampKeyboard(document);
+    renderAppRevision();
+    draftPending=null;
+    draftHideBar();
+    showPage(d.tool);
+  }catch(e){
+    draftPending=null;
+    draftHideBar();
+    draftClear();
+    location.reload();
+    return;
+  }
+  draftPaused=false;
+}
+
+/* ── 列印 ──────────────────────────────────────────────────────
+   報告本文放在 textarea，textarea 不會自己長高，
+   列印前先把高度撐到內容全長，印完再還原。 */
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('.rep-content').forEach(function(t){
+    t.dataset.prevH=t.style.height||'';
+    t.style.height='auto';
+    t.style.height=t.scrollHeight+'px';
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('.rep-content').forEach(function(t){
+    t.style.height=t.dataset.prevH||'';
+    delete t.dataset.prevH;
+  });
+});
+function printRpt(id){
+  var el=document.getElementById(id);
+  if(!el || !el.value.trim()){ return; }
+  window.print();
+}
+
+/* ── 鍵盤操作 ──────────────────────────────────────────────────
+   原本 372 個片語標籤都是 <span>，只能用滑鼠點。
+   補上 tabindex 與 Enter／空白鍵，內視鏡當下可以單手用鍵盤選。 */
+var KB_SEL='.ftag,.ind-tag,.tc,.dmitem,.nav-item,.sec-head,.cert-phrase';
+function stampKeyboard(root){
+  (root||document).querySelectorAll(KB_SEL).forEach(function(el){
+    if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0');
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+  });
+}
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter' && e.key!==' ' && e.key!=='Spacebar') return;
+  var t=e.target;
+  if(!t || typeof t.closest!=='function') return;
+  var hit=t.closest(KB_SEL);
+  if(!hit) return;
+  e.preventDefault();
+  hit.click();
+});
+
+/* ── 綁定：任何點擊或輸入都觸發一次去抖動存檔 ─────────────── */
+document.addEventListener('click',draftTouch,true);
+document.addEventListener('input',draftTouch,true);
+document.addEventListener('change',draftTouch,true);
+
+window.addEventListener('DOMContentLoaded',function(){
+  renderAppRevision();
+  stampKeyboard(document);
+  draftOffer();
+
+  /* 動態產生的片語標籤（+ Add lesion 等）也要能用鍵盤 */
+  if(window.MutationObserver){
+    new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        Array.prototype.forEach.call(m.addedNodes,function(n){
+          if(n.nodeType!==1) return;
+          if(n.matches&&n.matches(KB_SEL)){
+            if(!n.hasAttribute('tabindex')) n.setAttribute('tabindex','0');
+            if(!n.hasAttribute('role')) n.setAttribute('role','button');
+          }
+          stampKeyboard(n);
+        });
+      });
+    }).observe(document.body,{childList:true,subtree:true});
+  }
+
+  /* ── 離線可用：診所網路斷線時仍能開啟 ──────────────────── */
+  if('serviceWorker' in navigator && window.isSecureContext){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+});
+</script>
 
 </body>
 </html>
