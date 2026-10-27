@@ -74,42 +74,46 @@ button{font-family:inherit}
 .page{display:none;min-height:100vh;padding-top:var(--nav-h)}
 .page.visible{display:block}
 
-/* ── 首頁 ───────────────────────────────────── */
-.cover{position:relative;max-width:1080px;margin:0 auto;min-height:calc(100vh - var(--nav-h));
-  padding:56px 24px 72px}
-.cover-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
-  padding-bottom:28px;margin-bottom:32px;border-bottom:1px solid var(--border)}
-.cover-eye{font-size:13px;letter-spacing:.06em;color:var(--teal);font-weight:500;margin-bottom:10px}
-.cover h1{font-size:40px;font-weight:300;line-height:1.15;letter-spacing:-.01em;color:var(--navy)}
+/* ── 首頁：排滿整個畫面，四欄大卡片，高度跟著視窗 ─── */
+.cover{display:flex;flex-direction:column;gap:22px;min-height:calc(100vh - var(--nav-h));
+  padding:28px clamp(16px,2.6vw,48px) 28px}
+.cover-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cover-eye{font-size:14px;letter-spacing:.06em;color:var(--teal);font-weight:500;margin-bottom:6px}
+.cover h1{font-size:clamp(32px,3vw,46px);font-weight:300;line-height:1.1;letter-spacing:-.01em;color:var(--navy)}
 .cover h1 strong{font-weight:600}
-.cover-sub{font-size:15px;color:var(--text-muted);margin-top:12px;max-width:520px;line-height:1.7}
-.cover-keys{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--text-muted)}
-.cover-keys span{display:flex;align-items:center;gap:8px}
+.cover-sub{font-size:16px;color:var(--text-muted);margin-top:8px;line-height:1.6}
 kbd{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:5px;background:var(--surface);
   border:1px solid var(--border);border-bottom-width:2px;color:var(--text)}
-.tc-group{margin-bottom:28px}
-.tc-group-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
-.tc-group-h b{font-size:15px;font-weight:600;color:var(--navy)}
-.tc-group-h span{font-size:12px;color:var(--text-faint);letter-spacing:.04em}
-.tool-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.tc{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:18px 18px 16px 18px;text-align:left;cursor:pointer;transition:all .15s;
-  display:grid;grid-template-columns:44px 1fr auto;gap:4px 14px;align-items:center;box-shadow:var(--shadow)}
-.tc:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 6px 20px rgba(43,58,64,.09)}
-.tc-ico{grid-row:1 / span 2;width:44px;height:44px;border-radius:10px;background:var(--teal-light);
-  color:var(--teal);display:grid;place-items:center}
-.tc.endo .tc-ico{background:var(--gold-light);color:var(--gold-strong)}
-.tc.doc .tc-ico{background:#e9edf0;color:var(--navy)}
-.tc-ico svg{width:24px;height:24px}
-.tc-title{font-size:15px;font-weight:600;color:var(--navy)}
-.tc-desc{font-size:12.5px;color:var(--text-muted);grid-column:2}
-.tc-arr{grid-row:1 / span 2;grid-column:3;color:var(--text-faint);font-size:16px;transition:transform .15s}
-.tc:hover .tc-arr{transform:translateX(3px);color:var(--teal)}
-.tc-key{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:10px;color:var(--text-faint)}
-.cover-ft{display:flex;align-items:center;gap:10px;margin-top:12px;padding:14px 16px;border-radius:var(--radius);
-  background:var(--teal-light);color:var(--teal-strong);font-size:13px;line-height:1.6}
-.cover-ft svg{flex-shrink:0}
-.app-revision{margin-top:20px;font-size:12px;color:var(--text-faint);font-family:var(--mono);letter-spacing:.04em}
+.cover-grid{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(200px,1fr);gap:18px}
+.tc{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;cursor:pointer;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:clamp(18px,1.8vw,30px);
+  box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s,border-color .15s;overflow:hidden}
+.tc::after{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--tc-c,var(--teal));opacity:.75}
+.tc:hover{border-color:var(--tc-c,var(--teal));transform:translateY(-2px);box-shadow:0 10px 28px rgba(43,58,64,.10)}
+.tc.us{--tc-c:#4c7d73;--tc-bg:#e6f0ec}
+.tc.endo{--tc-c:#b57a3c;--tc-bg:#f8eddf}
+.tc.doc{--tc-c:#5d7290;--tc-bg:#e8edf4}
+.tc-tag{font-size:13px;font-weight:500;color:var(--tc-c);letter-spacing:.04em}
+.tc-ico{width:clamp(52px,4.4vw,72px);height:clamp(52px,4.4vw,72px);border-radius:16px;margin:4px 0 0;
+  background:var(--tc-bg);color:var(--tc-c);display:grid;place-items:center}
+.tc-ico svg{width:56%;height:56%}
+.tc-title{font-size:clamp(20px,1.7vw,27px);font-weight:600;color:var(--navy);margin-top:12px;line-height:1.25}
+.tc-secs{margin-top:auto;padding-top:14px;padding-right:34px;display:flex;flex-wrap:wrap;gap:6px}
+.tc-sec{font-size:clamp(12.5px,.85vw,14px);padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);cursor:pointer;transition:all .12s}
+.tc-sec:hover{border-color:var(--tc-c);color:var(--tc-c);background:var(--tc-bg)}
+.tc-desc{font-size:clamp(13px,1vw,15px);color:var(--text-faint);letter-spacing:.01em}
+.tc-note{font-size:clamp(14px,1vw,16px);color:var(--text-muted);line-height:1.6;margin-top:4px}
+.tc-key{position:absolute;top:18px;right:20px;font-family:var(--mono);font-size:12px;color:var(--text-faint)}
+.tc-arr{position:absolute;right:22px;bottom:20px;font-size:22px;color:var(--text-faint);transition:transform .15s}
+.tc:hover .tc-arr{transform:translateX(4px);color:var(--tc-c)}
+.cover-info{display:flex;flex-direction:column;gap:12px;border-radius:16px;padding:clamp(18px,1.8vw,30px);
+  background:var(--teal-light);color:var(--teal-strong);font-size:clamp(13.5px,1vw,15px);line-height:1.6}
+.cover-info b{font-size:clamp(16px,1.2vw,19px);color:var(--navy)}
+.cover-info .keys{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;color:var(--text-muted)}
+.cover-info .keys span:nth-child(odd){white-space:nowrap}
+.cover-info .lock{display:flex;gap:8px;margin-top:auto}
+.cover-info .lock svg{flex-shrink:0;margin-top:3px}
+.app-revision{font-size:12px;color:var(--text-faint);font-family:var(--mono);letter-spacing:.04em}
 
 /* ── 工具頁：側欄＋主內容（寬螢幕再分出報告欄） ── */
 .tool-layout{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - var(--nav-h))}
@@ -369,10 +373,47 @@ body{font-size:calc(14px * var(--fs))}
 .btn-clr{font-size:calc(13.5px * var(--fs));padding:calc(9px * var(--fs))}
 .plaque-table{font-size:calc(13px * var(--fs))}
 /* 大螢幕把側欄與報告欄放寬，左側片語區仍保有足夠寬度 */
-@media (min-width:1600px){
-  .tool-layout{grid-template-columns:260px 1fr}
-  .main-content{padding:28px 36px 40px}
-  .main-content:has(>.report-out){grid-template-columns:minmax(0,1fr) minmax(460px,42%);column-gap:28px}
+
+
+/* ── 畫面空間重新配置 ───────────────────────────────────────
+   側欄改成頁面頂端的工具列（標題、段落、按鈕一列排完），左右整個寬度留給片語與報告。
+   1500px 以上片語區分成左右兩欄（.sec-flow，由 JS 依片語數量分配），報告固定在最右側。 */
+@media (min-width:821px){
+  :root{--bar-h:58px}
+  html{scroll-padding-top:calc(var(--nav-h) + var(--bar-h) + 12px)}
+  .tool-layout{display:block}
+  .sidebar{position:sticky;top:var(--nav-h);z-index:150;height:var(--bar-h);overflow:visible;
+    flex-direction:row;align-items:center;gap:18px;padding:0 clamp(16px,2vw,36px);
+    border-right:none;border-bottom:1px solid var(--border);background:rgba(255,254,251,.96);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .sb-head{padding:0;display:flex;align-items:baseline;gap:10px;white-space:nowrap;flex-shrink:0}
+  .sb-label{display:none}
+  .sb-title{font-size:calc(17px * var(--fs))}
+  .sb-title span{display:inline;margin:0 0 0 8px;font-size:calc(13px * var(--fs))}
+  .nav-list{display:flex;align-items:center;gap:4px;padding:0;flex:1;min-width:0;overflow-x:auto;scrollbar-width:thin}
+  .nav-item{margin:0;white-space:nowrap;padding:calc(6px * var(--fs)) 11px;border-radius:20px;gap:7px}
+  .nav-item .ndot{margin-left:2px}
+  .sb-foot{display:flex;gap:8px;padding:0;border-top:none;background:none;flex-shrink:0}
+  .btn-gen,.btn-clr{width:auto;margin:0;padding:calc(8px * var(--fs)) 16px;white-space:nowrap}
+  .sb-keys{display:none}
+  .section,.section[style]{scroll-margin-top:calc(var(--nav-h) + var(--bar-h) + 12px) !important}
+  .main-content{padding:20px clamp(16px,2vw,36px) 40px}
+}
+.sec-col{display:contents}
+@media (min-width:1280px){
+  .main-content>.report-out{top:calc(var(--nav-h) + var(--bar-h) + 20px);height:calc(100vh - var(--nav-h) - var(--bar-h) - 40px)}
+}
+@media (min-width:821px) and (max-width:1399px){
+  .sb-title span,.nav-item>span:first-child{display:none}
+}
+@media (max-width:1100px){ .tc-secs{display:none} }
+@media (min-width:1500px){
+  .sec-flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+  .sec-col{display:block;min-width:0}
+  .main-content:has(>.report-out){grid-template-columns:minmax(0,1fr) minmax(440px,34%)}
+}
+@media (min-width:1900px){
+  .main-content:has(>.report-out){grid-template-columns:minmax(0,1fr) minmax(520px,32%)}
 }
 
 /* ── 平板與手機 ─────────────────────────────── */
@@ -384,7 +425,7 @@ body{font-size:calc(14px * var(--fs))}
   .main-content{padding:18px 16px 32px}
   .pt-bar{grid-template-columns:repeat(2,1fr)}
   .pt-bar-check{align-self:center}
-  .tool-cards{grid-template-columns:repeat(2,1fr)}
+  .cover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:820px){
   .topnav{padding:0 10px;gap:8px}
@@ -400,16 +441,13 @@ body{font-size:calc(14px * var(--fs))}
   .sb-foot{display:flex;gap:8px;padding:0;border-top:none;flex:1 1 100%}
   .sb-keys{display:none}
   .btn-gen,.btn-clr{margin-bottom:0}
-  .cover{padding:32px 16px 56px}
-  .cover h1{font-size:30px}
-  .cover-keys{display:none}
   .two-col{grid-template-columns:1fr}
   .imt-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:560px){
   .fs-switch{display:none}
   .pt-bar{grid-template-columns:1fr}
-  .tool-cards{grid-template-columns:1fr}
+  .cover-grid{grid-template-columns:1fr;grid-auto-rows:auto}
 }
 
 /* ── 列印：只印報告本文，不印介面 ───────────── */
@@ -422,7 +460,7 @@ body{font-size:calc(14px * var(--fs))}
   .page{padding-top:0}
   .page:not(.visible){display:none}
   .main-content{display:block !important;padding:0;overflow:visible}
-  .main-content>.section{display:none !important}
+  .main-content>.section,.main-content>.sec-flow{display:none !important}
   .report-out,.main-content>.report-out{display:block !important;position:static !important;height:auto !important;
     margin:0;border:none;border-radius:0;padding:16mm 14mm;box-shadow:none}
   .rep-head{background:#fff;color:#000;padding:0 0 6px 0;border-bottom:1px solid #000}
@@ -468,33 +506,29 @@ body{font-size:calc(14px * var(--fs))}
       <div>
         <div class="cover-eye">林彥廷醫師・肝膽胃腸科</div>
         <h1><strong>Clinical Report</strong> Hub</h1>
-        <div class="cover-sub">點選片語即時產生英文結構化報告，右側直接預覽，複製後貼進 HIS。</div>
       </div>
-      <div class="cover-keys">
-        <span><kbd>Alt</kbd>＋<kbd>1</kbd>～<kbd>7</kbd> 切換工具</span>
-        <span><kbd>Ctrl</kbd>＋<kbd>Enter</kbd> 複製目前的報告</span>
-        <span><kbd>Tab</kbd>／<kbd>Enter</kbd> 用鍵盤選片語</span>
-        <span><kbd>Esc</kbd> 返回上一層</span>
+      <div class="cover-sub">點選片語即時產生英文結構化報告，右側直接預覽，複製後貼進 HIS。</div>
+    </div>
+    <div class="cover-grid">
+      <div class="tc us" onclick="showTool('abd')"><span class="tc-key">Alt＋1</span><span class="tc-tag">超音波</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-4.5 0-8 3.6-8 8.5S7.5 21 12 21s8-4.6 8-9.5S16.5 3 12 3z"/><path d="M8 10c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5"/><path d="M8.5 14.5c1 .8 2.2 1.2 3.5 1.2s2.5-.4 3.5-1.2"/></svg></span><div class="tc-title">腹部超音波</div><div class="tc-desc">Abdominal Ultrasound</div><div class="tc-note">肝、膽、胰、脾、腎，脂肪肝分級與病灶描述</div><span class="tc-arr">→</span></div>
+      <div class="tc us" onclick="showTool('thy')"><span class="tc-key">Alt＋2</span><span class="tc-tag">超音波</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M12 9c-1.5-3-6-3.5-6.5 1-.4 3.6 1.5 7 4 7 1.3 0 2.5-1 2.5-2.5"/><path d="M12 9c1.5-3 6-3.5 6.5 1 .4 3.6-1.5 7-4 7-1.3 0-2.5-1-2.5-2.5"/></svg></span><div class="tc-title">甲狀腺超音波</div><div class="tc-desc">Thyroid US・ACR TI-RADS</div><div class="tc-note">結節逐顆計分，自動帶出 TR 分類</div><span class="tc-arr">→</span></div>
+      <div class="tc us" onclick="showTool('car')"><span class="tc-key">Alt＋3</span><span class="tc-tag">超音波</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2-6 1.5 3H21"/></svg></span><div class="tc-title">頸動脈超音波</div><div class="tc-desc">Carotid Ultrasound</div><div class="tc-note">四處 IMT、斑塊表格、血流與狹窄</div><span class="tc-arr">→</span></div>
+      <div class="tc endo" onclick="showTool('egd')"><span class="tc-key">Alt＋4</span><span class="tc-tag">內視鏡</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v6a5 5 0 0 0 5 5h1a4 4 0 0 1 4 4v3"/><circle cx="7" cy="3" r="0.5"/><path d="M14 21h6"/></svg></span><div class="tc-title">上消化道內視鏡</div><div class="tc-desc">Upper GI Endoscopy (EGD)</div><div class="tc-note">食道、EGJ、胃、十二指腸，含分級與處置</div><span class="tc-arr">→</span></div>
+      <div class="tc endo" onclick="showTool('cfs')"><span class="tc-key">Alt＋5</span><span class="tc-tag">內視鏡</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v8a2 2 0 0 1-2 2h-3"/><path d="M9 9h6"/></svg></span><div class="tc-title">大腸鏡</div><div class="tc-desc">Colonoscopy (CFS)</div><div class="tc-note">清腸品質、到達位置、瘜肉與處置</div><span class="tc-arr">→</span></div>
+      <div class="tc doc" onclick="showTool('opd')"><span class="tc-key">Alt＋6</span><span class="tc-tag">文書</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h6M9 18h3"/></svg></span><div class="tc-title">門診病歷</div><div class="tc-desc">OPD Structured Note</div><div class="tc-note">S／O／P 片語組成門診病歷</div><span class="tc-arr">→</span></div>
+      <div class="tc doc" onclick="showTool('cert')"><span class="tc-key">Alt＋7</span><span class="tc-tag">文書</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><circle cx="12.5" cy="14" r="2.5"/><path d="M11 16.3 10.5 20l2-1 2 1-.5-3.7"/></svg></span><div class="tc-title">診斷書</div><div class="tc-desc">Medical Certificate</div><div class="tc-note">診斷與醫囑片語，日期自動帶入</div><span class="tc-arr">→</span></div>
+      <div class="cover-info">
+        <b>操作方式</b>
+        <div class="keys">
+          <span><kbd>Alt</kbd>＋<kbd>1</kbd>～<kbd>7</kbd></span><span>切換工具</span>
+          <span><kbd>Ctrl</kbd>＋<kbd>Enter</kbd></span><span>複製目前的報告</span>
+          <span><kbd>Tab</kbd>／<kbd>Enter</kbd></span><span>用鍵盤選片語</span>
+          <span><kbd>Esc</kbd></span><span>返回上一層</span>
+        </div>
+        <div class="lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>全部在這台電腦的瀏覽器內產生，病人資料不會上傳。換病人請按「下一位病人」。</span></div>
+        <div class="app-revision" id="app-revision"></div>
       </div>
     </div>
-    <div class="tc-group"><div class="tc-group-h"><b>超音波</b><span>ULTRASOUND</span></div>
-    <div class="tool-cards">
-      <div class="tc us" onclick="showTool('abd')"><span class="tc-key">Alt＋1</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-4.5 0-8 3.6-8 8.5S7.5 21 12 21s8-4.6 8-9.5S16.5 3 12 3z"/><path d="M8 10c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5"/><path d="M8.5 14.5c1 .8 2.2 1.2 3.5 1.2s2.5-.4 3.5-1.2"/></svg></span><div class="tc-title">腹部超音波</div><div class="tc-desc">Abdominal Ultrasound</div><span class="tc-arr">→</span></div>
-      <div class="tc us" onclick="showTool('thy')"><span class="tc-key">Alt＋2</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12"/><path d="M12 9c-1.5-3-6-3.5-6.5 1-.4 3.6 1.5 7 4 7 1.3 0 2.5-1 2.5-2.5"/><path d="M12 9c1.5-3 6-3.5 6.5 1 .4 3.6-1.5 7-4 7-1.3 0-2.5-1-2.5-2.5"/></svg></span><div class="tc-title">甲狀腺超音波</div><div class="tc-desc">Thyroid US・ACR TI-RADS</div><span class="tc-arr">→</span></div>
-      <div class="tc us" onclick="showTool('car')"><span class="tc-key">Alt＋3</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 3 10 2-6 1.5 3H21"/></svg></span><div class="tc-title">頸動脈超音波</div><div class="tc-desc">Carotid US・IMT 與斑塊</div><span class="tc-arr">→</span></div>
-    </div></div>
-    <div class="tc-group"><div class="tc-group-h"><b>內視鏡</b><span>ENDOSCOPY</span></div>
-    <div class="tool-cards">
-      <div class="tc endo" onclick="showTool('egd')"><span class="tc-key">Alt＋4</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v6a5 5 0 0 0 5 5h1a4 4 0 0 1 4 4v3"/><circle cx="7" cy="3" r="0.5"/><path d="M14 21h6"/></svg></span><div class="tc-title">上消化道內視鏡</div><div class="tc-desc">Upper GI Endoscopy (EGD)</div><span class="tc-arr">→</span></div>
-      <div class="tc endo" onclick="showTool('cfs')"><span class="tc-key">Alt＋5</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v8a2 2 0 0 1-2 2h-3"/><path d="M9 9h6"/></svg></span><div class="tc-title">大腸鏡</div><div class="tc-desc">Colonoscopy (CFS)</div><span class="tc-arr">→</span></div>
-    </div></div>
-    <div class="tc-group"><div class="tc-group-h"><b>文書</b><span>DOCUMENTS</span></div>
-    <div class="tool-cards">
-      <div class="tc doc" onclick="showTool('opd')"><span class="tc-key">Alt＋6</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h6M9 18h3"/></svg></span><div class="tc-title">門診病歷</div><div class="tc-desc">OPD Note・S／O／P</div><span class="tc-arr">→</span></div>
-      <div class="tc doc" onclick="showTool('cert')"><span class="tc-key">Alt＋7</span><span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><circle cx="12.5" cy="14" r="2.5"/><path d="M11 16.3 10.5 20l2-1 2 1-.5-3.7"/></svg></span><div class="tc-title">診斷書</div><div class="tc-desc">診斷・醫囑片語</div><span class="tc-arr">→</span></div>
-    </div></div>
-    <div class="cover-ft"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>全部在這台電腦的瀏覽器內產生，沒有後端，病人姓名與病歷號不會上傳。換病人請按左下角「下一位病人」。</div>
-    <div class="app-revision" id="app-revision"></div>
   </div>
 </div>
 
@@ -6519,6 +6553,8 @@ function draftRestore(){
     DRAFT_PRIM.forEach(function(n){ if(n in d.state) draftPut(n,d.state[n]); });
 
     stampKeyboard(document);
+    layoutSections();
+    buildCoverShortcuts();
     renderAppRevision();
     repInitPreviews();
     draftPending=null;
@@ -6722,7 +6758,61 @@ function initFontScale(){
   setFontScale(v);
 }
 
+/* ── 片語區分兩欄 ─────────────────────────────────────────────
+   把各工具的 .section 依序分到左右兩欄，以片語數量估算份量，左右大約各半。
+   順序不變：左欄由上往下讀完，再讀右欄。窄螢幕時兩欄用 display:contents 還原成單欄。
+   已分過欄（例如草稿還原回來的頁面）就不再處理。 */
+function layoutSections(){
+  document.querySelectorAll('.main-content').forEach(function(mc){
+    if(mc.querySelector(':scope>.sec-flow')) return;
+    var secs=Array.prototype.filter.call(mc.children,function(c){ return c.classList.contains('section'); });
+    if(secs.length<2) return;
+    var w=secs.map(function(sec){
+      return 3+sec.querySelectorAll('.ftag,.cert-phrase,textarea,input,table').length;
+    });
+    var total=w.reduce(function(a,b){ return a+b; },0), acc=0, cut=secs.length-1;
+    for(var i=0;i<secs.length-1;i++){ acc+=w[i]; if(acc>=total/2){ cut=i+1; break; } }
+    var flow=document.createElement('div'); flow.className='sec-flow';
+    var L=document.createElement('div'), R=document.createElement('div');
+    L.className=R.className='sec-col';
+    flow.appendChild(L); flow.appendChild(R);
+    mc.insertBefore(flow,secs[0]);
+    secs.forEach(function(sec,i){ (i<cut?L:R).appendChild(sec); });
+  });
+}
+
+
+/* ── 首頁卡片的段落捷徑 ───────────────────────────────────────
+   從各工具的段落導覽自動產生，點了直接開工具並捲到那一段（例：腹部超音波 → Kidneys）。
+   每次都整個重建，草稿還原回來的首頁也不會重複。 */
+function buildCoverShortcuts(){
+  document.querySelectorAll('#page-cover .tc').forEach(function(card){
+    var m=(card.getAttribute('onclick')||'').match(/showTool\('(\w+)'\)/);
+    if(!m) return;
+    var tool=m[1], old=card.querySelector('.tc-secs');
+    if(old) old.parentNode.removeChild(old);
+    var items=document.querySelectorAll('#page-'+tool+' .nav-list .nav-item');
+    if(!items.length) return;
+    var box=document.createElement('div'); box.className='tc-secs';
+    Array.prototype.forEach.call(items,function(it,i){
+      var label=(it.textContent||'').replace(/^\s*\S+\s+/,'').trim();
+      var chip=document.createElement('span');
+      chip.className='tc-sec'; chip.textContent=label;
+      chip.setAttribute('onclick',"event.stopPropagation();openSection('"+tool+"',"+i+")");
+      box.appendChild(chip);
+    });
+    card.insertBefore(box,card.querySelector('.tc-arr'));
+  });
+}
+function openSection(tool,i){
+  showTool(tool);
+  var it=document.querySelectorAll('#page-'+tool+' .nav-list .nav-item')[i];
+  if(it) setTimeout(function(){ it.click(); },30);
+}
+
 window.addEventListener('DOMContentLoaded',function(){
+  layoutSections();
+  buildCoverShortcuts();
   renderAppRevision();
   initFontScale();
   try{ history.replaceState({tool:currentTool},''); }catch(e){}
