@@ -1,7 +1,7 @@
 /* 離線快取：診所網路斷線時，工具仍然開得起來。
    策略是「先連網、連不上才用快取」，避免改版後還拿到舊版本。
    改版時請把 CACHE 的日期改成與 index.html 的 APP_REVISION 相同。 */
-var CACHE = 'ytlin-clinical-2026-09-11';
+var CACHE = 'ytlin-clinical-2026-10-27';
 var SHELL = ['./', './index.html'];
 
 self.addEventListener('install', function (e) {
