@@ -114,15 +114,12 @@ button{font-family:inherit}
 .cover-mast .logo{width:clamp(48px,4vw,64px)}
 .cover h1{font-family:var(--serif);font-size:clamp(40px,3.6vw,60px);font-weight:700;letter-spacing:.12em;line-height:1.15;color:var(--navy);margin-top:6px}
 .cover-org{font-size:14px;letter-spacing:.24em;color:var(--text-muted)}
-.cover-sub{font-size:16px;color:var(--text-muted);line-height:1.8;max-width:26em;padding-top:18px;border-top:1px solid var(--border)}
 kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;background:var(--surface);
   border:1px solid var(--border);border-bottom-width:2px;color:var(--text)}
 .cover-keys{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;align-items:center;font-size:14px;color:var(--text-muted);margin-top:auto}
 .cover-keys dt{white-space:nowrap}
-.cover-lock{display:flex;gap:8px;font-size:14px;line-height:1.7;color:var(--text-muted)}
-.cover-lock svg{flex-shrink:0;margin-top:4px}
 /* 中文只在標點與空格處換行，詞語不拆開 */
-.cover-sub,.cover-lock,.tc-note,.rev-list{word-break:keep-all;line-break:strict}
+.rev-list{word-break:keep-all;line-break:strict}
 .app-revision{align-self:flex-start;font-size:12px;color:var(--text-faint);font-family:var(--mono);letter-spacing:.04em;
   background:none;border:none;border-bottom:1px dotted var(--border-strong);padding:2px 0;cursor:pointer}
 .app-revision:hover{color:var(--teal-strong);border-bottom-color:var(--teal)}
@@ -134,25 +131,23 @@ kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;bac
 .ci-head span{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--text-faint);text-transform:uppercase}
 .ci-group+.ci-group{margin-top:clamp(14px,2.4vh,28px)}
 .tc{flex:1 1 auto;display:grid;align-items:center;cursor:pointer;text-align:left;
-  grid-template-columns:3.2em minmax(10em,15em) minmax(0,1fr) 2em;grid-template-areas:"key title note arr" "key desc secs arr";
+  grid-template-columns:3.2em minmax(10em,15em) minmax(0,1fr) 2em;grid-template-areas:"key title secs arr" "key desc secs arr";
   column-gap:clamp(12px,1.6vw,28px);row-gap:4px;padding:10px 12px 10px 4px;border-bottom:1px solid var(--border);
   transition:background .15s}
 .tc:hover{background:var(--hover)}
 .tc-key{grid-area:key;font-family:var(--serif);font-size:clamp(28px,2.4vw,40px);font-weight:500;color:var(--text-faint);text-align:center;line-height:1}
 .tc-title{grid-area:title;align-self:end;font-family:var(--serif);font-size:clamp(20px,1.6vw,27px);font-weight:600;color:var(--navy);letter-spacing:.06em;white-space:nowrap}
 .tc-desc{grid-area:desc;align-self:start;font-size:13px;color:var(--text-faint);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tc-note{grid-area:note;align-self:end;font-size:clamp(14px,1vw,16px);color:var(--text-muted);line-height:1.5}
-.tc-secs{grid-area:secs;align-self:start;display:flex;flex-wrap:wrap;row-gap:2px}
-.tc-sec{font-size:13px;padding:1px 2px;color:var(--text-faint);cursor:pointer}
-.tc-sec+.tc-sec::before{content:'・';color:var(--border-strong);text-decoration:none;display:inline-block}
+.tc-secs{grid-area:secs;align-self:center;display:flex;flex-wrap:wrap;row-gap:2px}
+.tc-sec{font-size:14px;padding:1px 2px;color:var(--text-faint);cursor:pointer}
+.tc-sec+.tc-sec::before{content:'・';color:var(--border-strong)}
 .tc-sec:hover{color:var(--teal-strong)}
 .tc-arr{grid-area:arr;font-size:20px;color:var(--border-strong);text-align:right;transition:color .15s}
 .tc:hover .tc-arr,.tc:hover .tc-key{color:var(--teal)}
 @media (max-width:1100px){
   .cover{grid-template-columns:1fr}
   .cover-keys{margin-top:8px}
-  .tc{grid-template-columns:2.6em minmax(0,1fr) 2em;grid-template-areas:"key title arr" "key note arr"}
-  .tc-desc{display:none}
+  .tc{grid-template-columns:2.6em minmax(0,1fr) 2em;grid-template-areas:"key title arr" "key desc arr"}
 }
 
 /* ── 工具頁：側欄＋主內容（寬螢幕再分出報告欄） ── */
@@ -616,32 +611,30 @@ body{font-size:calc(14px * var(--fs))}
       <span class="logo" aria-hidden="true"></span>
       <h1>診間報告</h1>
       <div class="cover-org">木子澄安診所　消化內科</div>
-      <p class="cover-sub">點選片語即時產生英文結構化報告，右側直接預覽，複製後貼進 HIS。</p>
       <dl class="cover-keys">
         <dt><kbd>Alt</kbd>＋<kbd>1</kbd> 至 <kbd>7</kbd></dt><dd>切換報告</dd>
         <dt><kbd>Ctrl</kbd>＋<kbd>Enter</kbd></dt><dd>複製目前的報告</dd>
         <dt><kbd>Tab</kbd>／<kbd>Enter</kbd></dt><dd>用鍵盤選片語</dd>
         <dt><kbd>Esc</kbd></dt><dd>返回上一層</dd>
       </dl>
-      <div class="cover-lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>全部在這台電腦的瀏覽器內產生，病人資料不會上傳。換病人請按「下一位病人」。</span></div>
       <button type="button" class="app-revision" id="app-revision" onclick="openRev()"></button>
     </div>
     <nav class="cover-index" aria-label="報告種類">
       <section class="ci-group" style="--n:3">
         <div class="ci-head"><b>超音波</b><span>Ultrasound</span></div>
-        <div class="tc" onclick="showTool('abd')" title="Alt＋1"><span class="tc-key">1</span><div class="tc-title">腹部超音波</div><div class="tc-desc">Abdominal Ultrasound</div><div class="tc-note">肝、膽、胰、脾、腎，脂肪肝分級與病灶描述</div><span class="tc-arr">→</span></div>
-        <div class="tc" onclick="showTool('thy')" title="Alt＋2"><span class="tc-key">2</span><div class="tc-title">甲狀腺超音波</div><div class="tc-desc">Thyroid US・ACR TI-RADS</div><div class="tc-note">結節逐顆計分，自動帶出 TR 分類</div><span class="tc-arr">→</span></div>
-        <div class="tc" onclick="showTool('car')" title="Alt＋3"><span class="tc-key">3</span><div class="tc-title">頸動脈超音波</div><div class="tc-desc">Carotid Ultrasound</div><div class="tc-note">四處 IMT、斑塊表格、血流與狹窄</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('abd')" title="Alt＋1"><span class="tc-key">1</span><div class="tc-title">腹部超音波</div><div class="tc-desc">Abdominal Ultrasound</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('thy')" title="Alt＋2"><span class="tc-key">2</span><div class="tc-title">甲狀腺超音波</div><div class="tc-desc">Thyroid US・ACR TI-RADS</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('car')" title="Alt＋3"><span class="tc-key">3</span><div class="tc-title">頸動脈超音波</div><div class="tc-desc">Carotid Ultrasound</div><span class="tc-arr">→</span></div>
       </section>
       <section class="ci-group" style="--n:2">
         <div class="ci-head"><b>內視鏡</b><span>Endoscopy</span></div>
-        <div class="tc" onclick="showTool('egd')" title="Alt＋4"><span class="tc-key">4</span><div class="tc-title">上消化道內視鏡</div><div class="tc-desc">Upper GI Endoscopy (EGD)</div><div class="tc-note">食道、EGJ、胃、十二指腸，含分級與處置</div><span class="tc-arr">→</span></div>
-        <div class="tc" onclick="showTool('cfs')" title="Alt＋5"><span class="tc-key">5</span><div class="tc-title">大腸鏡</div><div class="tc-desc">Colonoscopy (CFS)</div><div class="tc-note">清腸品質、到達位置、瘜肉與處置</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('egd')" title="Alt＋4"><span class="tc-key">4</span><div class="tc-title">上消化道內視鏡</div><div class="tc-desc">Upper GI Endoscopy (EGD)</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('cfs')" title="Alt＋5"><span class="tc-key">5</span><div class="tc-title">大腸鏡</div><div class="tc-desc">Colonoscopy (CFS)</div><span class="tc-arr">→</span></div>
       </section>
       <section class="ci-group" style="--n:2">
         <div class="ci-head"><b>文書</b><span>Documents</span></div>
-        <div class="tc" onclick="showTool('opd')" title="Alt＋6"><span class="tc-key">6</span><div class="tc-title">門診病歷</div><div class="tc-desc">OPD Structured Note</div><div class="tc-note">S／O／P 片語組成門診病歷</div><span class="tc-arr">→</span></div>
-        <div class="tc" onclick="showTool('cert')" title="Alt＋7"><span class="tc-key">7</span><div class="tc-title">診斷書</div><div class="tc-desc">Medical Certificate</div><div class="tc-note">診斷與醫囑片語，日期自動帶入</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('opd')" title="Alt＋6"><span class="tc-key">6</span><div class="tc-title">門診病歷</div><div class="tc-desc">OPD Structured Note</div><span class="tc-arr">→</span></div>
+        <div class="tc" onclick="showTool('cert')" title="Alt＋7"><span class="tc-key">7</span><div class="tc-title">診斷書</div><div class="tc-desc">Medical Certificate</div><span class="tc-arr">→</span></div>
       </section>
     </nav>
   </div>
@@ -693,9 +686,9 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('asec-liver')"><span class="sec-num">01</span><span class="sec-title">Liver <span class="sec-sub">肝臟</span></span><span class="sec-status normal" id="ast-liver">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Size &amp; Echotexture</div><div class="fg">
-          <span class="ftag sel-ok" data-val="normal size" data-lvl="ok" data-group="liver-size" onclick="aTagEx(this,'liver','liver-size')">Normal size</span>
-          <span class="ftag" data-val="enlarged liver" data-lvl="warn" data-group="liver-size" onclick="aTagEx(this,'liver','liver-size')">Enlarged</span>
-          <span class="ftag" data-val="small liver" data-lvl="warn" data-group="liver-size" onclick="aTagEx(this,'liver','liver-size')">Small</span>
+          <span class="ftag sel-ok" data-val="normal size" data-lvl="ok" data-group="liver-size" onclick="tagEx(this,'liver','liver-size')">Normal size</span>
+          <span class="ftag" data-val="enlarged liver" data-lvl="warn" data-group="liver-size" onclick="tagEx(this,'liver','liver-size')">Enlarged</span>
+          <span class="ftag" data-val="small liver" data-lvl="warn" data-group="liver-size" onclick="tagEx(this,'liver','liver-size')">Small</span>
           <span class="ftag sel-ok" id="ftag-homo-btn" data-val="homogeneous echotexture" data-lvl="ok" onclick="aTagEchoNormal(this)">Homogeneous echo</span>
           <span class="ftag" data-val="heterogeneous echotexture compatible with parenchymal liver disease" data-lvl="warn" onclick="aTagEchoAbnormal(this)">Heterogeneous</span>
           <span class="ftag" id="ftag-fatty-btn" data-val="" data-lvl="warn" onclick="toggleFattyPanel()">Fatty liver</span>
@@ -763,9 +756,9 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('asec-gb')"><span class="sec-num">02</span><span class="sec-title">Gallbladder &amp; Bile Duct <span class="sec-sub">膽囊與膽管</span></span><span class="sec-status normal" id="ast-gb">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Gallbladder</div><div class="fg">
-          <span class="ftag sel-ok" data-val="gallbladder normal" data-lvl="ok" onclick="aTagNormal(this,'gb','gallbladder normal','^(gallbladder|post-cholecystectomy|contracted|features|thickened|chronic|acute|suspicious)')">Normal</span>
+          <span class="ftag sel-ok" data-val="gallbladder normal" data-lvl="ok" onclick="tagNormal(this,'gb','gallbladder normal','^(gallbladder|post-cholecystectomy|contracted|features|thickened|chronic|acute|suspicious)')">Normal</span>
           <span class="ftag" data-val="post-cholecystectomy (gallbladder absent)" data-lvl="ok" onclick="aTagPostChole(this)">Post-cholecystectomy</span>
-          <span class="ftag" data-val="contracted gallbladder" data-lvl="warn" onclick="aTagMutexOrg(this,'gb','gallbladder normal')">Contracted</span>
+          <span class="ftag" data-val="contracted gallbladder" data-lvl="warn" onclick="tagMutex(this,'gb','gallbladder normal')">Contracted</span>
 
           <span class="ftag" id="ftag-gbstone-btn" data-val="" data-lvl="warn" onclick="toggleGbStonePanel()">Stone</span>
           <div id="gbstone-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -789,10 +782,10 @@ body{font-size:calc(14px * var(--fs))}
           </div>
         </div></div>
         <div class="subsect"><div class="fl">Bile Duct (CBD)</div><div class="fg">
-          <span class="ftag sel-ok" data-val="CBD within normal limits" data-lvl="ok" onclick="aTagNormal(this,'gb','CBD within normal limits','^(CBD|mildly dilated|dilated CBD|intrahepatic|choledocholith)')">CBD normal</span>
-          <span class="ftag" data-val="dilated CBD (obstructive etiology suspected)" data-lvl="danger" onclick="aTagMutexOrg(this,'gb','CBD within normal limits')">CBD dilated</span>
-          <span class="ftag" data-val="intrahepatic bile duct dilatation" data-lvl="danger" onclick="aTagMutexOrg(this,'gb','CBD within normal limits')">IHBD dilatation</span>
-          <span class="ftag" data-val="choledocholithiasis" data-lvl="danger" onclick="aTagMutexOrg(this,'gb','CBD within normal limits')">Choledocholithiasis</span>
+          <span class="ftag sel-ok" data-val="CBD within normal limits" data-lvl="ok" onclick="tagNormal(this,'gb','CBD within normal limits','^(CBD|mildly dilated|dilated CBD|intrahepatic|choledocholith)')">CBD normal</span>
+          <span class="ftag" data-val="dilated CBD (obstructive etiology suspected)" data-lvl="danger" onclick="tagMutex(this,'gb','CBD within normal limits')">CBD dilated</span>
+          <span class="ftag" data-val="intrahepatic bile duct dilatation" data-lvl="danger" onclick="tagMutex(this,'gb','CBD within normal limits')">IHBD dilatation</span>
+          <span class="ftag" data-val="choledocholithiasis" data-lvl="danger" onclick="tagMutex(this,'gb','CBD within normal limits')">Choledocholithiasis</span>
         </div></div>
         <div class="ot-field"><label>Other findings</label><textarea id="aot-gb" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. CBD 8mm with distal stone...</div></div>
       </div>
@@ -803,9 +796,9 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-body">
         <div class="fg">
           <span class="ftag sel-ok" data-val="pancreas unremarkable" data-lvl="ok" onclick="aTagPanNormal(this)">Unremarkable</span>
-          <span class="ftag" data-val="pancreas not well visualized due to bowel gas" data-lvl="warn" onclick="aTagMutexOrg(this,'pan','pancreas unremarkable')">Not well visualized</span>
-          <span class="ftag" data-val="fatty infiltration of pancreas" data-lvl="warn" onclick="aTagMutexOrg(this,'pan','pancreas unremarkable')">Fatty infiltration</span>
-          <span class="ftag" data-val="main pancreatic duct dilatation (>3mm), nature?" data-lvl="danger" onclick="aTagMutexOrg(this,'pan','pancreas unremarkable')">MPD dilatation</span>
+          <span class="ftag" data-val="pancreas not well visualized due to bowel gas" data-lvl="warn" onclick="tagMutex(this,'pan','pancreas unremarkable')">Not well visualized</span>
+          <span class="ftag" data-val="fatty infiltration of pancreas" data-lvl="warn" onclick="tagMutex(this,'pan','pancreas unremarkable')">Fatty infiltration</span>
+          <span class="ftag" data-val="main pancreatic duct dilatation (>3mm), nature?" data-lvl="danger" onclick="tagMutex(this,'pan','pancreas unremarkable')">MPD dilatation</span>
           <span class="ftag" id="ftag-pancyst-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Pancyst')">Cystic lesion</span>
           <div id="Pancyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Pancyst-list"></div><button onclick="abdSimplePlusAdd('Pancyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" id="ftag-panmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Panmass')">Solid mass</span>
@@ -828,14 +821,14 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('asec-spl')"><span class="sec-num">04</span><span class="sec-title">Spleen <span class="sec-sub">脾臟</span></span><span class="sec-status normal" id="ast-spl">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag sel-ok" data-val="spleen normal in size and echotexture" data-lvl="ok" onclick="aTagNormal(this,'spl','spleen normal in size and echotexture')">Normal</span>
-          <span class="ftag" data-val="splenomegaly" data-lvl="warn" onclick="aTagMutexOrg(this,'spl','spleen normal in size and echotexture')">Splenomegaly</span>
-          <span class="ftag" data-val="accessory spleen" data-lvl="ok" onclick="aTagMutexOrg(this,'spl','spleen normal in size and echotexture')">Accessory spleen</span>
+          <span class="ftag sel-ok" data-val="spleen normal in size and echotexture" data-lvl="ok" onclick="tagNormal(this,'spl','spleen normal in size and echotexture')">Normal</span>
+          <span class="ftag" data-val="splenomegaly" data-lvl="warn" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Splenomegaly</span>
+          <span class="ftag" data-val="accessory spleen" data-lvl="ok" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Accessory spleen</span>
           <span class="ftag" id="ftag-splcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Splcyst')">Splenic cyst</span>
           <div id="Splcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcyst-list"></div><button onclick="abdSimplePlusAdd('Splcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" id="ftag-splcalc-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Splcalc')">Calcification</span>
           <div id="Splcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcalc-list"></div><button onclick="abdSimplePlusAdd('Splcalc')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
-          <span class="ftag" data-val="splenic infarction" data-lvl="danger" onclick="aTagMutexOrg(this,'spl','spleen normal in size and echotexture')">Infarction</span>
+          <span class="ftag" data-val="splenic infarction" data-lvl="danger" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Infarction</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. Spleen 14cm, homogeneous...</div></div>
       </div>
@@ -846,27 +839,27 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-body">
         <div class="col-label">Right Kidney</div>
         <div class="fg" style="margin-bottom:10px">
-          <span class="ftag sel-ok" data-val="right kidney unremarkable" data-lvl="ok" onclick="aTagNormal(this,'kid','right kidney unremarkable','^right')">Unremarkable</span>
+          <span class="ftag sel-ok" data-val="right kidney unremarkable" data-lvl="ok" onclick="tagNormal(this,'kid','right kidney unremarkable','^right')">Unremarkable</span>
           <span class="ftag" id="ftag-rkcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Rkcyst')">Renal cyst</span>
           <div id="Rkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkcyst-list"></div><button onclick="abdSimplePlusAdd('Rkcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" id="ftag-rkstone-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Rkstone')">Renal stone</span>
           <div id="Rkstone-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkstone-list"></div><button onclick="abdSimplePlusAdd('Rkstone')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
-          <span class="ftag" data-val="right hydronephrosis" data-lvl="warn" onclick="aTagMutexOrg(this,'kid','right kidney unremarkable')">Hydronephrosis</span>
+          <span class="ftag" data-val="right hydronephrosis" data-lvl="warn" onclick="tagMutex(this,'kid','right kidney unremarkable')">Hydronephrosis</span>
           <span class="ftag" id="ftag-rkmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Rkmass')">Renal mass</span>
           <div id="Rkmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkmass-list"></div><button onclick="abdSimplePlusAdd('Rkmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
-          <span class="ftag" data-val="right kidney small (chronic renal disease)" data-lvl="warn" onclick="aTagMutexOrg(this,'kid','right kidney unremarkable')">Small kidney</span>
+          <span class="ftag" data-val="right kidney small (chronic renal disease)" data-lvl="warn" onclick="tagMutex(this,'kid','right kidney unremarkable')">Small kidney</span>
         </div>
         <div class="col-label">Left Kidney</div>
         <div class="fg">
-          <span class="ftag sel-ok" data-val="left kidney unremarkable" data-lvl="ok" onclick="aTagNormal(this,'kid','left kidney unremarkable','^left')">Unremarkable</span>
+          <span class="ftag sel-ok" data-val="left kidney unremarkable" data-lvl="ok" onclick="tagNormal(this,'kid','left kidney unremarkable','^left')">Unremarkable</span>
           <span class="ftag" id="ftag-lkcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Lkcyst')">Renal cyst</span>
           <div id="Lkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkcyst-list"></div><button onclick="abdSimplePlusAdd('Lkcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
           <span class="ftag" id="ftag-lkstone-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Lkstone')">Renal stone</span>
           <div id="Lkstone-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkstone-list"></div><button onclick="abdSimplePlusAdd('Lkstone')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
-          <span class="ftag" data-val="left hydronephrosis" data-lvl="warn" onclick="aTagMutexOrg(this,'kid','left kidney unremarkable')">Hydronephrosis</span>
+          <span class="ftag" data-val="left hydronephrosis" data-lvl="warn" onclick="tagMutex(this,'kid','left kidney unremarkable')">Hydronephrosis</span>
           <span class="ftag" id="ftag-lkmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Lkmass')">Renal mass</span>
           <div id="Lkmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkmass-list"></div><button onclick="abdSimplePlusAdd('Lkmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
-          <span class="ftag" data-val="left kidney small (chronic renal disease)" data-lvl="warn" onclick="aTagMutexOrg(this,'kid','left kidney unremarkable')">Small kidney</span>
+          <span class="ftag" data-val="left kidney small (chronic renal disease)" data-lvl="warn" onclick="tagMutex(this,'kid','left kidney unremarkable')">Small kidney</span>
         </div>
         <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. bilateral small renal cysts...</div></div>
       </div>
@@ -876,14 +869,14 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('asec-aoth')"><span class="sec-num">06</span><span class="sec-title">Others <span class="sec-sub">其他發現</span></span><span class="sec-status normal" id="ast-aoth">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag sel-ok" data-val="no ascites" data-lvl="ok" data-group="ascites" onclick="aTagEx(this,'aoth','ascites')">No ascites</span>
-          <span class="ftag" data-val="small amount of ascites" data-lvl="warn" data-group="ascites" onclick="aTagEx(this,'aoth','ascites')">Small ascites</span>
-          <span class="ftag" data-val="moderate to large ascites" data-lvl="danger" data-group="ascites" onclick="aTagEx(this,'aoth','ascites')">Moderate/large ascites</span>
-          <span class="ftag sel-ok" data-val="aorta normal caliber" data-lvl="ok" onclick="aTag(this,'aoth')">Aorta normal</span>
-          <span class="ftag" data-val="abdominal aortic aneurysm" data-lvl="danger" onclick="aTag(this,'aoth')">AAA</span>
-          <span class="ftag" data-val="retroperitoneal lymphadenopathy" data-lvl="danger" onclick="aTag(this,'aoth')">Lymphadenopathy</span>
-          <span class="ftag" data-val="limited study due to overlying bowel gas" data-lvl="warn" onclick="aTag(this,'aoth')">Limited (gas)</span>
-          <span class="ftag" data-val="limited study due to body habitus" data-lvl="warn" onclick="aTag(this,'aoth')">Limited (habitus)</span>
+          <span class="ftag sel-ok" data-val="no ascites" data-lvl="ok" data-group="ascites" onclick="tagEx(this,'aoth','ascites')">No ascites</span>
+          <span class="ftag" data-val="small amount of ascites" data-lvl="warn" data-group="ascites" onclick="tagEx(this,'aoth','ascites')">Small ascites</span>
+          <span class="ftag" data-val="moderate to large ascites" data-lvl="danger" data-group="ascites" onclick="tagEx(this,'aoth','ascites')">Moderate/large ascites</span>
+          <span class="ftag sel-ok" data-val="aorta normal caliber" data-lvl="ok" onclick="tag(this,'aoth')">Aorta normal</span>
+          <span class="ftag" data-val="abdominal aortic aneurysm" data-lvl="danger" onclick="tag(this,'aoth')">AAA</span>
+          <span class="ftag" data-val="retroperitoneal lymphadenopathy" data-lvl="danger" onclick="tag(this,'aoth')">Lymphadenopathy</span>
+          <span class="ftag" data-val="limited study due to overlying bowel gas" data-lvl="warn" onclick="tag(this,'aoth')">Limited (gas)</span>
+          <span class="ftag" data-val="limited study due to body habitus" data-lvl="warn" onclick="tag(this,'aoth')">Limited (habitus)</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="aot-aoth" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. small perihepatic ascites...</div></div>
       </div>
@@ -951,15 +944,15 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('tsec-gland')"><span class="sec-num">01</span><span class="sec-title">Thyroid Gland <span class="sec-sub">甲狀腺</span></span><span class="sec-status normal" id="tst-gland">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Overall</div><div class="fg">
-          <span class="ftag sel-ok" data-val="thyroid gland normal in size and shape" data-lvl="ok" data-org="gland" data-group="thyroid-overall" onclick="tTagEx(this,'thyroid-overall')">Normal</span>
-          <span class="ftag" data-val="thyroid gland enlarged (goiter)" data-lvl="warn" data-org="gland" data-group="thyroid-overall" onclick="tTagEx(this,'thyroid-overall')">Goiter</span>
-          <span class="ftag" data-val="thyroid gland small (atrophy)" data-lvl="warn" data-org="gland" data-group="thyroid-overall" onclick="tTagEx(this,'thyroid-overall')">Atrophy</span>
-          <span class="ftag" data-val="post-thyroidectomy — thyroid bed unremarkable" data-lvl="ok" data-org="gland" data-group="thyroid-overall" onclick="tTagEx(this,'thyroid-overall')">Post-thyroidectomy</span>
+          <span class="ftag sel-ok" data-val="thyroid gland normal in size and shape" data-lvl="ok" data-org="gland" data-group="thyroid-overall" onclick="tagEx(this,null,'thyroid-overall')">Normal</span>
+          <span class="ftag" data-val="thyroid gland enlarged (goiter)" data-lvl="warn" data-org="gland" data-group="thyroid-overall" onclick="tagEx(this,null,'thyroid-overall')">Goiter</span>
+          <span class="ftag" data-val="thyroid gland small (atrophy)" data-lvl="warn" data-org="gland" data-group="thyroid-overall" onclick="tagEx(this,null,'thyroid-overall')">Atrophy</span>
+          <span class="ftag" data-val="post-thyroidectomy — thyroid bed unremarkable" data-lvl="ok" data-org="gland" data-group="thyroid-overall" onclick="tagEx(this,null,'thyroid-overall')">Post-thyroidectomy</span>
         </div></div>
         <div class="subsect"><div class="fl">Echogenicity &amp; Texture</div><div class="fg">
-          <span class="ftag" data-val="normal echogenicity and homogeneous texture" data-lvl="ok" data-org="gland" onclick="tTagNormal(this,'normal echogenicity and homogeneous texture')">Normal echo</span>
-          <span class="ftag" data-val="diffusely decreased echogenicity" data-lvl="warn" data-org="gland" onclick="tTagMutexOrg(this,'normal echogenicity and homogeneous texture')">Decreased echo</span>
-          <span class="ftag" data-val="heterogeneous echotexture" data-lvl="warn" data-org="gland" onclick="tTagMutexOrg(this,'normal echogenicity and homogeneous texture')">Heterogeneous</span>
+          <span class="ftag" data-val="normal echogenicity and homogeneous texture" data-lvl="ok" data-org="gland" onclick="tagNormal(this,null,'normal echogenicity and homogeneous texture')">Normal echo</span>
+          <span class="ftag" data-val="diffusely decreased echogenicity" data-lvl="warn" data-org="gland" onclick="tagMutex(this,null,'normal echogenicity and homogeneous texture')">Decreased echo</span>
+          <span class="ftag" data-val="heterogeneous echotexture" data-lvl="warn" data-org="gland" onclick="tagMutex(this,null,'normal echogenicity and homogeneous texture')">Heterogeneous</span>
           <span class="ftag" data-val="diffuse heterogeneity with increased vascularity (Hashimoto's thyroiditis pattern)" data-lvl="warn" data-org="gland" data-group="thy-diffuse" onclick="tTagDiffuse(this)">Hashimoto pattern</span>
           <span class="ftag" data-val="diffuse increased vascularity (Graves' disease pattern)" data-lvl="warn" data-org="gland" data-group="thy-diffuse" onclick="tTagDiffuse(this)">Graves' pattern</span>
           <span class="ftag" id="ftag-thycyst-btn" data-val="" data-lvl="warn" onclick="toggleThyCystPanel()">Cystic lesion</span>
@@ -993,12 +986,12 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('tsec-lymph')"><span class="sec-num">03</span><span class="sec-title">Lymph Nodes <span class="sec-sub">頸部淋巴結</span></span><span class="sec-status normal" id="tst-lymph">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag sel-ok" data-val="no cervical lymphadenopathy" data-lvl="ok" data-org="lymph" onclick="tTagNormal(this,'no cervical lymphadenopathy')">No lymphadenopathy</span>
-          <span class="ftag" data-val="reactive cervical lymph nodes" data-lvl="warn" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Reactive nodes</span>
-          <span class="ftag" data-val="enlarged cervical lymph nodes (short axis >10mm)" data-lvl="warn" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Enlarged nodes</span>
-          <span class="ftag" data-val="suspicious cervical lymph nodes (loss of fatty hilum, round shape)" data-lvl="danger" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Suspicious nodes</span>
-          <span class="ftag" data-val="lymph node calcification" data-lvl="danger" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Node calcification</span>
-          <span class="ftag" data-val="cystic changes in cervical lymph node" data-lvl="danger" data-org="lymph" onclick="tTagMutexOrg(this,'no cervical lymphadenopathy')">Cystic changes</span>
+          <span class="ftag sel-ok" data-val="no cervical lymphadenopathy" data-lvl="ok" data-org="lymph" onclick="tagNormal(this,null,'no cervical lymphadenopathy')">No lymphadenopathy</span>
+          <span class="ftag" data-val="reactive cervical lymph nodes" data-lvl="warn" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Reactive nodes</span>
+          <span class="ftag" data-val="enlarged cervical lymph nodes (short axis >10mm)" data-lvl="warn" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Enlarged nodes</span>
+          <span class="ftag" data-val="suspicious cervical lymph nodes (loss of fatty hilum, round shape)" data-lvl="danger" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Suspicious nodes</span>
+          <span class="ftag" data-val="lymph node calcification" data-lvl="danger" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Node calcification</span>
+          <span class="ftag" data-val="cystic changes in cervical lymph node" data-lvl="danger" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Cystic changes</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="tot-lymph" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. level III right cervical node 1.2cm...</div></div>
       </div>
@@ -1112,11 +1105,11 @@ body{font-size:calc(14px * var(--fs))}
         <!-- General IMT tags -->
         <div class="fl">Overall IMT Assessment</div>
         <div class="fg">
-          <span class="ftag sel-ok" data-val="IMT within normal limits bilaterally" data-lvl="ok" data-org="imt" onclick="cTagNormal(this,'imt','IMT within normal limits bilaterally','(mildly increased|increased IMT|asymmetric IMT)')">Normal bilaterally</span>
-          <span class="ftag" data-val="mildly increased IMT (0.8–1.0mm)" data-lvl="warn" data-org="imt" data-group="imt-level" onclick="cTagEx(this,'imt','imt-level','IMT within normal limits bilaterally')">Mildly increased</span>
-          <span class="ftag" data-val="increased IMT (&gt;1.0mm)" data-lvl="danger" data-org="imt" data-group="imt-level" onclick="cTagEx(this,'imt','imt-level','IMT within normal limits bilaterally')">Increased (&gt;1.0mm)</span>
-          <span class="ftag" data-val="asymmetric IMT (right > left)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="cTagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric R&gt;L</span>
-          <span class="ftag" data-val="asymmetric IMT (left > right)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="cTagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric L&gt;R</span>
+          <span class="ftag sel-ok" data-val="IMT within normal limits bilaterally" data-lvl="ok" data-org="imt" onclick="tagNormal(this,'imt','IMT within normal limits bilaterally','(mildly increased|increased IMT|asymmetric IMT)')">Normal bilaterally</span>
+          <span class="ftag" data-val="mildly increased IMT (0.8–1.0mm)" data-lvl="warn" data-org="imt" data-group="imt-level" onclick="tagEx(this,'imt','imt-level','IMT within normal limits bilaterally')">Mildly increased</span>
+          <span class="ftag" data-val="increased IMT (&gt;1.0mm)" data-lvl="danger" data-org="imt" data-group="imt-level" onclick="tagEx(this,'imt','imt-level','IMT within normal limits bilaterally')">Increased (&gt;1.0mm)</span>
+          <span class="ftag" data-val="asymmetric IMT (right > left)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="tagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric R&gt;L</span>
+          <span class="ftag" data-val="asymmetric IMT (left > right)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="tagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric L&gt;R</span>
         </div>
         <div class="ot-field"><label>Other notes</label><textarea id="cot-imt" oninput="carAutoPreview()"></textarea><div class="fh">e.g. diffuse intimal thickening of bilateral CCA...</div></div>
       </div>
@@ -1141,12 +1134,12 @@ body{font-size:calc(14px * var(--fs))}
           <div class="subsect" style="margin-top:12px">
             <div class="fl">Plaque Characteristics</div>
             <div class="fg">
-              <span class="ftag" data-val="soft (lipid-rich) plaque" data-lvl="danger" data-org="plaque" data-group="plaque-type" onclick="cTagEx(this,'plaque','plaque-type')">Soft plaque</span>
-              <span class="ftag" data-val="calcified plaque" data-lvl="warn" data-org="plaque" data-group="plaque-type" onclick="cTagEx(this,'plaque','plaque-type')">Calcified</span>
-              <span class="ftag" data-val="mixed echogenicity plaque" data-lvl="warn" data-org="plaque" onclick="cTag(this,'plaque')">Mixed echo</span>
-              <span class="ftag" data-val="homogeneous echogenic (fibrous) plaque" data-lvl="warn" data-org="plaque" onclick="cTag(this,'plaque')">Fibrous/Echogenic</span>
-              <span class="ftag" data-val="irregular (ulcerated) plaque surface" data-lvl="danger" data-org="plaque" data-group="plaque-surface" onclick="cTagEx(this,'plaque','plaque-surface')">Ulcerated surface</span>
-              <span class="ftag" data-val="smooth plaque surface" data-lvl="warn" data-org="plaque" data-group="plaque-surface" onclick="cTagEx(this,'plaque','plaque-surface')">Smooth surface</span>
+              <span class="ftag" data-val="soft (lipid-rich) plaque" data-lvl="danger" data-org="plaque" data-group="plaque-type" onclick="tagEx(this,'plaque','plaque-type')">Soft plaque</span>
+              <span class="ftag" data-val="calcified plaque" data-lvl="warn" data-org="plaque" data-group="plaque-type" onclick="tagEx(this,'plaque','plaque-type')">Calcified</span>
+              <span class="ftag" data-val="mixed echogenicity plaque" data-lvl="warn" data-org="plaque" onclick="tag(this,'plaque')">Mixed echo</span>
+              <span class="ftag" data-val="homogeneous echogenic (fibrous) plaque" data-lvl="warn" data-org="plaque" onclick="tag(this,'plaque')">Fibrous/Echogenic</span>
+              <span class="ftag" data-val="irregular (ulcerated) plaque surface" data-lvl="danger" data-org="plaque" data-group="plaque-surface" onclick="tagEx(this,'plaque','plaque-surface')">Ulcerated surface</span>
+              <span class="ftag" data-val="smooth plaque surface" data-lvl="warn" data-org="plaque" data-group="plaque-surface" onclick="tagEx(this,'plaque','plaque-surface')">Smooth surface</span>
             </div>
           </div>
         </div>
@@ -1160,27 +1153,27 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-body">
         <div class="two-col">
           <div><div class="col-label">Right Side</div><div class="fg">
-            <span class="ftag" data-val="right carotid flow normal, no significant stenosis" data-lvl="ok" data-org="flow" onclick="cTagNormal(this,'flow','right carotid flow normal, no significant stenosis','^right')">Normal flow</span>
-            <span class="ftag" data-val="right CCA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" onclick="cTagMutexOrg(this,'flow','right carotid flow normal, no significant stenosis')">R-CCA &lt;50%</span>
-            <span class="ftag" data-val="right ICA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" data-group="r-ica" onclick="cTagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA &lt;50%</span>
-            <span class="ftag" data-val="right ICA moderate stenosis (50–69%)" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="cTagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA 50–69%</span>
-            <span class="ftag" data-val="right ICA severe stenosis (≥70%)" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="cTagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA ≥70%</span>
-            <span class="ftag" data-val="right ICA near-occlusion" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="cTagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA near-occlusion</span>
+            <span class="ftag" data-val="right carotid flow normal, no significant stenosis" data-lvl="ok" data-org="flow" onclick="tagNormal(this,'flow','right carotid flow normal, no significant stenosis','^right')">Normal flow</span>
+            <span class="ftag" data-val="right CCA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" onclick="tagMutex(this,'flow','right carotid flow normal, no significant stenosis')">R-CCA &lt;50%</span>
+            <span class="ftag" data-val="right ICA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" data-group="r-ica" onclick="tagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA &lt;50%</span>
+            <span class="ftag" data-val="right ICA moderate stenosis (50–69%)" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="tagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA 50–69%</span>
+            <span class="ftag" data-val="right ICA severe stenosis (≥70%)" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="tagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA ≥70%</span>
+            <span class="ftag" data-val="right ICA near-occlusion" data-lvl="danger" data-org="flow" data-group="r-ica" onclick="tagEx(this,'flow','r-ica','right carotid flow normal, no significant stenosis')">R-ICA near-occlusion</span>
           </div></div>
           <div><div class="col-label">Left Side</div><div class="fg">
-            <span class="ftag" data-val="left carotid flow normal, no significant stenosis" data-lvl="ok" data-org="flow" onclick="cTagNormal(this,'flow','left carotid flow normal, no significant stenosis','^left')">Normal flow</span>
-            <span class="ftag" data-val="left CCA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" onclick="cTagMutexOrg(this,'flow','left carotid flow normal, no significant stenosis')">L-CCA &lt;50%</span>
-            <span class="ftag" data-val="left ICA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" data-group="l-ica" onclick="cTagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA &lt;50%</span>
-            <span class="ftag" data-val="left ICA moderate stenosis (50–69%)" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="cTagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA 50–69%</span>
-            <span class="ftag" data-val="left ICA severe stenosis (≥70%)" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="cTagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA ≥70%</span>
-            <span class="ftag" data-val="left ICA near-occlusion" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="cTagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA near-occlusion</span>
+            <span class="ftag" data-val="left carotid flow normal, no significant stenosis" data-lvl="ok" data-org="flow" onclick="tagNormal(this,'flow','left carotid flow normal, no significant stenosis','^left')">Normal flow</span>
+            <span class="ftag" data-val="left CCA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" onclick="tagMutex(this,'flow','left carotid flow normal, no significant stenosis')">L-CCA &lt;50%</span>
+            <span class="ftag" data-val="left ICA mild stenosis (&lt;50%)" data-lvl="warn" data-org="flow" data-group="l-ica" onclick="tagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA &lt;50%</span>
+            <span class="ftag" data-val="left ICA moderate stenosis (50–69%)" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="tagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA 50–69%</span>
+            <span class="ftag" data-val="left ICA severe stenosis (≥70%)" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="tagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA ≥70%</span>
+            <span class="ftag" data-val="left ICA near-occlusion" data-lvl="danger" data-org="flow" data-group="l-ica" onclick="tagEx(this,'flow','l-ica','left carotid flow normal, no significant stenosis')">L-ICA near-occlusion</span>
           </div></div>
         </div>
         <div class="subsect" style="margin-top:10px"><div class="fl">Additional Flow Findings</div><div class="fg">
-          <span class="ftag" data-val="turbulent flow at carotid bifurcation" data-lvl="warn" data-org="flow" onclick="cTag(this,'flow')">Turbulent flow</span>
-          <span class="ftag" data-val="elevated PSV (peak systolic velocity)" data-lvl="warn" data-org="flow" onclick="cTag(this,'flow')">Elevated PSV</span>
-          <span class="ftag" data-val="dampened waveform" data-lvl="danger" data-org="flow" onclick="cTag(this,'flow')">Dampened waveform</span>
-          <span class="ftag" data-val="reversed flow" data-lvl="danger" data-org="flow" onclick="cTag(this,'flow')">Reversed flow</span>
+          <span class="ftag" data-val="turbulent flow at carotid bifurcation" data-lvl="warn" data-org="flow" onclick="tag(this,'flow')">Turbulent flow</span>
+          <span class="ftag" data-val="elevated PSV (peak systolic velocity)" data-lvl="warn" data-org="flow" onclick="tag(this,'flow')">Elevated PSV</span>
+          <span class="ftag" data-val="dampened waveform" data-lvl="danger" data-org="flow" onclick="tag(this,'flow')">Dampened waveform</span>
+          <span class="ftag" data-val="reversed flow" data-lvl="danger" data-org="flow" onclick="tag(this,'flow')">Reversed flow</span>
         </div></div>
         <div class="ot-field"><label>PSV / EDV values</label><textarea id="cot-flow" oninput="carAutoPreview()"></textarea><div class="fh">e.g. R-ICA PSV 180 cm/s, EDV 60 cm/s, ICA/CCA ratio 3.2...</div></div>
       </div>
@@ -1191,15 +1184,15 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-vert')"><span class="sec-num">04</span><span class="sec-title">Vertebral Arteries <span class="sec-sub">椎動脈</span></span><span class="sec-status normal" id="cst-vert">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" data-val="bilateral vertebral arteries normal flow" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="cTagNormal(this,'vert','bilateral vertebral arteries normal flow','^(right vertebral|left vertebral)')">Bilateral normal</span>
-          <span class="ftag" data-val="right vertebral artery dominant" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="cTagEx(this,'vert','vert-normal','bilateral vertebral arteries normal flow')">R dominant</span>
-          <span class="ftag" data-val="left vertebral artery dominant" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="cTagEx(this,'vert','vert-normal','bilateral vertebral arteries normal flow')">L dominant</span>
-          <span class="ftag" data-val="right vertebral artery hypoplastic" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">R hypoplastic</span>
-          <span class="ftag" data-val="left vertebral artery hypoplastic" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">L hypoplastic</span>
-          <span class="ftag" data-val="right vertebral artery reversed flow (subclavian steal)" data-lvl="danger" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">R reversed (steal)</span>
-          <span class="ftag" data-val="left vertebral artery reversed flow (subclavian steal)" data-lvl="danger" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">L reversed (steal)</span>
-          <span class="ftag" data-val="right vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">R not visualized</span>
-          <span class="ftag" data-val="left vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="cTagMutexOrg(this,'vert','bilateral vertebral arteries normal flow')">L not visualized</span>
+          <span class="ftag" data-val="bilateral vertebral arteries normal flow" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="tagNormal(this,'vert','bilateral vertebral arteries normal flow','^(right vertebral|left vertebral)')">Bilateral normal</span>
+          <span class="ftag" data-val="right vertebral artery dominant" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="tagEx(this,'vert','vert-normal','bilateral vertebral arteries normal flow')">R dominant</span>
+          <span class="ftag" data-val="left vertebral artery dominant" data-lvl="ok" data-org="vert" data-group="vert-normal" onclick="tagEx(this,'vert','vert-normal','bilateral vertebral arteries normal flow')">L dominant</span>
+          <span class="ftag" data-val="right vertebral artery hypoplastic" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">R hypoplastic</span>
+          <span class="ftag" data-val="left vertebral artery hypoplastic" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">L hypoplastic</span>
+          <span class="ftag" data-val="right vertebral artery reversed flow (subclavian steal)" data-lvl="danger" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">R reversed (steal)</span>
+          <span class="ftag" data-val="left vertebral artery reversed flow (subclavian steal)" data-lvl="danger" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">L reversed (steal)</span>
+          <span class="ftag" data-val="right vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">R not visualized</span>
+          <span class="ftag" data-val="left vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">L not visualized</span>
         </div>
         <div class="ot-field"><label>Other notes</label><textarea id="cot-vert" oninput="carAutoPreview()"></textarea><div class="fh">e.g. right VA PSV 45 cm/s, normal triphasic waveform...</div></div>
       </div>
@@ -1275,16 +1268,16 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-prep')"><span class="sec-num">00</span><span class="sec-title">Preparation <span class="sec-sub">前置作業</span></span><span class="sec-status normal" id="est-prep">OK</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Pre-medication</div><div class="fg">
-          <span class="ftag sel-ok" data-val="Simethicone (20mg/mL) 5mL PO" data-lvl="ok" onclick="eTag(this,'prep')">Simethicone 5mL PO</span>
-          <span class="ftag sel-ok" data-val="10% Lidocaine local spray" data-lvl="ok" onclick="eTag(this,'prep')">10% Lidocaine local spray</span>
-          <span class="ftag" data-val="2% Lidocaine gel for lubricant" data-lvl="ok" onclick="eTag(this,'prep')">2% Lidocaine gel for lubricant</span>
-          <span class="ftag sel-ok" data-val="Hyoscine (Scopolamine) 20mg IV slowly" data-lvl="ok" onclick="eTag(this,'prep')">Hyoscine 20mg IV</span>
+          <span class="ftag sel-ok" data-val="Simethicone (20mg/mL) 5mL PO" data-lvl="ok" onclick="tag(this,'prep')">Simethicone 5mL PO</span>
+          <span class="ftag sel-ok" data-val="10% Lidocaine local spray" data-lvl="ok" onclick="tag(this,'prep')">10% Lidocaine local spray</span>
+          <span class="ftag" data-val="2% Lidocaine gel for lubricant" data-lvl="ok" onclick="tag(this,'prep')">2% Lidocaine gel for lubricant</span>
+          <span class="ftag sel-ok" data-val="Hyoscine (Scopolamine) 20mg IV slowly" data-lvl="ok" onclick="tag(this,'prep')">Hyoscine 20mg IV</span>
         </div></div>
         <div class="subsect"><div class="fl">Preparation Quality &amp; Sedation</div><div class="fg">
-          <span class="ftag sel-ok" data-val="adequate preparation" data-lvl="ok" data-group="egd-prepq" onclick="eTagEx(this,'prep','egd-prepq')">Adequate prep</span>
-          <span class="ftag" data-val="fair preparation" data-lvl="warn" data-group="egd-prepq" onclick="eTagEx(this,'prep','egd-prepq')">Fair prep</span>
-          <span class="ftag sel-ok" data-val="performed without sedation" data-lvl="ok" data-group="egd-sedat" onclick="eTagEx(this,'prep','egd-sedat')">Without sedation</span>
-          <span class="ftag" data-val="performed under conscious sedation" data-lvl="ok" data-group="egd-sedat" onclick="eTagEx(this,'prep','egd-sedat')">Conscious sedation</span>
+          <span class="ftag sel-ok" data-val="adequate preparation" data-lvl="ok" data-group="egd-prepq" onclick="tagEx(this,'prep','egd-prepq')">Adequate prep</span>
+          <span class="ftag" data-val="fair preparation" data-lvl="warn" data-group="egd-prepq" onclick="tagEx(this,'prep','egd-prepq')">Fair prep</span>
+          <span class="ftag sel-ok" data-val="performed without sedation" data-lvl="ok" data-group="egd-sedat" onclick="tagEx(this,'prep','egd-sedat')">Without sedation</span>
+          <span class="ftag" data-val="performed under conscious sedation" data-lvl="ok" data-group="egd-sedat" onclick="tagEx(this,'prep','egd-sedat')">Conscious sedation</span>
         </div></div>
       </div>
     </div>
@@ -1294,8 +1287,8 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-esoph')"><span class="sec-num">01</span><span class="sec-title">Esophagus <span class="sec-sub">食道</span></span><span class="sec-status normal" id="est-esoph">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">General</div><div class="fg">
-          <span class="ftag sel-ok" data-val="No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor." data-lvl="ok" onclick="eTagNormal(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Unremarkable</span>
-          <span class="ftag" data-val="Mild esophagitis without definite mucosal break." data-lvl="warn" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Mild esophagitis</span>
+          <span class="ftag sel-ok" data-val="No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor." data-lvl="ok" onclick="tagNormal(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Unremarkable</span>
+          <span class="ftag" data-val="Mild esophagitis without definite mucosal break." data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Mild esophagitis</span>
           <span class="ftag" id="ftag-la-btn" data-val="" data-lvl="warn" onclick="toggleLaPanel()">Reflux esophagitis</span>
           <div id="la-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">LA Classification — select one:</div>
@@ -1310,9 +1303,9 @@ body{font-size:calc(14px * var(--fs))}
               C: continuous breaks &lt;75% circumference &nbsp;|&nbsp; D: breaks ≥75% circumference
             </div>
           </div>
-          <span class="ftag" data-val="Multiple small whitish patches along the lumen, favor glycogenic acanthosis." data-lvl="ok" data-label="Esophageal glycogenic acanthosis" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Glycogenic acanthosis</span>
-          <span class="ftag" data-val="Inflamed esophagus with poor contraction, suspect eosinophilic esophagitis." data-lvl="warn" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Eosinophilic esophagitis</span>
-          <span class="ftag" data-val="Schatzki ring" data-lvl="warn" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Schatzki ring</span>
+          <span class="ftag" data-val="Multiple small whitish patches along the lumen, favor glycogenic acanthosis." data-lvl="ok" data-label="Esophageal glycogenic acanthosis" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Glycogenic acanthosis</span>
+          <span class="ftag" data-val="Inflamed esophagus with poor contraction, suspect eosinophilic esophagitis." data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Eosinophilic esophagitis</span>
+          <span class="ftag" data-val="Schatzki ring" data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Schatzki ring</span>
           <span class="ftag" id="ftag-caustic-btn" data-val="" data-lvl="danger" onclick="toggleCausticPanel()">Caustic injury</span>
           <div id="caustic-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Zargar Classification — select one:</div>
@@ -1337,9 +1330,9 @@ body{font-size:calc(14px * var(--fs))}
             </span>
           </div>
 
-          <span class="ftag" data-val="esophageal stricture" data-lvl="danger" data-label="Esophageal stricture" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Stricture</span>
+          <span class="ftag" data-val="esophageal stricture" data-lvl="danger" data-label="Esophageal stricture" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Stricture</span>
 
-          <span class="ftag" data-val="esophageal web" data-lvl="warn" data-label="Esophageal web" onclick="eTagMutexOrg(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Web</span>
+          <span class="ftag" data-val="esophageal web" data-lvl="warn" data-label="Esophageal web" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Web</span>
         </div></div>
         <div class="subsect"><div class="fl">Mucosa / Lesion</div><div class="fg">
 
@@ -1477,10 +1470,10 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-ej')"><span class="sec-num">02</span><span class="sec-title">EG Junction <span class="sec-sub">食胃接合部</span></span><span class="sec-status normal" id="est-ej">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Z-line / Squamocolumnar Junction</div><div class="fg">
-          <span class="ftag" data-val="Z-line at normal position" data-lvl="ok" data-group="ej-zline" onclick="eTagEx(this,'ej','ej-zline')">Z-line normal</span>
-          <span class="ftag" data-val="Z-line irregular" data-lvl="warn" data-group="ej-zline" onclick="eTagEx(this,'ej','ej-zline')">Z-line irregular</span>
-          <span class="ftag" data-val="suspected short-segment Barrett's esophagus (&lt;3cm)" data-lvl="warn" data-group="ej-barrett" onclick="eTagEx(this,'ej','ej-barrett')">Barrett's short (&lt;3cm)</span>
-          <span class="ftag" data-val="suspected long-segment Barrett's esophagus (≥3cm)" data-lvl="danger" data-group="ej-barrett" onclick="eTagEx(this,'ej','ej-barrett')">Barrett's long (≥3cm)</span>
+          <span class="ftag" data-val="Z-line at normal position" data-lvl="ok" data-group="ej-zline" onclick="tagEx(this,'ej','ej-zline')">Z-line normal</span>
+          <span class="ftag" data-val="Z-line irregular" data-lvl="warn" data-group="ej-zline" onclick="tagEx(this,'ej','ej-zline')">Z-line irregular</span>
+          <span class="ftag" data-val="suspected short-segment Barrett's esophagus (&lt;3cm)" data-lvl="warn" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's short (&lt;3cm)</span>
+          <span class="ftag" data-val="suspected long-segment Barrett's esophagus (≥3cm)" data-lvl="danger" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's long (≥3cm)</span>
           <span class="ftag" id="ftag-esem-btn" data-val="" data-lvl="danger" onclick="toggleEsemPanel()">ESEM</span>
           <div id="esem-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="line-height:2.2;">
@@ -1498,11 +1491,11 @@ body{font-size:calc(14px * var(--fs))}
           </div>
         </div></div>
         <div class="subsect"><div class="fl">Hiatus / Cardia</div><div class="fg">
-          <span class="ftag" data-val="no hiatal hernia" data-lvl="ok" data-group="ej-hernia" onclick="eTagEx(this,'ej','ej-hernia')">No hiatal hernia</span>
-          <span class="ftag" data-val="small hiatal hernia (&lt;3cm)" data-lvl="warn" data-group="ej-hernia" onclick="eTagEx(this,'ej','ej-hernia')">Hiatal hernia &lt;3cm</span>
-          <span class="ftag" data-val="hiatal hernia (≥3cm)" data-lvl="warn" data-group="ej-hernia" onclick="eTagEx(this,'ej','ej-hernia')">Hiatal hernia ≥3cm</span>
-          <span class="ftag sel-ok" data-val="cardia closes well" data-lvl="ok" data-group="ej-cardia" onclick="eTagEx(this,'ej','ej-cardia')">Cardia closes well</span>
-          <span class="ftag" data-val="cardia does not close completely" data-lvl="warn" data-group="ej-cardia" onclick="eTagEx(this,'ej','ej-cardia')">Cardia incomplete closure</span>
+          <span class="ftag" data-val="no hiatal hernia" data-lvl="ok" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">No hiatal hernia</span>
+          <span class="ftag" data-val="small hiatal hernia (&lt;3cm)" data-lvl="warn" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">Hiatal hernia &lt;3cm</span>
+          <span class="ftag" data-val="hiatal hernia (≥3cm)" data-lvl="warn" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">Hiatal hernia ≥3cm</span>
+          <span class="ftag sel-ok" data-val="cardia closes well" data-lvl="ok" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia closes well</span>
+          <span class="ftag" data-val="cardia does not close completely" data-lvl="warn" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia incomplete closure</span>
         </div></div>
         <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. 2cm hiatal hernia with bile reflux...</div></div>
       </div>
@@ -1513,9 +1506,9 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-stomach')"><span class="sec-num">03</span><span class="sec-title">Stomach <span class="sec-sub">胃</span></span><span class="sec-status normal" id="est-stomach">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Mucosa / Gastritis</div><div class="fg">
-          <span class="ftag sel-ok" data-val="Clear lumen with good contraction and insufflation." data-lvl="ok" onclick="eTag(this,'stomach')">Clear lumen</span>
-          <span class="ftag sel-ok" data-val="stomach mucosa normal" data-lvl="ok" onclick="eTagNormal(this,'stomach','stomach mucosa normal')">Mucosa normal</span>
-          <span class="ftag" data-val="Erythematous mucosa over antrum and body. No obvious ulcer nor mass." data-lvl="warn" data-label="Antral gastritis" onclick="eTagMutexOrg(this,'stomach','stomach mucosa normal')">Mild antral gastritis</span>
+          <span class="ftag sel-ok" data-val="Clear lumen with good contraction and insufflation." data-lvl="ok" onclick="tag(this,'stomach')">Clear lumen</span>
+          <span class="ftag sel-ok" data-val="stomach mucosa normal" data-lvl="ok" onclick="tagNormal(this,'stomach','stomach mucosa normal')">Mucosa normal</span>
+          <span class="ftag" data-val="Erythematous mucosa over antrum and body. No obvious ulcer nor mass." data-lvl="warn" data-label="Antral gastritis" onclick="tagMutex(this,'stomach','stomach mucosa normal')">Mild antral gastritis</span>
 
           <span class="ftag" id="ftag-ogastritis-btn" data-val="" data-lvl="warn" onclick="toggleOGastritisPanel()">Other gastritis</span>
           <div id="ogastritis-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -1539,9 +1532,9 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
 
-          <span class="ftag" data-val="Multiple scattered flat or raised erosions over reddish mucosa at antrum." data-lvl="warn" data-label="Gastric erosions" onclick="eTagMutexOrg(this,'stomach','stomach mucosa normal')">Gastric erosions</span>
-          <span class="ftag" data-val="Reddish uneven mucosa with pitting and gyrus-like pattern under NBI, angularis and antrum, suspect intestinal metaplasia, s/p biopsy." data-lvl="warn" data-label="Chronic gastritis with suspicious intestinal metaplasia, s/p biopsy" onclick="eTagMutexOrg(this,'stomach','stomach mucosa normal')">Intestinal metaplasia</span>
-          <span class="ftag" data-val="Reddish antral nodularity mucosal change (H. pylori-associated)." data-lvl="warn" onclick="eTagMutexOrg(this,'stomach','stomach mucosa normal')">Antral nodularity (H. pylori)</span>
+          <span class="ftag" data-val="Multiple scattered flat or raised erosions over reddish mucosa at antrum." data-lvl="warn" data-label="Gastric erosions" onclick="tagMutex(this,'stomach','stomach mucosa normal')">Gastric erosions</span>
+          <span class="ftag" data-val="Reddish uneven mucosa with pitting and gyrus-like pattern under NBI, angularis and antrum, suspect intestinal metaplasia, s/p biopsy." data-lvl="warn" data-label="Chronic gastritis with suspicious intestinal metaplasia, s/p biopsy" onclick="tagMutex(this,'stomach','stomach mucosa normal')">Intestinal metaplasia</span>
+          <span class="ftag" data-val="Reddish antral nodularity mucosal change (H. pylori-associated)." data-lvl="warn" onclick="tagMutex(this,'stomach','stomach mucosa normal')">Antral nodularity (H. pylori)</span>
         </div></div>
         <div class="subsect"><div class="fl">Lesions</div><div class="fg">
           <span class="ftag" id="ftag-gsml-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('gsml')">Submucosal lesion</span>
@@ -1636,8 +1629,8 @@ body{font-size:calc(14px * var(--fs))}
               <input id="xanth-cm" type="text" oninput="updateXanthVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm yellow nodules in the gastric fundus, s/p biopsy.
             </span>
           </div>
-          <span class="ftag" data-val="Snake-skin like mucosal pattern over antrum and low body." data-lvl="warn" onclick="eTag(this,'stomach')">Portal hypertensive gastropathy</span>
-          <span class="ftag" data-val="Pepper and salt like mucosal pattern with polyps formation at antrum, GC side, favor ectopic gastric mucosa." data-lvl="warn" onclick="eTag(this,'stomach')">Ectopic gastric mucosa</span>
+          <span class="ftag" data-val="Snake-skin like mucosal pattern over antrum and low body." data-lvl="warn" onclick="tag(this,'stomach')">Portal hypertensive gastropathy</span>
+          <span class="ftag" data-val="Pepper and salt like mucosal pattern with polyps formation at antrum, GC side, favor ectopic gastric mucosa." data-lvl="warn" onclick="tag(this,'stomach')">Ectopic gastric mucosa</span>
           <span class="ftag" id="ftag-spop-btn" data-val="" data-lvl="warn" onclick="toggleSpopPanel()">s/p OP</span>
           <div id="spop-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select reconstruction type:</div>
@@ -1656,7 +1649,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-duo')"><span class="sec-num">04</span><span class="sec-title">Duodenum <span class="sec-sub">十二指腸</span></span><span class="sec-status normal" id="est-duo">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag sel-ok" data-val="No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)" data-lvl="ok" onclick="eTagNormal(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Unremarkable</span>
+          <span class="ftag sel-ok" data-val="No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)" data-lvl="ok" onclick="tagNormal(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Unremarkable</span>
 
           <span class="ftag" id="ftag-dulcer-btn" data-val="" data-lvl="danger" onclick="toggleEgdMlPanel('dulcer')">Ulcer</span>
           <div id="dulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -1685,11 +1678,11 @@ body{font-size:calc(14px * var(--fs))}
             <div id="dsml-panels"></div>
           </div>
 
-          <span class="ftag" data-val="Duodenal ulcer scar with bulb deformity." data-lvl="warn" data-label="Bulb deformity" onclick="eTagMutexOrg(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Bulb deformity</span>
+          <span class="ftag" data-val="Duodenal ulcer scar with bulb deformity." data-lvl="warn" data-label="Bulb deformity" onclick="tagMutex(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Bulb deformity</span>
 
-          <span class="ftag" data-val="Multiple reddish spots and erosions at bulb." data-lvl="warn" data-label="Duodenitis" onclick="eTagMutexOrg(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Duodenitis</span>
+          <span class="ftag" data-val="Multiple reddish spots and erosions at bulb." data-lvl="warn" data-label="Duodenitis" onclick="tagMutex(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Duodenitis</span>
 
-          <span class="ftag" data-val="A diverticulum was noted near major papilla (with food stasis inside), favor juxtapapillary diverticulum." data-lvl="ok" data-label="Juxtapapillary diverticulum (JPDD)" onclick="eTagMutexOrg(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">JPDD</span>
+          <span class="ftag" data-val="A diverticulum was noted near major papilla (with food stasis inside), favor juxtapapillary diverticulum." data-lvl="ok" data-label="Juxtapapillary diverticulum (JPDD)" onclick="tagMutex(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">JPDD</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="eot-duo" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. active ulcer 8mm at anterior wall of duodenal bulb...</div></div>
       </div>
@@ -1718,7 +1711,7 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="incomp-intol" onclick="toggleIncompReason('patient intolerance',this)">Patient intolerance</span>
             </div>
           </div>
-          <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="eTag(this,'eoth')">EMR</span>
+          <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="tag(this,'eoth')">EMR</span>
           <span class="ftag" id="ftag-efb-btn" data-val="" data-lvl="warn" onclick="toggleEfbPanel()">Foreign body retrieval</span>
           <div id="efb-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="margin-bottom:6px;">Instrument:
@@ -1761,12 +1754,12 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-ereco')"><span class="sec-num">06</span><span class="sec-title">Recommendation <span class="sec-sub">建議</span></span><span class="sec-status normal" id="est-ereco">—</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" data-val="Pending pathology report." data-lvl="ok" onclick="eTag(this,'ereco')">Pending pathology</span>
-          <span class="ftag" data-val="Routine follow-up as clinically indicated." data-lvl="ok" onclick="eTag(this,'ereco')">Routine follow-up</span>
-          <span class="ftag" data-val="H. pylori eradication therapy recommended. Follow-up EGD after treatment completion." data-lvl="warn" onclick="eTag(this,'ereco')">H. pylori eradication + F/U EGD</span>
-          <span class="ftag" data-val="PPI therapy recommended. Follow-up EGD in 8 weeks to assess healing." data-lvl="warn" onclick="eTag(this,'ereco')">PPI + F/U EGD 8 weeks</span>
-          <span class="ftag" data-val="Barrett's esophagus surveillance endoscopy recommended per guidelines." data-lvl="warn" onclick="eTag(this,'ereco')">Barrett's surveillance</span>
-          <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="eTag(this,'ereco')">Transfer to hospital</span>
+          <span class="ftag" data-val="Pending pathology report." data-lvl="ok" onclick="tag(this,'ereco')">Pending pathology</span>
+          <span class="ftag" data-val="Routine follow-up as clinically indicated." data-lvl="ok" onclick="tag(this,'ereco')">Routine follow-up</span>
+          <span class="ftag" data-val="H. pylori eradication therapy recommended. Follow-up EGD after treatment completion." data-lvl="warn" onclick="tag(this,'ereco')">H. pylori eradication + F/U EGD</span>
+          <span class="ftag" data-val="PPI therapy recommended. Follow-up EGD in 8 weeks to assess healing." data-lvl="warn" onclick="tag(this,'ereco')">PPI + F/U EGD 8 weeks</span>
+          <span class="ftag" data-val="Barrett's esophagus surveillance endoscopy recommended per guidelines." data-lvl="warn" onclick="tag(this,'ereco')">Barrett's surveillance</span>
+          <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="tag(this,'ereco')">Transfer to hospital</span>
         </div>
         <div class="ot-field"><label>Free text</label><textarea id="eot-ereco" oninput="egdAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
@@ -1829,24 +1822,24 @@ body{font-size:calc(14px * var(--fs))}
 
         <!-- 1. Pre-medication -->
         <div class="subsect"><div class="fl">Pre-medication</div><div class="fg">
-          <span class="ftag" data-val="Split dose prep (Bowklean)" data-lvl="ok" data-group="cfs-bowelprep" onclick="cfTagEx(this,'cprep','cfs-bowelprep')">Split dose prep (Bowklean)</span>
-          <span class="ftag sel-ok" data-val="Split dose prep (PEG)" data-lvl="ok" data-group="cfs-bowelprep" onclick="cfTagEx(this,'cprep','cfs-bowelprep')">Split dose prep (PEG)</span>
-          <span class="ftag" data-val="2% Lidocaine gel for lubricant" data-lvl="ok" onclick="cfTag(this,'cprep')">2% Lidocaine gel for lubricant</span>
-          <span class="ftag sel-ok" data-val="Hyoscine (Scopolamine) 20mg IV slowly" data-lvl="ok" onclick="cfTag(this,'cprep')">Hyoscine (Scopolamine) 20mg IV</span>
+          <span class="ftag" data-val="Split dose prep (Bowklean)" data-lvl="ok" data-group="cfs-bowelprep" onclick="tagEx(this,'cprep','cfs-bowelprep')">Split dose prep (Bowklean)</span>
+          <span class="ftag sel-ok" data-val="Split dose prep (PEG)" data-lvl="ok" data-group="cfs-bowelprep" onclick="tagEx(this,'cprep','cfs-bowelprep')">Split dose prep (PEG)</span>
+          <span class="ftag" data-val="2% Lidocaine gel for lubricant" data-lvl="ok" onclick="tag(this,'cprep')">2% Lidocaine gel for lubricant</span>
+          <span class="ftag sel-ok" data-val="Hyoscine (Scopolamine) 20mg IV slowly" data-lvl="ok" onclick="tag(this,'cprep')">Hyoscine (Scopolamine) 20mg IV</span>
         </div></div>
 
         <!-- 2. Sedation -->
         <div class="subsect"><div class="fl">Sedation</div><div class="fg">
-          <span class="ftag sel-ok" data-val="performed without sedation" data-lvl="ok" data-group="cfs-sedat" onclick="cfTagEx(this,'cprep','cfs-sedat')">Without sedation</span>
-          <span class="ftag" data-val="performed under conscious sedation" data-lvl="ok" data-group="cfs-sedat" onclick="cfTagEx(this,'cprep','cfs-sedat')">Conscious sedation</span>
+          <span class="ftag sel-ok" data-val="performed without sedation" data-lvl="ok" data-group="cfs-sedat" onclick="tagEx(this,'cprep','cfs-sedat')">Without sedation</span>
+          <span class="ftag" data-val="performed under conscious sedation" data-lvl="ok" data-group="cfs-sedat" onclick="tagEx(this,'cprep','cfs-sedat')">Conscious sedation</span>
         </div></div>
 
         <!-- 3. Preparation Quality -->
         <div class="subsect"><div class="fl">Preparation Quality (Boston Scale)</div><div class="fg">
-          <span class="ftag" data-val="excellent (BBPS 8–9)" data-lvl="ok" data-group="cfs-bbps" onclick="cfTagEx(this,'cprep','cfs-bbps')">Excellent (BBPS 8–9)</span>
-          <span class="ftag sel-ok" data-val="good (BBPS 6–7)" data-lvl="ok" data-group="cfs-bbps" onclick="cfTagEx(this,'cprep','cfs-bbps')">Good (BBPS 6–7)</span>
-          <span class="ftag" data-val="fair (BBPS 3–5)" data-lvl="warn" data-group="cfs-bbps" onclick="cfTagEx(this,'cprep','cfs-bbps')">Fair (BBPS 3–5)</span>
-          <span class="ftag" data-val="inadequate (BBPS &lt;3, repeat exam recommended)" data-lvl="danger" data-group="cfs-bbps" onclick="cfTagEx(this,'cprep','cfs-bbps')">Inadequate (&lt;BBPS 3)</span>
+          <span class="ftag" data-val="excellent (BBPS 8–9)" data-lvl="ok" data-group="cfs-bbps" onclick="tagEx(this,'cprep','cfs-bbps')">Excellent (BBPS 8–9)</span>
+          <span class="ftag sel-ok" data-val="good (BBPS 6–7)" data-lvl="ok" data-group="cfs-bbps" onclick="tagEx(this,'cprep','cfs-bbps')">Good (BBPS 6–7)</span>
+          <span class="ftag" data-val="fair (BBPS 3–5)" data-lvl="warn" data-group="cfs-bbps" onclick="tagEx(this,'cprep','cfs-bbps')">Fair (BBPS 3–5)</span>
+          <span class="ftag" data-val="inadequate (BBPS &lt;3, repeat exam recommended)" data-lvl="danger" data-group="cfs-bbps" onclick="tagEx(this,'cprep','cfs-bbps')">Inadequate (&lt;BBPS 3)</span>
         </div></div>
 
       </div>
@@ -1908,11 +1901,11 @@ body{font-size:calc(14px * var(--fs))}
         <div class="fg">
           <span class="ftag" data-val="terminal ileum not intubated" data-lvl="ok" onclick="cfTagNormalEx(this,'term','ti-overall')">Not intubated</span>
           <span class="ftag" data-val="terminal ileum unremarkable" data-lvl="ok" onclick="cfTagNormalEx(this,'term','ti-overall')">Unremarkable</span>
-          <span class="ftag" data-val="terminal ileum with mild mucosal edema" data-lvl="warn" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Mucosal edema</span>
-          <span class="ftag" data-val="terminal ileum with aphthous ulcers" data-lvl="warn" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Aphthous ulcers</span>
-          <span class="ftag" data-val="ileitis with mucosal friability" data-lvl="danger" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Ileitis / friability</span>
-          <span class="ftag" data-val="stricture of terminal ileum" data-lvl="danger" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Stricture</span>
-          <span class="ftag" data-val="backwash ileitis" data-lvl="warn" onclick="cfTagMutexOrg(this,'term','terminal ileum unremarkable')">Backwash ileitis</span>
+          <span class="ftag" data-val="terminal ileum with mild mucosal edema" data-lvl="warn" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Mucosal edema</span>
+          <span class="ftag" data-val="terminal ileum with aphthous ulcers" data-lvl="warn" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Aphthous ulcers</span>
+          <span class="ftag" data-val="ileitis with mucosal friability" data-lvl="danger" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Ileitis / friability</span>
+          <span class="ftag" data-val="stricture of terminal ileum" data-lvl="danger" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Stricture</span>
+          <span class="ftag" data-val="backwash ileitis" data-lvl="warn" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Backwash ileitis</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="cot-term" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. multiple aphthous ulcers at TI, Crohn's disease suspected...</div></div>
       </div>
@@ -1923,7 +1916,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-colon')"><span class="sec-num">02</span><span class="sec-title">Colon <span class="sec-sub">大腸</span></span><span class="sec-status normal" id="cst-colon">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">General Mucosa</div><div class="fg">
-          <span class="ftag sel-ok" data-val="colonic mucosa normal throughout" data-lvl="ok" onclick="cfTagNormal(this,'colon','colonic mucosa normal throughout')">Mucosa normal</span>
+          <span class="ftag sel-ok" data-val="colonic mucosa normal throughout" data-lvl="ok" onclick="tagNormal(this,'colon','colonic mucosa normal throughout')">Mucosa normal</span>
 
           <span class="ftag" id="ftag-ccolitis-btn" data-val="" data-lvl="warn" onclick="toggleCcolitisPanel()">Colitis</span>
           <div id="ccolitis-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -1937,10 +1930,10 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
 
-          <span class="ftag" data-val="distinct, dark brown to jet-black discoloration of the colonic mucosa, compatible with melanosis coli" data-lvl="warn" onclick="cfTagMutexOrg(this,'colon','colonic mucosa normal throughout')">Melanosis coli</span>
-          <span class="ftag" data-val="diverticulosis of colon" data-lvl="warn" onclick="cfTagMutexOrg(this,'colon','colonic mucosa normal throughout')">Diverticulosis</span>
-          <span class="ftag" data-val="anastomosis site unremarkable (post-op)" data-lvl="ok" onclick="cfTag(this,'colon')">Anastomosis OK</span>
-          <span class="ftag" data-val="external compression of colon" data-lvl="warn" onclick="cfTag(this,'colon')">External compression</span>
+          <span class="ftag" data-val="distinct, dark brown to jet-black discoloration of the colonic mucosa, compatible with melanosis coli" data-lvl="warn" onclick="tagMutex(this,'colon','colonic mucosa normal throughout')">Melanosis coli</span>
+          <span class="ftag" data-val="diverticulosis of colon" data-lvl="warn" onclick="tagMutex(this,'colon','colonic mucosa normal throughout')">Diverticulosis</span>
+          <span class="ftag" data-val="anastomosis site unremarkable (post-op)" data-lvl="ok" onclick="tag(this,'colon')">Anastomosis OK</span>
+          <span class="ftag" data-val="external compression of colon" data-lvl="warn" onclick="tag(this,'colon')">External compression</span>
         </div></div>
 
         <div class="subsect"><div class="fl">Lesions</div><div class="fg">
@@ -1990,7 +1983,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-rectum')"><span class="sec-num">03</span><span class="sec-title">Rectum &amp; Anus <span class="sec-sub">直腸與肛門</span></span><span class="sec-status normal" id="cst-rectum">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" data-val="rectum unremarkable" data-lvl="ok" onclick="cfTagNormal(this,'rectum','rectum unremarkable')">Unremarkable</span>
+          <span class="ftag" data-val="rectum unremarkable" data-lvl="ok" onclick="tagNormal(this,'rectum','rectum unremarkable')">Unremarkable</span>
 
           <span class="ftag" id="ftag-hemo-btn" data-val="" data-lvl="ok" onclick="toggleHemoPanel()">Hemorrhoids</span>
           <div id="hemo-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -2006,7 +1999,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
 
-          <span class="ftag" data-val="rectal proctitis" data-lvl="warn" onclick="cfTagMutexOrg(this,'rectum','rectum unremarkable')">Proctitis</span>
+          <span class="ftag" data-val="rectal proctitis" data-lvl="warn" onclick="tagMutex(this,'rectum','rectum unremarkable')">Proctitis</span>
 
           <span class="ftag" id="ftag-rulcer-btn" data-val="" data-lvl="danger" onclick="toggleRulcerPanel()">Ulcer</span>
           <div id="rulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
@@ -2053,7 +2046,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-polyp')"><span class="sec-num">04</span><span class="sec-title">Others <span class="sec-sub">其他</span></span><span class="sec-status normal" id="cst-polyp">—</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="cfTag(this,'polyp')">EMR</span>
+          <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="tag(this,'polyp')">EMR</span>
           <span class="ftag" id="ftag-cfb-btn" data-val="" data-lvl="warn" onclick="toggleCfbPanel()">Foreign body retrieval</span>
           <div id="cfb-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="margin-bottom:6px;">Instrument:
@@ -2102,13 +2095,13 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-creco')"><span class="sec-num">05</span><span class="sec-title">Recommendation <span class="sec-sub">建議</span></span><span class="sec-status normal" id="cst-creco">—</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" id="cfs-pend-tag" data-val="Pending pathology report." data-lvl="ok" onclick="cfsPendManual=true;cfTag(this,'creco')">Pending pathology</span>
-          <span class="ftag" data-val="Routine colorectal cancer screening in 5 years (average risk)." data-lvl="ok" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">Routine screening 5 yrs</span>
+          <span class="ftag" id="cfs-pend-tag" data-val="Pending pathology report." data-lvl="ok" onclick="cfsPendManual=true;tag(this,'creco')">Pending pathology</span>
+          <span class="ftag" data-val="Routine colorectal cancer screening in 5 years (average risk)." data-lvl="ok" data-group="cfs-repeat" onclick="tagEx(this,'creco','cfs-repeat')">Routine screening 5 yrs</span>
           <!-- 追蹤間隔依國健署《大腸癌篩檢指引》2021，與 tools/edu-src/a5.html 衛教單一致 -->
-          <span class="ftag" data-tier="low" data-val="Low-risk adenoma(s) (1–2 adenomas, all &lt;10 mm, without villous component or high-grade dysplasia): repeat colonoscopy in 3–5 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">Low-risk – repeat CFS 3–5 yrs</span>
-          <span class="ftag" data-tier="high" data-val="High-risk adenoma(s) (≥3 adenomas, any ≥10 mm, villous component, or high-grade dysplasia): repeat colonoscopy in 3 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">High-risk – repeat CFS 3 yrs</span>
-          <span class="ftag" data-tier="p10" data-val="≥10 adenomas: repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">≥10 adenomas – repeat CFS 1 yr</span>
-          <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="cfTag(this,'creco')">Transfer to hospital</span>
+          <span class="ftag" data-tier="low" data-val="Low-risk adenoma(s) (1–2 adenomas, all &lt;10 mm, without villous component or high-grade dysplasia): repeat colonoscopy in 3–5 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="tagEx(this,'creco','cfs-repeat')">Low-risk – repeat CFS 3–5 yrs</span>
+          <span class="ftag" data-tier="high" data-val="High-risk adenoma(s) (≥3 adenomas, any ≥10 mm, villous component, or high-grade dysplasia): repeat colonoscopy in 3 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="tagEx(this,'creco','cfs-repeat')">High-risk – repeat CFS 3 yrs</span>
+          <span class="ftag" data-tier="p10" data-val="≥10 adenomas: repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="tagEx(this,'creco','cfs-repeat')">≥10 adenomas – repeat CFS 1 yr</span>
+          <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="tag(this,'creco')">Transfer to hospital</span>
         </div>
         <div class="fh" id="cfs-repeat-hint" hidden>已依瘜肉數量與大小自動預選追蹤間隔（國健署 2021），病理回來後請再確認；點選其他間隔即改為手動。</div>
         <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
@@ -2180,9 +2173,201 @@ function _recoTag(el, arr, stId, previewFn) {
   if(st){st.textContent=arr.length?'SET':'—';st.className='sec-status'+(arr.length?' normal':'');}
   previewFn();
 }
+// 腹超選正常：關閉同一個正常值底下的簡單病灶面板；膽囊正常另外關閉結石、瘜肉、膽囊炎面板
+function abdNormalReset(org,normalVal){
+  Object.keys(abdSimpleCfg).forEach(function(sid){
+    var sc=abdSimpleCfg[sid];
+    if(sc.normalVal!==normalVal)return;
+    abdPlusItems[sid]=[];
+    var p=gEl(sid+'-panel');if(p)p.style.display='none';
+    clrCls(gEl('ftag-'+sid.toLowerCase()+'-btn'));
+    var li=gEl(sid+'-list');if(li)li.innerHTML='';
+    delete aS[org]['__'+sid+'__'];
+  });
+  if(org==='gb'&&normalVal==='gallbladder normal'){
+    Object.keys(aS.gb).forEach(function(k){
+      if(/^__(GBSTONE|GBPOLY|GBCHOL)__/.test(k))delete aS.gb[k];
+    });
+    ['gbstone-panel','gbpoly-panel','gbchol-panel'].forEach(function(id){var p=gEl(id);if(p)p.style.display='none';});
+    ['ftag-gbstone-btn','ftag-gbpoly-btn','ftag-gbchol-btn','gbchol-acute','gbchol-chronic'].forEach(function(id){clrCls(gEl(id));});
+    gbStoneItems=[];gbCholType=null;gbPolyItems=[];
+    ['gbstone-list','gbpoly-list'].forEach(function(id){var l=gEl(id);if(l)l.innerHTML='';});
+  }
+}
+// 胃鏡選正常：關閉該段（食道、胃、十二指腸）所有細項面板並清空內容
+function egdNormalReset(grp){
+  if(grp==='esoph'){
+    Object.keys(eFillCfg).forEach(function(k){
+      var c=eFillCfg[k];var p=gEl(c.panel);if(p)p.style.display='none';
+      clrCls(gEl(c.btn));c.inputs.forEach(function(id){var e=gEl(id);if(e)e.value='';});
+    });
+    removeFillVal('__EULCER__');removeFillVal('__EPOLYP__');
+    // Reset EGD ml V2 esoph panels
+    ['eulcer','epolyp'].forEach(function(id){
+      egdMlState[id]={lesions:[],activeIdx:0};
+      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
+      clrCls(document.getElementById('ftag-'+id+'-btn'));
+      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
+    });
+    // Close LA panel and clear grade
+    var laP=gEl('la-panel');if(laP)laP.style.display='none';
+    if(laGrade){removeFillVal('Mucosal breaks');laGrade=null;}
+    clrCls(gEl('ftag-la-btn'));['la-A','la-B','la-C','la-D'].forEach(function(id){clrCls(gEl(id));});
+    // Close eca panel
+    var ecaP=gEl('eca-panel');if(ecaP)ecaP.style.display='none';
+    if(ecaType){removeEcaFromSel();ecaType=null;}
+    clrCls(gEl('ftag-eca-btn'));['eca-semi','eca-adv','eca-steno'].forEach(function(id){clrCls(gEl(id));});
+    ['eca-sub-semi','eca-sub-adv','eca-sub-steno'].forEach(function(id){var p=gEl(id);if(p)p.style.display='none';});
+    // Close eatyp panel
+    var eatypP=gEl('eatyp-panel');if(eatypP)eatypP.style.display='none';
+    clrCls(gEl('ftag-eatyp-btn'));
+  }
+  if(grp==='stomach'){
+    Object.keys(sFillCfg).forEach(function(k){
+      var c=sFillCfg[k];var p=gEl(c.panel);if(p)p.style.display='none';
+      clrCls(gEl(c.btn));c.inputs.forEach(function(id){var e=gEl(id);if(e)e.value='';});
+    });
+    removeStomachFill('__ULCER__');removeStomachFill('__GPOLYP__');removeStomachFill('__OGAST__');
+    // Reset EGD ml V2 stomach panels
+    ['ulcer','gpolyp'].forEach(function(id){
+      egdMlState[id]={lesions:[],activeIdx:0};
+      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
+      clrCls(document.getElementById('ftag-'+id+'-btn'));
+      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
+    });
+    oGastType=null;oGastKTReset();var ogp=gEl('ogastritis-panel');if(ogp)ogp.style.display='none';
+    clrCls(gEl('ftag-ogastritis-btn'));
+    ['ogast-chronic','ogast-atrophic','ogast-bile','ogast-hemorrhagic'].forEach(function(id){clrCls(gEl(id));});
+  }
+  if(grp==='duo'){
+    removeDuoFill('__DULCER__');removeDuoFill('__DPOLYP__');
+    // Reset EGD ml V2 duo panels
+    ['dulcer','dpolyp'].forEach(function(id){
+      egdMlState[id]={lesions:[],activeIdx:0};
+      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
+      clrCls(document.getElementById('ftag-'+id+'-btn'));
+      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
+    });
+  }
+}
+/* ── 共用片語引擎 ─────────────────────────────────────────────
+   腹超、甲狀腺、頸動脈、胃鏡、大腸鏡的片語按鈕共用三個函式：
+     tag(el, 段落)                    點一下選、再點取消
+     tagEx(el, 段落, 群組[, 正常值])   同一個 data-group 只能選一個；有給正常值就順便取消它
+     tagMutex(el, 段落, 正常值)        選了異常就取消同段的「正常」
+   工具由按鈕所在頁面判斷；段落給 null 時讀按鈕的 data-org（甲狀腺）。
+   各工具只差在狀態存在哪裡，寫在下面的 PH 轉接表。 */
+var SEL_CLS=['sel-ok','sel-warn','sel-danger'];
+function isSel(el){ return !!el && SEL_CLS.some(function(c){ return el.classList.contains(c); }); }
+// 存成 {片語: 等級}
+function phMap(get,upd,prev,more){ return Object.assign({
+  lvl:function(el){ return el.dataset.lvl; },
+  on:function(el){ return isSel(el); },
+  add:function(g,v,l){ get()[g][v]=l; },
+  del:function(g,v){ delete get()[g][v]; },
+  // 清掉同段除了 keep 以外的片語；有 re 時只清符合的
+  clearExcept:function(pg,g,keep,re){
+    Object.keys(get()[g]).forEach(function(v){
+      if(v===keep||(re&&!re.test(v))) return;
+      delete get()[g][v];
+      pg.querySelectorAll('.ftag[data-val="'+v+'"]').forEach(clrCls);
+    });
+  },
+  done:function(g){ upd(g); prev(); }
+},more||{}); }
+// 存成陣列；胃鏡另外記片語的顯示文字
+function phArr(get,text,upd,prev,sec,more){ return Object.assign({
+  lvl:function(el){ return el.dataset.lvl||'ok'; },
+  on:function(el,g){ return get()[g].indexOf(el.dataset.val)>-1; },
+  add:function(g,v,l,el){ get()[g].push(v); if(text) text()[g][v]=el.dataset.label||el.innerText.trim(); },
+  del:function(g,v){ var a=get()[g],i=a.indexOf(v); if(i>-1){ a.splice(i,1); if(text) delete text()[g][v]; } },
+  clearExcept:function(pg,g,keep){
+    var a=get()[g];
+    for(var i=a.length-1;i>=0;i--) if(a[i]!==keep){ if(text) delete text()[g][a[i]]; a.splice(i,1); }
+    pg.querySelectorAll('[data-grp="'+g+'"], #'+sec+g+' .ftag').forEach(function(e){ if(e.dataset.val!==keep) clrCls(e); });
+  },
+  done:function(g){ upd(g); prev(); }
+},more||{}); }
+var PH={
+  abd:phMap(function(){return aS;},function(g){aUpdSt(g);},function(){abdAutoPreview();},{
+    // 已勾膽囊切除：膽囊（不含膽管）的異常片語點不下去，閃紅框提示
+    guard:function(el,g){
+      if(g==='gb'&&gbIsPostChole()&&gbIsGbVal(el.dataset.val)){
+        el.style.outline='2px solid var(--danger)'; setTimeout(function(){el.style.outline='';},600); return false;
+      }
+      return true;
+    },
+    onNormal:abdNormalReset}),
+  thy:phMap(function(){return tS;},function(g){tUpdSt(g);},function(){thyAutoPreview();},{
+    // 甲狀腺選正常：關閉囊腫面板
+    onNormal:function(g){
+      if(g!=='gland'||!thyCystItems||!thyCystItems.length) return;
+      thyCystItems=[]; delete tS.gland['__THYCYST__'];
+      var p=gEl('thycyst-panel'); if(p) p.style.display='none';
+      clrCls(gEl('ftag-thycyst-btn')); var li=gEl('thycyst-list'); if(li) li.innerHTML='';
+    }}),
+  car:phMap(function(){return cS;},function(g){cUpdSt(g);},function(){carAutoPreview();},{
+    // 有 prefix 時（IMT、ICA 狹窄），同一組互斥片語的外觀也一起清掉
+    onNormal:function(g,normalVal,re){
+      if(re) document.querySelectorAll('#page-car .ftag[data-group]').forEach(function(e){ if(re.test(e.dataset.val||'')) clrCls(e); });
+    }}),
+  egd:phArr(function(){return egdSel;},function(){return egdSelText;},function(g){egdUpdStatus(g);},function(){egdAutoPreview();},'esec-',{onNormal:egdNormalReset}),
+  cfs:phArr(function(){return cfsSel;},null,function(g){cfsUpdStatus(g);},function(){cfsAutoPreview();},'csec-',{
+    onNormal:function(g){
+      if(g!=='rectum') return;
+      clearHemoState();
+      var hp=gEl('hemo-panel'); if(hp) hp.style.display='none';
+      clrCfsSel(gEl('ftag-hemo-btn'));
+    },
+    // 選了迴腸異常，也要取消「未進入迴腸」
+    alsoNormal:{term:['terminal ileum not intubated']},
+    // 醫師手動點追蹤間隔後，不再依瘜肉自動改
+    afterEx:function(el,group){
+      if(group==='cfs-repeat'&&!cfsRepeatAuto){ cfsRepeatManual=true; var h=gEl('cfs-repeat-hint'); if(h) h.hidden=true; }
+    }})
+};
+function phPage(el){ return el.closest('.page'); }
+/* tagNormal(el, 段落, 正常值[, prefix])：選「正常」時先清掉同段的異常與細項面板再選；
+   prefix 是正規式字串，只清掉符合的異常（例如同一段裡只清 IMT 相關）。已選時再點就是取消。 */
+function tagNormal(el,g,normalVal,prefix){
+  var pg=phPage(el), S=PH[pg.id.slice(5)]; g=g||el.dataset.org;
+  if(isSel(el)){ tag(el,g); return; }
+  if(S.guard && !S.guard(el,g)) return;
+  var re=prefix?new RegExp(prefix,'i'):null;
+  S.clearExcept(pg,g,normalVal,re);
+  if(S.onNormal) S.onNormal(g,normalVal,re);
+  tag(el,g);
+}
+function tag(el,g){
+  var S=PH[phPage(el).id.slice(5)], v=el.dataset.val; g=g||el.dataset.org;
+  if(S.on(el,g)){ clrCls(el); S.del(g,v); }
+  else { var l=S.lvl(el); el.classList.add('sel-'+l); S.add(g,v,l,el); }
+  S.done(g);
+}
+function tagEx(el,g,group,normalVal){
+  var pg=phPage(el), S=PH[pg.id.slice(5)], was=isSel(el); g=g||el.dataset.org;
+  pg.querySelectorAll('[data-group="'+group+'"]').forEach(function(e){ clrCls(e); S.del(g,e.dataset.val); });
+  if(!was){
+    var l=S.lvl(el); el.classList.add('sel-'+l); S.add(g,el.dataset.val,l,el);
+    if(normalVal){ pg.querySelectorAll('.ftag[data-val="'+normalVal+'"]').forEach(clrCls); S.del(g,normalVal); }
+  }
+  if(S.afterEx) S.afterEx(el,group);
+  S.done(g);
+}
+function tagMutex(el,g,normalVal){
+  var pg=phPage(el), S=PH[pg.id.slice(5)]; g=g||el.dataset.org;
+  if(S.guard && !S.guard(el,g)) return;
+  tag(el,g);
+  if(!isSel(el)) return;
+  [normalVal].concat((S.alsoNormal||{})[g]||[]).forEach(function(v){
+    pg.querySelectorAll('.ftag[data-val="'+v+'"]').forEach(clrCls); S.del(g,v);
+  });
+  S.done(g);
+}
+
 function abdRecoTag(el){_recoTag(el,abdRecoSel,'ast-areco',abdAutoPreview);}
 function _recoTagEx(el,group,arr,pageId,previewFn){
-  var wasOn=['sel-ok','sel-warn','sel-danger'].some(c=>el.classList.contains(c));
+  var wasOn=isSel(el);
   document.querySelectorAll('#'+pageId+' .ftag[data-group="'+group+'"]').forEach(function(e){
     clrCls(e);var i=arr.indexOf(e.dataset.val);if(i>-1)arr.splice(i,1);
   });
@@ -2550,13 +2735,6 @@ const aDef={liver:['normal size','homogeneous echotexture','no focal lesion'],gb
 function initAbd(){
   for(const[o,vs]of Object.entries(aDef)){vs.forEach(v=>{aS[o][v]='ok'});aUpdSt(o)}
 }
-function aTag(el,org){
-  const v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){clrCls(el);delete aS[org][v]}
-  else{el.classList.add('sel-'+l);aS[org][v]=l}
-  aUpdSt(org);
-  abdAutoPreview();
-}
 // ---- ABD Liver Lesion panels ----
 var abdPlusItems={Lcyst:[],Lhem:[],Lnod:[],Lmass:[],Lcalc:[],Lpvt:[],Pancyst:[],Panmass:[],Splcyst:[],Splcalc:[],Rkcyst:[],Rkstone:[],Rkmass:[],Lkcyst:[],Lkstone:[],Lkmass:[]};
 
@@ -2565,9 +2743,8 @@ function gbIsPostChole(){return !!aS.gb['post-cholecystectomy (gallbladder absen
 // Liver: selecting "Normal size" clears ALL liver abnormals (size group + echotexture + lesions)
 // Pancreas: selecting unremarkable clears all pan abnormals including panels
 function aTagPanNormal(el){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){aTag(el,'pan');return;}
+  var isOn=isSel(el);
+  if(isOn){tag(el,'pan');return;}
   // Clear all pan aS entries
   Object.keys(aS.pan).forEach(function(v){
     if(v==='pancreas unremarkable')return;
@@ -2586,77 +2763,16 @@ function aTagPanNormal(el){
     var li=gEl(id+'-list');if(li)li.innerHTML='';
     clrCls(gEl('ftag-'+id.toLowerCase()+'-btn'));
   });
-  aTag(el,'pan');
+  tag(el,'pan');
 }
 
 function gbIsGbVal(val){return !(/^(CBD|mildly dilated CBD|dilated CBD|intrahepatic bile duct|choledocholithiasis)/i.test(val));}
 
-function aTagMutexOrg(el,org,normalVal){
-  // Block GB (not CBD) if post-cholecystectomy is selected
-  if(org==='gb'&&gbIsPostChole()&&gbIsGbVal(el.dataset.val)){
-    el.style.outline='2px solid var(--danger)';
-    setTimeout(function(){el.style.outline='';},600);
-    return;
-  }
-  aTag(el,org);
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){
-    var normalEl=document.querySelector('#page-abd .ftag[data-val="'+normalVal+'"]');
-    if(normalEl&&cls.some(c=>normalEl.classList.contains(c))){
-      clrCls(normalEl);
-      delete aS[org][normalVal];
-      aUpdSt(org);abdAutoPreview();
-    }
-  }
-}
-// Override aTag for normal buttons in mutex groups
-function aTagNormal(el,org,normalVal,prefix){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){aTag(el,org);return;}
-  // Block GB normal (not CBD) if post-cholecystectomy is selected
-  if(org==='gb'&&gbIsPostChole()&&gbIsGbVal(normalVal)){
-    el.style.outline='2px solid var(--danger)';
-    setTimeout(function(){el.style.outline='';},600);
-    return;
-  }
-  var re=prefix?new RegExp(prefix,'i'):null;
-  // Clear matching abnormals then select normal
-  Object.keys(aS[org]).forEach(function(v){
-    if(v===normalVal)return;
-    if(re&&!re.test(v))return;
-    delete aS[org][v];
-    document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(function(e){clrCls(e);});
-  });
-  // Also close simple panels whose normalVal matches
-  Object.keys(abdSimpleCfg).forEach(function(sid){
-    var sc=abdSimpleCfg[sid];
-    if(sc.normalVal!==normalVal)return;
-    abdPlusItems[sid]=[];
-    var p=gEl(sid+'-panel');if(p)p.style.display='none';
-    clrCls(gEl('ftag-'+sid.toLowerCase()+'-btn'));
-    var li=gEl(sid+'-list');if(li)li.innerHTML='';
-    delete aS[org]['__'+sid+'__'];
-  });
-  // For GB normal: also close GB panels and clear their state
-  if(org==='gb'&&normalVal==='gallbladder normal'){
-    // Clear __GBSTONE__, __GBPOLY__, __GBCHOL__ keys
-    Object.keys(aS.gb).forEach(function(k){
-      if(/^__(GBSTONE|GBPOLY|GBCHOL)__/.test(k))delete aS.gb[k];
-    });
-    ['gbstone-panel','gbpoly-panel','gbchol-panel'].forEach(function(id){var p=gEl(id);if(p)p.style.display='none';});
-    ['ftag-gbstone-btn','ftag-gbpoly-btn','ftag-gbchol-btn','gbchol-acute','gbchol-chronic'].forEach(function(id){clrCls(gEl(id));});
-    gbStoneItems=[];gbCholType=null;gbPolyItems=[];
-    ['gbstone-list','gbpoly-list'].forEach(function(id){var l=gEl(id);if(l)l.innerHTML='';});
-  }
-  aTag(el,org);
-}
 // Simple lesion button (Cyst, Hemangioma, Calcification, PV thrombosis)
 function aTagLesion(el,org,id){
-  aTag(el,org);
+  tag(el,org);
   aTagNoFL(null);
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
+  var isOn=isSel(el);
   var ex=gEl(id+'-extra');
   if(ex)ex.style.display=isOn?'block':'none';
   if(!isOn){abdPlusItems[id]=[];var li=gEl(id+'-list');if(li)li.innerHTML='';}
@@ -2739,7 +2855,6 @@ function toggleAbdSimplePanel(id){
     if(org==='liver')aTagNoFL(null);
     // Clear the normalVal (unremarkable) for this org
     if(cfg.normalVal){
-      var cls=['sel-ok','sel-warn','sel-danger'];
       delete aS[org][cfg.normalVal];
       document.querySelectorAll('#page-abd .ftag[data-val="'+cfg.normalVal+'"]').forEach(function(e){clrCls(e);});
     }
@@ -2833,9 +2948,8 @@ function toggleAbdMassPanel(){
 
 function aTagNoFL(el){
   if(el){
-    var cls=['sel-ok','sel-warn','sel-danger'];
-    var isOn=cls.some(c=>el.classList.contains(c));
-    if(isOn){aTag(el,'liver');return;} // already selected → deselect
+    var isOn=isSel(el);
+    if(isOn){tag(el,'liver');return;} // already selected → deselect
     // Clear all lesion selections then select NFL
     ['hepatic cyst','hepatic hemangioma','hepatic calcification','portal vein thrombosis'].forEach(function(v){
       delete aS.liver[v];
@@ -2854,7 +2968,7 @@ function aTagNoFL(el){
       clrCls(gEl('ftag-'+id.toLowerCase()+'-btn'));
     });
     aUpdSt('liver');
-    aTag(el,'liver');
+    tag(el,'liver');
   } else {
     var nflBtn=gEl('ftag-nfl-btn');
     if(nflBtn){['sel-ok','sel-warn','sel-danger'].forEach(c=>nflBtn.classList.remove(c));delete aS.liver['no focal lesion'];}
@@ -2976,9 +3090,8 @@ function selectGbChol(type){
 
 // Post-cholecystectomy: fully exclusive with all other GB items
 function aTagPostChole(el){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){aTag(el,'gb');return;}
+  var isOn=isSel(el);
+  if(isOn){tag(el,'gb');return;}
   // Clear GB-only selections (preserve CBD vals)
   Object.keys(aS.gb).forEach(function(k){if(gbIsGbVal(k))delete aS.gb[k];});
   document.querySelectorAll('#asec-gb .ftag').forEach(function(t){
@@ -3124,27 +3237,13 @@ function gbPolyUpdate(){
 }
 // ---- end GB Polypoid Panel ----
 
-// Mutually exclusive group (size buttons)
-function aTagEx(el,org,group){
-  var v=el.dataset.val,l=el.dataset.lvl;
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var wasSelected=cls.some(c=>el.classList.contains(c));
-  // Deselect all in same group
-  document.querySelectorAll('[data-group="'+group+'"]').forEach(function(e){
-    clrCls(e);
-    delete aS[org][e.dataset.val];
-  });
-  if(!wasSelected){el.classList.add('sel-'+l);aS[org][v]=l;}
-  aUpdSt(org);abdAutoPreview();
-}
 // Select and deselect homogeneous echo (fatty/cirrhotic/PLD → remove homo)
 function aTagMutex(el,org,mutexVal){
-  aTag(el,org);
+  tag(el,org);
   // If newly selected, remove mutexVal
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){
+  if(isSel(el)){
     var homoEl=document.getElementById('ftag-homo-btn');
-    if(homoEl&&cls.some(c=>homoEl.classList.contains(c))){
+    if(homoEl&&isSel(homoEl)){
       clrCls(homoEl);
       delete aS[org][mutexVal];
       aUpdSt(org);abdAutoPreview();
@@ -3160,7 +3259,6 @@ var fattyVals={
 };
 // ---- Liver echotexture mutual exclusion ----
 function _clearEchoAbnormals(){
-  var cls=['sel-ok','sel-warn','sel-danger'];
   // Clear fatty panel state + button
   if(fattyGrade){delete aS.liver[fattyVals[fattyGrade].val];fattyGrade=null;}
   var fp=gEl('fatty-panel');if(fp)fp.style.display='none';
@@ -3174,8 +3272,7 @@ function _clearEchoAbnormals(){
   });
 }
 function aTagEchoNormal(el){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
+  var isOn=isSel(el);
   if(isOn){// deselect homogeneous echo
     clrCls(el);
     delete aS.liver['homogeneous echotexture'];
@@ -3189,8 +3286,8 @@ function aTagEchoNormal(el){
   aUpdSt('liver');abdAutoPreview();
 }
 function aTagEchoAbnormal(el){
-  var v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
+  var v=el.dataset.val,l=el.dataset.lvl;
+  var isOn=isSel(el);
   // Always clear homogeneous echo
   clrCls(gEl('ftag-homo-btn'));
   delete aS.liver['homogeneous echotexture'];
@@ -3212,7 +3309,6 @@ function toggleFattyPanel(){
   panel.style.display=opening?'block':'none';
   if(opening){
     // Clear homogeneous echo
-    var cls=['sel-ok','sel-warn','sel-danger'];
     clrCls(gEl('ftag-homo-btn'));
     delete aS.liver['homogeneous echotexture'];
     aUpdSt('liver');abdAutoPreview();
@@ -3398,17 +3494,10 @@ function initThy(){
   document.getElementById('tst-nod').className='sec-status normal';
   document.getElementById('tnd-nod').className='ndot ok';
 }
-function tTag(el){
-  const o=el.dataset.org,v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){clrCls(el);delete tS[o][v]}
-  else{el.classList.add('sel-'+l);tS[o][v]=l}
-  tUpdSt(o);
-  thyAutoPreview();
-}
 // Hashimoto/Graves: exclusive within group + clears normal echo
 function tTagDiffuse(el){
-  var o=el.dataset.org,v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  var wasOn=cls.some(c=>el.classList.contains(c));
+  var o=el.dataset.org,v=el.dataset.val,l=el.dataset.lvl;
+  var wasOn=isSel(el);
   // Clear all in thy-diffuse group
   document.querySelectorAll('#page-thy .ftag[data-group="thy-diffuse"]').forEach(function(e){
     clrCls(e);delete tS[o][e.dataset.val];
@@ -3431,7 +3520,6 @@ function toggleThyCystPanel(){
   panel.style.display=opening?'block':'none';
   if(opening){
     // Clear normal echo (tTagMutexOrg effect)
-    var cls=['sel-ok','sel-warn','sel-danger'];
     var normalEl=document.querySelector('#page-thy .ftag[data-val="normal echogenicity and homogeneous texture"]');
     if(normalEl){clrCls(normalEl);delete tS.gland['normal echogenicity and homogeneous texture'];}
     if(!thyCystItems.length)thyCystItems=[{note:''}];
@@ -3475,47 +3563,6 @@ function thyCystUpdate(){
 }
 // ---- end thyroid cyst panel ----
 
-function tTagEx(el,group){
-  const o=el.dataset.org,v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  const wasOn=cls.some(c=>el.classList.contains(c));
-  document.querySelectorAll(`#page-thy .ftag[data-group="${group}"]`).forEach(function(e){
-    clrCls(e);delete tS[o][e.dataset.val];
-  });
-  if(!wasOn){el.classList.add('sel-'+l);tS[o][v]=l;}
-  tUpdSt(o);thyAutoPreview();
-}
-function tTagNormal(el,normalVal){
-  const o=el.dataset.org,cls=['sel-ok','sel-warn','sel-danger'];
-  const isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){tTag(el);return;}
-  const hasAbnormal=Object.keys(tS[o]).some(v=>v!==normalVal&&tS[o][v]);
-  if(hasAbnormal){
-    Object.keys(tS[o]).forEach(v=>{
-      if(v===normalVal)return;
-      delete tS[o][v];
-      document.querySelectorAll(`#page-thy .ftag[data-val="${v}"]`).forEach(e=>clrCls(e));
-    });
-    // Also close thyroid cyst panel if it's the gland org
-    if(o==='gland'&&thyCystItems&&thyCystItems.length){
-      thyCystItems=[];delete tS.gland['__THYCYST__'];
-      var p=gEl('thycyst-panel');if(p)p.style.display='none';
-      clrCls(gEl('ftag-thycyst-btn'));var li=gEl('thycyst-list');if(li)li.innerHTML='';
-    }
-  }
-  tTag(el);
-}
-function tTagMutexOrg(el,normalVal){
-  const o=el.dataset.org,cls=['sel-ok','sel-warn','sel-danger'];
-  tTag(el);
-  if(cls.some(c=>el.classList.contains(c))){
-    const normalEl=document.querySelector(`#page-thy .ftag[data-val="${normalVal}"]`);
-    if(normalEl&&cls.some(c=>normalEl.classList.contains(c))){
-      clrCls(normalEl);
-      delete tS[o][normalVal];
-      tUpdSt(o);thyAutoPreview();
-    }
-  }
-}
 function thyAutoPreview(){
   const oe=document.getElementById('thy-rpt'),te=document.getElementById('thy-rtxt');
   if(!oe||!te)return;
@@ -3678,61 +3725,6 @@ function initCar(){
   cUpdPlaqSt();
 }
 
-function cTag(el,org){
-  const v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){clrCls(el);delete cS[org][v]}
-  else{el.classList.add('sel-'+l);cS[org][v]=l}
-  cUpdSt(org);
-  carAutoPreview();
-}
-function cTagNormal(el,org,normalVal,prefix){
-  const cls=['sel-ok','sel-warn','sel-danger'];
-  const isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){cTag(el,org);return;}
-  const re=prefix?new RegExp(prefix,'i'):null;
-  // Clear matching abnormals then select normal
-  Object.keys(cS[org]).forEach(v=>{
-    if(v===normalVal)return;
-    if(re&&!re.test(v))return;
-    delete cS[org][v];
-    document.querySelectorAll(`#page-car .ftag[data-val="${v}"]`).forEach(e=>clrCls(e));
-  });
-  // Also clear exclusive group selections (imt-level, imt-side, r-ica, l-ica)
-  if(prefix){
-    document.querySelectorAll('#page-car .ftag[data-group]').forEach(function(e){
-      if(!re.test(e.dataset.val||''))return;
-      clrCls(e);
-    });
-  }
-  cTag(el,org);
-}
-function cTagMutexOrg(el,org,normalVal){
-  const cls=['sel-ok','sel-warn','sel-danger'];
-  cTag(el,org);
-  if(cls.some(c=>el.classList.contains(c))){
-    const nEl=document.querySelector(`#page-car .ftag[data-val="${normalVal}"]`);
-    if(nEl&&cls.some(c=>nEl.classList.contains(c))){
-      clrCls(nEl);delete cS[org][normalVal];
-      cUpdSt(org);carAutoPreview();
-    }
-  }
-}
-function cTagEx(el,org,group,normalVal){
-  const v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  const wasOn=cls.some(c=>el.classList.contains(c));
-  document.querySelectorAll(`#page-car .ftag[data-group="${group}"]`).forEach(function(e){
-    clrCls(e);delete cS[org][e.dataset.val];
-  });
-  if(!wasOn){
-    el.classList.add('sel-'+l);cS[org][v]=l;
-    // Remove normalVal if specified
-    if(normalVal){
-      const nEl=document.querySelector(`#page-car .ftag[data-val="${normalVal}"]`);
-      if(nEl){clrCls(nEl);delete cS[org][normalVal];}
-    }
-  }
-  cUpdSt(org);carAutoPreview();
-}
 function carAutoPreview(){
   const oe=document.getElementById('car-rpt'),te=document.getElementById('car-rtxt');
   if(!oe||!te)return;
@@ -4242,7 +4234,6 @@ function toggleGradePanel(panelId,btnId,childIds,stateRef,clearFn){
 // LA
 var ESOPH_UNREM='No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.';
 function clearEsophUnrem(){
-  var cls=['sel-ok','sel-warn','sel-danger'];
   var idx=egdSel.esoph.indexOf(ESOPH_UNREM);
   if(idx>-1){egdSel.esoph.splice(idx,1);delete egdSelText.esoph[ESOPH_UNREM];}
   document.querySelectorAll('#page-egd .ftag[data-val="'+ESOPH_UNREM+'"]').forEach(function(e){clrCls(e);});
@@ -4828,7 +4819,6 @@ function selectOGastritis(type){
   setCls(gEl('ogast-'+type),info.lv);
   setCls(gEl('ftag-ogastritis-btn'),info.lv);
   // Remove mucosa normal
-  var cls=['sel-ok','sel-warn','sel-danger'];
   var ni=egdSel.stomach.indexOf('stomach mucosa normal');
   if(ni>-1){egdSel.stomach.splice(ni,1);delete egdSelText.stomach['stomach mucosa normal'];}
   document.querySelectorAll('#page-egd .ftag[data-val="stomach mucosa normal"]').forEach(function(e){clrCls(e);});
@@ -4911,7 +4901,6 @@ function clearVascState(){
 function selectVasc(type){
   var sub=gEl('vasc-'+type+'-sub');
   var btn=gEl('vasc-'+type);
-  var cls=['sel-ok','sel-warn','sel-danger'];
   if(vascSel[type]){
     // Deselect
     vascSel[type]=false;clrCls(btn);
@@ -5072,103 +5061,6 @@ function removeEothFill(key){
   }
 }
 
-function eTagEx(el,grp,group){
-  var v=el.dataset.val,l=el.dataset.lvl,cls=['sel-ok','sel-warn','sel-danger'];
-  var wasOn=cls.some(c=>el.classList.contains(c));
-  document.querySelectorAll('#page-egd .ftag[data-group="'+group+'"]').forEach(function(e){
-    clrCls(e);
-    var idx=egdSel[grp].indexOf(e.dataset.val);
-    if(idx>-1){egdSel[grp].splice(idx,1);delete egdSelText[grp][e.dataset.val];}
-  });
-  if(!wasOn){egdSel[grp].push(v);egdSelText[grp][v]=el.dataset.label||el.innerText.trim();el.classList.add('sel-'+l);}
-  egdUpdStatus(grp);egdAutoPreview();
-}
-function eTagNormal(el,grp,normalVal){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){eTag(el,grp);return;}
-  // Clear all abnormals in this grp then select normal
-  var arr=egdSel[grp];
-  for(var i=arr.length-1;i>=0;i--){
-    if(arr[i]!==normalVal){delete egdSelText[grp][arr[i]];arr.splice(i,1);}
-  }
-  document.querySelectorAll('#page-egd [data-grp="'+grp+'"], #esec-'+grp+' .ftag').forEach(function(e){
-    if(e.dataset.val!==normalVal)clrCls(e);
-  });
-  // Close fill panels for this grp
-  if(grp==='esoph'){
-    Object.keys(eFillCfg).forEach(function(k){
-      var c=eFillCfg[k];var p=gEl(c.panel);if(p)p.style.display='none';
-      clrCls(gEl(c.btn));c.inputs.forEach(function(id){var e=gEl(id);if(e)e.value='';});
-    });
-    removeFillVal('__EULCER__');removeFillVal('__EPOLYP__');
-    // Reset EGD ml V2 esoph panels
-    ['eulcer','epolyp'].forEach(function(id){
-      egdMlState[id]={lesions:[],activeIdx:0};
-      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
-      clrCls(document.getElementById('ftag-'+id+'-btn'));
-      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
-    });
-    // Close LA panel and clear grade
-    var laP=gEl('la-panel');if(laP)laP.style.display='none';
-    if(laGrade){removeFillVal('Mucosal breaks');laGrade=null;}
-    clrCls(gEl('ftag-la-btn'));['la-A','la-B','la-C','la-D'].forEach(function(id){clrCls(gEl(id));});
-    // Close eca panel
-    var ecaP=gEl('eca-panel');if(ecaP)ecaP.style.display='none';
-    if(ecaType){removeEcaFromSel();ecaType=null;}
-    clrCls(gEl('ftag-eca-btn'));['eca-semi','eca-adv','eca-steno'].forEach(function(id){clrCls(gEl(id));});
-    ['eca-sub-semi','eca-sub-adv','eca-sub-steno'].forEach(function(id){var p=gEl(id);if(p)p.style.display='none';});
-    // Close eatyp panel
-    var eatypP=gEl('eatyp-panel');if(eatypP)eatypP.style.display='none';
-    clrCls(gEl('ftag-eatyp-btn'));
-  }
-  if(grp==='stomach'){
-    Object.keys(sFillCfg).forEach(function(k){
-      var c=sFillCfg[k];var p=gEl(c.panel);if(p)p.style.display='none';
-      clrCls(gEl(c.btn));c.inputs.forEach(function(id){var e=gEl(id);if(e)e.value='';});
-    });
-    removeStomachFill('__ULCER__');removeStomachFill('__GPOLYP__');removeStomachFill('__OGAST__');
-    // Reset EGD ml V2 stomach panels
-    ['ulcer','gpolyp'].forEach(function(id){
-      egdMlState[id]={lesions:[],activeIdx:0};
-      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
-      clrCls(document.getElementById('ftag-'+id+'-btn'));
-      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
-    });
-    oGastType=null;oGastKTReset();var ogp=gEl('ogastritis-panel');if(ogp)ogp.style.display='none';
-    clrCls(gEl('ftag-ogastritis-btn'));
-    ['ogast-chronic','ogast-atrophic','ogast-bile','ogast-hemorrhagic'].forEach(function(id){clrCls(gEl(id));});
-  }
-  if(grp==='duo'){
-    removeDuoFill('__DULCER__');removeDuoFill('__DPOLYP__');
-    // Reset EGD ml V2 duo panels
-    ['dulcer','dpolyp'].forEach(function(id){
-      egdMlState[id]={lesions:[],activeIdx:0};
-      var p=document.getElementById(id+'-panel');if(p)p.style.display='none';
-      clrCls(document.getElementById('ftag-'+id+'-btn'));
-      ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
-    });
-  }
-  eTag(el,grp);
-}
-function eTagMutexOrg(el,grp,normalVal){
-  eTag(el,grp);
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){
-    var idx=egdSel[grp].indexOf(normalVal);
-    if(idx>-1){egdSel[grp].splice(idx,1);delete egdSelText[grp][normalVal];}
-    document.querySelectorAll('#page-egd .ftag[data-val="'+normalVal+'"]').forEach(function(e){clrCls(e);});
-    egdUpdStatus(grp);egdAutoPreview();
-  }
-}
-function eTag(el, grp) {
-  var v = el.dataset.val, lv = el.dataset.lvl||'ok';
-  var arr = egdSel[grp], idx = arr.indexOf(v);
-  if(idx>-1){ arr.splice(idx,1); delete egdSelText[grp][v]; el.classList.remove('sel-ok','sel-warn','sel-danger'); }
-  else { arr.push(v); egdSelText[grp][v] = el.dataset.label || el.innerText.trim(); el.classList.add('sel-'+lv); }
-  egdUpdStatus(grp);
-  egdAutoPreview();
-}
 function egdAutoPreview(){
   var oe=document.getElementById('egd-rtxt'); if(!oe)return;
   // Trigger full generate without scroll/button animation
@@ -5647,7 +5539,6 @@ function clearCcolitisState(){
   ['ccolitis-mild','ccolitis-moderate','ccolitis-severe','ccolitis-ischemic','ccolitis-diverti'].forEach(function(id){clrCfsSel(gEl(id));});
 }
 function selectCcolitis(type){
-  var cls=['sel-ok','sel-warn','sel-danger'];
   var info=ccolitisVals[type];
   if(type==='ischemic'||type==='diverti'){
     var stateKey=type==='ischemic'?'ccolitisIschemic':'ccolitisDiverti';
@@ -5878,8 +5769,7 @@ function colonRenderPanel(id,state,opts,color,setFieldFn,toggleProcFn,removeFn,s
 
 // Mutual-exclusive normal: deselects the other normal AND clears all abnormals in grp
 function cfTagNormalEx(el,grp,group){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
+  var isOn=isSel(el);
   // Deselect all in group first
   document.querySelectorAll('#page-cfs .ftag[data-val]').forEach(function(e){
     if(e===el)return;
@@ -6081,53 +5971,6 @@ function removeCfsPolyp(key){
 }
 // ---- end CFS Incomplete Study ----
 
-function cfTagMutexOrg(el,grp,normalVal){
-  cfTag(el,grp);
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  if(cls.some(c=>el.classList.contains(c))){
-    // Clear normalVal and any additional normals for same grp
-    var toRemove=[normalVal];
-    if(grp==='term')toRemove.push('terminal ileum not intubated');
-    toRemove.forEach(function(v){
-      var idx=cfsSel[grp].indexOf(v);
-      if(idx>-1)cfsSel[grp].splice(idx,1);
-      document.querySelectorAll('#page-cfs .ftag[data-val="'+v+'"]').forEach(function(e){clrCls(e);});
-    });
-    cfsUpdStatus(grp);cfsAutoPreview();
-  }
-}
-function cfTagNormal(el,grp,normalVal){
-  var cls=['sel-ok','sel-warn','sel-danger'];
-  var isOn=cls.some(c=>el.classList.contains(c));
-  if(isOn){cfTag(el,grp);return;}
-  var arr=cfsSel[grp];
-  for(var i=arr.length-1;i>=0;i--){
-    if(arr[i]!==normalVal)arr.splice(i,1);
-  }
-  // Clear DOM for all abnormals in this grp
-  document.querySelectorAll('#page-cfs .ftag[data-grp="'+grp+'"], #csec-'+grp+' .ftag').forEach(function(e){
-    if(e.dataset.val!==normalVal)clrCls(e);
-  });
-  // Close hemorrhoids panel if clearing rectum
-  if(grp==='rectum'){
-    clearHemoState();
-    var hp=gEl('hemo-panel');if(hp)hp.style.display='none';
-    clrCfsSel(gEl('ftag-hemo-btn'));
-  }
-  cfTag(el,grp);
-}
-function cfTagEx(el,grp,group){
-  var v=el.dataset.val,l=el.dataset.lvl||'ok',cls=['sel-ok','sel-warn','sel-danger'];
-  var wasOn=cls.some(c=>el.classList.contains(c));
-  document.querySelectorAll('#page-cfs .ftag[data-group="'+group+'"]').forEach(function(e){
-    clrCls(e);
-    var idx=cfsSel[grp].indexOf(e.dataset.val);
-    if(idx>-1)cfsSel[grp].splice(idx,1);
-  });
-  if(!wasOn){cfsSel[grp].push(v);el.classList.add('sel-'+l);}
-  if(group==='cfs-repeat'&&!cfsRepeatAuto){cfsRepeatManual=true;var h=gEl('cfs-repeat-hint');if(h)h.hidden=true;}
-  cfsUpdStatus(grp);cfsAutoPreview();
-}
 // 依瘜肉數量與大小預選追蹤間隔（國健署《大腸癌篩檢指引》2021）。
 // 病理還沒出來，只能用數量與大小判斷；醫師手動點過間隔之後就不再自動改。
 var cfsRepeatManual=false,cfsRepeatAuto=false,cfsPendManual=false;
@@ -6144,21 +5987,13 @@ function cfsAutoRepeat(){
   var cur=document.querySelector('#page-cfs .ftag[data-group="cfs-repeat"].sel-ok, #page-cfs .ftag[data-group="cfs-repeat"].sel-warn, #page-cfs .ftag[data-group="cfs-repeat"].sel-danger');
   var want=tier?document.querySelector('#page-cfs .ftag[data-tier="'+tier+'"]'):null;
   var pend=gEl('cfs-pend-tag');
-  if(tier&&!cfsPendManual&&pend&&cfsSel.creco.indexOf(pend.dataset.val)<0)cfTag(pend,'creco');
+  if(tier&&!cfsPendManual&&pend&&cfsSel.creco.indexOf(pend.dataset.val)<0)tag(pend,'creco');
   if(cur!==want){
     cfsRepeatAuto=true;
-    if(want)cfTagEx(want,'creco','cfs-repeat');else if(cur)cfTagEx(cur,'creco','cfs-repeat');
+    if(want)tagEx(want,'creco','cfs-repeat');else if(cur)tagEx(cur,'creco','cfs-repeat');
     cfsRepeatAuto=false;
   }
   if(hint)hint.hidden=!tier;
-}
-function cfTag(el, grp) {
-  var v = el.dataset.val, lv = el.dataset.lvl||'ok';
-  var arr = cfsSel[grp], idx = arr.indexOf(v);
-  if(idx>-1){ arr.splice(idx,1); el.classList.remove('sel-ok','sel-warn','sel-danger'); }
-  else { arr.push(v); el.classList.add('sel-'+lv); }
-  cfsUpdStatus(grp);
-  cfsAutoPreview();
 }
 var cfsRepeatBusy=false;
 function cfsAutoPreview(){
@@ -6589,13 +6424,14 @@ function cfsGenerate() {
 /* ── 最後改版日期 ──────────────────────────────────────────────
    每次改版請一併更新這一行，會顯示在首頁左下角。
    同時當作草稿的版本戳記：版本一變，舊草稿一律不還原。 */
-var APP_REVISION = '2026-11-18';
+var APP_REVISION = '2026-11-19';
 /* 點改版日期跳出這次改了什麼。每次改版整份換成「當次」的說明，一行一件事，不要累加前幾次的。 */
 var REVISION_NOTE = [
   '頁首加上深色模式切換（月亮按鈕），選擇記在這台電腦',
-  '首頁與頁首改成診所標誌加目錄式排版，拿掉卡片與色條',
+  '首頁與頁首改成診所標誌加目錄式排版，拿掉卡片、色條與說明文字',
   '點改版日期可以看這次改了什麼',
-  '畫面穩定：點片語時段落標題不再換行跳動；甲狀腺結節與頸動脈斑塊的細項改成浮出視窗'
+  '畫面穩定：點片語時段落標題不再換行跳動；甲狀腺結節與頸動脈斑塊的細項改成浮出視窗',
+  '程式精簡：五種報告的片語按鈕改用同一套程式，報告文字不變'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
