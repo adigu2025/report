@@ -257,10 +257,6 @@ kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;bac
 .imt-indicator.warn{background:#e0a23a}
 .imt-indicator.danger{background:#d0474c}
 .imt-hint{font-family:var(--mono);font-size:10.5px;color:var(--text-faint);margin-top:5px}
-.imt-legend{display:flex;gap:14px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);
-  border-radius:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
-.imt-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)}
-.imt-dot{width:8px;height:8px;border-radius:50%}
 .imt-summary-bar{display:flex;align-items:center;justify-content:space-between;
   padding:10px 14px;border-radius:8px;margin-bottom:14px;border:1px solid var(--border);
   background:var(--surface)}
@@ -496,6 +492,8 @@ body{font-size:calc(14px * var(--fs))}
    頂端一行病人欄位；適應症當成第一段；片語區由 fitColumns() 依內容排 3 至 5 欄，
    放不下才在片語區裡上下捲動；報告固定在右側。細項面板浮在觸發片語旁（見 popSync）。 */
 .sec-flow{display:block}
+.sec-col{display:contents}
+@media (min-width:1280px){ .sec-cols.planned>.sec-col{display:block;min-width:0} }
 @media (min-width:1280px){
   html,body{overflow:hidden}
   #page-cover.visible{height:100vh;overflow-y:auto}
@@ -510,8 +508,8 @@ body{font-size:calc(14px * var(--fs))}
   .main-content>.sec-flow{grid-column:1;grid-row:2;min-height:0;overflow-y:auto;scrollbar-width:thin}
   .sec-cols{column-gap:12px;height:100%}
   .sec-cols.scroll{height:auto}
-  .sec-cols>.ind-bar,.sec-cols>.section,.sec-pair>.section{margin:0 0 10px !important}
-  .sec-pair{break-inside:avoid}
+  .sec-cols>.ind-bar,.sec-cols>.section,.sec-col>.ind-bar,.sec-col>.section{margin:0 0 10px !important}
+  .sec-cols.planned{display:grid;grid-template-columns:var(--col-w,repeat(4,minmax(0,1fr)));column-gap:12px;align-items:start;columns:auto !important}
   .sec-cols>.ind-bar{padding:8px 12px}
   .sec-cols .sec-head{break-after:avoid;padding-top:7px;padding-bottom:7px;cursor:default}
   .sec-cols .sec-head:hover{background:var(--surface)}
@@ -699,7 +697,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="pt-bar-check"><input type="checkbox" id="abd-ptchk" onchange="ptBarToggle('abd')"><label for="abd-ptchk">帶入<br>報告</label></div>
     </div>
     <div class="ind-bar" id="ind-bar-abd">
-      <div class="fl">Indication — 適應症（可複選）</div>
+      <div class="fl">Indication（可複選）</div>
       <div class="ind-tags">
         <span class="ind-tag" data-val="health examination" onclick="indTag(this)">Health exam 健檢</span>
         <span class="ind-tag" data-val="refractory epigastric pain" onclick="indTag(this)">Epigastric pain 上腹痛</span>
@@ -730,11 +728,6 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="fatty-mild" data-fgrade="mild" onclick="selectFatty(this)">Mild</span>
               <span class="ftag" id="fatty-moderate" data-fgrade="moderate" onclick="selectFatty(this)">Moderate</span>
               <span class="ftag" id="fatty-severe" data-fgrade="severe" onclick="selectFatty(this)">Severe</span>
-            </div>
-            <div style="margin-top:5px;font-size:11px;color:var(--text-muted);">
-              Mild: bright parenchyma + increased liver-kidney contrast<br>
-              Moderate: + far attenuation and obscured vessel<br>
-              Severe: + obscured gallbladder and diaphragm
             </div>
           </div>
           <span class="ftag" data-val="cirrhotic change with heterogeneous echotexture and irregular surface" data-lvl="danger" onclick="aTagEchoAbnormal(this)">Cirrhotic change</span>
@@ -959,7 +952,7 @@ body{font-size:calc(14px * var(--fs))}
       <div class="pt-bar-check"><input type="checkbox" id="thy-ptchk" onchange="ptBarToggle('thy')"><label for="thy-ptchk">帶入<br>報告</label></div>
     </div>
     <div class="ind-bar" id="ind-bar-thy">
-      <div class="fl">Indication — 適應症（可複選）</div>
+      <div class="fl">Indication（可複選）</div>
       <div class="ind-tags">
         <span class="ind-tag" data-val="health examination" onclick="indTag(this)">Health exam 健檢</span>
         <span class="ind-tag" data-val="thyroid nodule follow-up" onclick="indTag(this)">Nodule F/U</span>
@@ -1073,7 +1066,7 @@ body{font-size:calc(14px * var(--fs))}
     </div>
 
     <div class="ind-bar" id="ind-bar-car">
-      <div class="fl">Indication — 適應症（可複選）</div>
+      <div class="fl">Indication（可複選）</div>
       <div class="ind-tags">
         <span class="ind-tag" data-val="health examination" onclick="indTag(this)">Health exam 健檢</span>
         <span class="ind-tag" data-val="cardiovascular risk assessment" onclick="indTag(this)">CV risk assessment</span>
@@ -1092,13 +1085,6 @@ body{font-size:calc(14px * var(--fs))}
     <div class="section open" id="csec-imt">
       <div class="sec-head" onclick="tSec('csec-imt')"><span class="sec-num">01</span><span class="sec-title">IMT Measurement <span class="sec-sub">內膜中層厚度</span></span><span class="sec-status normal" id="cst-imt">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
-        <!-- Legend -->
-        <div class="imt-legend">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-right:6px;letter-spacing:.08em">IMT CRITERIA</span>
-          <div class="imt-leg-item"><div class="imt-dot" style="background:#22c55e"></div>&lt; 0.8 mm — Ideal</div>
-          <div class="imt-leg-item"><div class="imt-dot" style="background:#f59e0b"></div>0.8 – 1.0 mm — Borderline</div>
-          <div class="imt-leg-item"><div class="imt-dot" style="background:#ef4444"></div>&gt; 1.0 mm or Plaque — High Risk</div>
-        </div>
         <!-- IMT inputs -->
         <div class="imt-grid">
           <div class="imt-box">
@@ -1249,7 +1235,7 @@ body{font-size:calc(14px * var(--fs))}
 </div>
 </div>
 
-<div class="page" id="page-egd">
+<div class="page" id="page-egd" data-col-plan="ind-bar-egd esec-prep|esec-esoph esec-ej|esec-stomach esec-duo|esec-eoth esec-ereco" style="--col-w:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr) minmax(0,1.05fr)">
 <div class="tool-layout">
   <aside class="sidebar">
     <div class="sb-head"><div class="sb-label">Tool 04</div><div class="sb-title">Upper GI Endoscopy <span>上消化道內視鏡報告</span></div></div>
@@ -1280,7 +1266,7 @@ body{font-size:calc(14px * var(--fs))}
 
     <!-- INDICATION BAR (獨立 section，在報告標題下) -->
     <div class="ind-bar" id="ind-bar-egd">
-      <div class="fl">Indication — 適應症（可複選）</div>
+      <div class="fl">Indication（可複選）</div>
       <div class="ind-tags">
         <span class="ind-tag" data-val="health examination" onclick="indTag(this)">Health exam 健檢</span>
         <span class="ind-tag" data-val="upper GI symptoms evaluation" onclick="indTag(this)">Upper GI symptoms</span>
@@ -1315,7 +1301,7 @@ body{font-size:calc(14px * var(--fs))}
     </div>
 
     <!-- 01 ESOPHAGUS -->
-    <div class="section open" id="esec-esoph" data-keep-next>
+    <div class="section open" id="esec-esoph">
       <div class="sec-head" onclick="tSec('esec-esoph')"><span class="sec-num">01</span><span class="sec-title">Esophagus <span class="sec-sub">食道</span></span><span class="sec-status normal" id="est-esoph">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">General</div><div class="fg">
@@ -1329,10 +1315,6 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="la-B" data-grade="B" onclick="selectLa(this)">LA grade B</span>
               <span class="ftag" id="la-C" data-grade="C" onclick="selectLa(this)">LA grade C</span>
               <span class="ftag" id="la-D" data-grade="D" onclick="selectLa(this)">LA grade D</span>
-            </div>
-            <div style="margin-top:6px;font-size:11px;color:var(--text-muted);">
-              A: mucosal breaks &lt;5mm &nbsp;|&nbsp; B: mucosal breaks &gt;5mm, not between fold tops<br>
-              C: continuous breaks &lt;75% circumference &nbsp;|&nbsp; D: breaks ≥75% circumference
             </div>
           </div>
           <span class="ftag" data-val="Multiple small whitish patches along the lumen, favor glycogenic acanthosis." data-lvl="ok" data-label="Esophageal glycogenic acanthosis" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Glycogenic acanthosis</span>
@@ -1349,10 +1331,6 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="caustic-IIIA" data-grade="IIIA" data-desc="Focal deep gray or brownish-black ulcers"               onclick="selectCaustic(this)">Grade IIIA</span>
               <span class="ftag" id="caustic-IIIB" data-grade="IIIB" data-desc="Extensive deep gray or brownish-black ulcers"           onclick="selectCaustic(this)">Grade IIIB</span>
               <span class="ftag" id="caustic-IV"   data-grade="IV"   data-desc="Perforation"                                             onclick="selectCaustic(this)">Grade IV</span>
-            </div>
-            <div style="margin-top:7px;font-size:11px;color:var(--text-muted);line-height:1.7;">
-              0: Normal &nbsp;|&nbsp; I: Edema/erythema &nbsp;|&nbsp; IIA: Hemorrhage/erosions/blisters/superficial ulcers<br>
-              IIB: Circumferential &nbsp;|&nbsp; IIIA: Focal deep ulcers &nbsp;|&nbsp; IIIB: Extensive deep ulcers &nbsp;|&nbsp; IV: Perforation
             </div>
           </div>
           <span class="ftag" id="ftag-esophx-btn" data-val="" data-lvl="warn" onclick="toggleEsophxPanel()">s/p esophagectomy</span>
@@ -1449,7 +1427,6 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="varices-F2" data-form="F2" data-shape="nodular"  onclick="selectVarices(this)">F2 — nodular</span>
               <span class="ftag" id="varices-F3" data-form="F3" data-shape="tumorous" onclick="selectVarices(this)">F3 — tumorous</span>
             </div>
-            <div style="margin-top:6px;font-size:11px;color:var(--text-muted);">F1: tortuous &nbsp;|&nbsp; F2: nodular &nbsp;|&nbsp; F3: tumorous</div>
           </div>
 
           <span class="ftag" id="ftag-eatyp-btn" data-val="" data-lvl="danger" onclick="toggleEatypPanel()">Atypical infection</span>
@@ -1502,8 +1479,6 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('esec-ej')"><span class="sec-num">02</span><span class="sec-title">EG Junction <span class="sec-sub">食胃接合部</span></span><span class="sec-status normal" id="est-ej">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">Z-line / Squamocolumnar Junction</div><div class="fg">
-          <span class="ftag" data-val="Z-line at normal position" data-lvl="ok" data-group="ej-zline" onclick="tagEx(this,'ej','ej-zline')">Z-line normal</span>
-          <span class="ftag" data-val="Z-line irregular" data-lvl="warn" data-group="ej-zline" onclick="tagEx(this,'ej','ej-zline')">Z-line irregular</span>
           <span class="ftag" data-val="suspected short-segment Barrett's esophagus (&lt;3cm)" data-lvl="warn" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's short (&lt;3cm)</span>
           <span class="ftag" data-val="suspected long-segment Barrett's esophagus (≥3cm)" data-lvl="danger" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's long (≥3cm)</span>
           <span class="ftag" id="ftag-esem-btn" data-val="" data-lvl="danger" onclick="toggleEsemPanel()">ESEM</span>
@@ -1523,11 +1498,9 @@ body{font-size:calc(14px * var(--fs))}
           </div>
         </div></div>
         <div class="subsect"><div class="fl">Hiatus / Cardia</div><div class="fg">
-          <span class="ftag" data-val="no hiatal hernia" data-lvl="ok" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">No hiatal hernia</span>
           <span class="ftag" data-val="small hiatal hernia (&lt;3cm)" data-lvl="warn" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">Hiatal hernia &lt;3cm</span>
           <span class="ftag" data-val="hiatal hernia (≥3cm)" data-lvl="warn" data-group="ej-hernia" onclick="tagEx(this,'ej','ej-hernia')">Hiatal hernia ≥3cm</span>
           <span class="ftag sel-ok" data-val="cardia closes well" data-lvl="ok" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia closes well</span>
-          <span class="ftag" data-val="cardia does not close completely" data-lvl="warn" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia incomplete closure</span>
         </div></div>
         <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()"></textarea></div>
       </div>
@@ -1642,7 +1615,6 @@ body{font-size:calc(14px * var(--fs))}
                 <span class="ftag" id="gvar-igv1" data-gtype="IGV1" data-gdesc="Tortuous isolated cluster of gastric varices in the gastric fundus." onclick="selectGvar(this)">IGV1</span>
                 <span class="ftag" id="gvar-igv2" data-gtype="IGV2" data-gdesc="Tortuous gastric varices occur in the other part than gastric fundus." onclick="selectGvar(this)">IGV2</span>
               </div>
-              <div style="margin-top:5px;font-size:10px;color:var(--text-muted);">GOV1: lesser curvature &nbsp;|&nbsp; GOV2: fundus &nbsp;|&nbsp; IGV1: isolated fundus &nbsp;|&nbsp; IGV2: isolated other</div>
             </div>
             <!-- Giant rugae sub-panel -->
             <div class="sub-box" id="vasc-rugae-sub" style="display:none">
@@ -1832,7 +1804,7 @@ body{font-size:calc(14px * var(--fs))}
 
     <!-- INDICATION BAR (獨立 section，在報告標題下) -->
     <div class="ind-bar" id="ind-bar-cfs">
-      <div class="fl">Indication — 適應症（可複選）</div>
+      <div class="fl">Indication（可複選）</div>
       <div class="ind-tags">
         <span class="ind-tag" data-val="health examination" onclick="indTag(this)">Health exam 健檢</span>
         <span class="ind-tag" data-val="colorectal cancer screening" onclick="indTag(this)">Cancer screening</span>
@@ -1884,7 +1856,7 @@ body{font-size:calc(14px * var(--fs))}
 
         <!-- Insertion Level -->
         <div class="subsect">
-          <div class="fl">Insertion Level — 進鏡深度</div>
+          <div class="fl">Insertion Level</div>
           <div class="fg" style="align-items:center;gap:6px;flex-wrap:wrap">
             <span class="ftag" id="cfs-ins-ti" data-ins="terminal ileum" onclick="cfsSetInsLevel(this,'terminal ileum')">Terminal ileum</span>
             <span class="ftag sel-ok" id="cfs-ins-cec" data-ins="cecum" onclick="cfsSetInsLevel(this,'cecum')">Cecum</span>
@@ -1904,7 +1876,7 @@ body{font-size:calc(14px * var(--fs))}
 
         <!-- Timing -->
         <div class="subsect" style="border-top:1px solid var(--border);padding-top:11px">
-          <div class="fl">Procedure Timing — 操作時間</div>
+          <div class="fl">Procedure Timing</div>
           <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:4px">
             <div style="display:flex;align-items:center;gap:6px">
               <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--text-faint);text-transform:uppercase;white-space:nowrap">Insertion Time</span>
@@ -4677,7 +4649,7 @@ function egdMlRender(id){
       var opts=cfg.type==='ulcer'?forrestOpts:parisOpts;
       var gradeRow=opts.map(function(o){return '<span class="ftag'+(l.grade===o.g?' sel-'+cfg.color:'')+'" onclick="egdMlSetField(\''+id+'\','+i+',\'grade\',\''+(l.grade===o.g?'':o.g)+'\')" style="font-size:11px">'+o.g+'</span>';}).join('');
       var desc=opts.find(function(o){return o.g===l.grade;});
-      var descTxt=desc?'<span style="color:var(--text-muted);font-size:11px;margin-left:4px">'+(desc.shortDesc||desc.desc)+'</span>':'';
+      var descTxt='';
       var procList=cfg.type==='ulcer'?colonUlcerProcs:colonProcs;
       var procRow=procList.map(function(p){return '<span class="ftag'+(l.procs.includes(p.id)?' sel-ok':'')+'" onclick="egdMlToggleProc(\''+id+'\','+i+',\''+p.id+'\')" style="font-size:11.5px;margin-bottom:3px">'+p.label+'</span>';}).join('');
       body='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px">'+gradeRow+'</div>'
@@ -5265,7 +5237,7 @@ function cfsInsLevelCmInput() {
 function cfsUpdInsDisplay() {
   var disp=document.getElementById('cfs-ins-display');
   if(!disp)return;
-  disp.textContent = cfsInsLevel ? '→ Scope advanced to: '+cfsInsLevel : '';
+  disp.textContent = '';
 }
 
 function cfsGetInsLine() {
@@ -5442,7 +5414,7 @@ function cMlRender(id){
         ? '<input type="text" value="'+(l.loc||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px">'
         : '<select oninput="cMlField(\''+id+'\','+i+',\'loc\',this.value)" style="font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px"><option value="">Location</option>'+colonLocs.map(function(loc){return '<option value="'+loc+'"'+(l.loc===loc?' selected':'')+'>'+loc+'</option>';}).join('')+'</select>';
       body='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px">'+gradeRow+'</div>'
-        +(desc?'<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">'+(desc.shortDesc||desc.desc)+'</div>':'')
+        
         +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">'+niceRow+'</div>'
         +'<div style="line-height:2;font-size:11px;margin-bottom:4px">Size: <input type="text" value="'+(l.cm||'').replace(/"/g,'&quot;')+'" oninput="cMlField(\''+id+'\','+i+',\'cm\',this.value)" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px">cm'+locHtml2+'</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:4px">'+procRow+'</div>';
@@ -5665,14 +5637,14 @@ function colonRenderPanel(id,state,opts,color,setFieldFn,toggleProcFn,removeFn,s
       return '<span class="ftag'+(l.grade===o.g?' sel-'+color:'')+'" onclick="'+setFieldFn+'(\'grade\',\''+(l.grade===o.g?'':o.g)+'\','+i+')" style="font-size:11px">'+o.g+'</span>';
     }).join('');
     var desc=opts.find(o=>o.g===l.grade);
-    var descTxt=desc?'<span style="color:var(--text-muted);margin-left:6px;font-size:11px">'+(desc.shortDesc||desc.desc)+'</span>':'';
+    var descTxt='';
     var niceRow='';
     if(opts===parisOpts){
       var niceBtns=niceOpts.map(function(o){
         return '<span class="ftag'+(l.nice===o.g?' sel-ok':'')+'" onclick="'+setFieldFn+'(\'nice\',\''+(l.nice===o.g?'':o.g)+'\','+i+')" style="font-size:11px">'+o.g+'</span>';
       }).join('');
       var niceDesc=niceOpts.find(o=>o.g===l.nice);
-      var niceDescTxt=niceDesc?'<span style="color:var(--text-muted);margin-left:6px;font-size:11px">'+niceDesc.desc+'</span>':'';
+      var niceDescTxt='';
       niceRow='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;margin-bottom:3px">'+niceBtns+'</div>'+niceDescTxt;
     }
     var locOpts='<select oninput="'+setFieldFn+'(\'loc\',this.value,'+i+')" style="font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 4px"><option value="">Location</option>'+locs.map(function(loc){return '<option value="'+loc+'"'+(l.loc===loc?' selected':'')+'>'+loc+'</option>';}).join('')+'</select>';
@@ -6349,7 +6321,10 @@ var REVISION_NOTE = [
   '程式精簡：片語按鈕、細項面板開關、大腸鏡四種多病灶面板各改用同一套程式；重複的行內樣式收成 class，報告文字不變',
   '頁首只留文字；頸動脈 IMT 四格改成兩格一列，不再被遮住；胃鏡 E-G junction 接在 Esophagus 正下方',
   '門診病歷以外的自由輸入欄平常收成一顆按鈕，點了才浮出輸入框，有內容時按鈕顯示開頭文字',
-  '診斷書兩張卡片等高；七個功能區拿掉灰色說明小字，只留（可複選）'
+  '診斷書兩張卡片等高；七個功能區拿掉灰色說明小字，只留（可複選）',
+  '再拿掉分類說明（脂肪肝分級、IMT 標準、LA、Zargar、Paris、Forrest、NICE 等）與標題裡重複的中文',
+  '胃鏡改成固定四欄：適應症＋前置／食道＋食胃接合部／胃＋十二指腸／其他＋建議，1920x1080 不用捲動',
+  '胃鏡 EG junction 拿掉 Z-line normal、Z-line irregular、No hiatal hernia、Cardia incomplete closure'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
@@ -6739,12 +6714,16 @@ function layoutSections(){
     var cols=document.createElement('div'); cols.className='sec-cols';
     flow.appendChild(cols); mc.insertBefore(flow,secs[0]);
     secs.forEach(function(sec){ cols.appendChild(sec); });
-    // 結構相鄰的段落（食道＋食胃接合部）包成一組，排在同一欄上下相接
-    cols.querySelectorAll(':scope>[data-keep-next]').forEach(function(a){
-      var b=a.nextElementSibling; if(!b) return;
-      var pair=document.createElement('div'); pair.className='sec-pair';
-      cols.insertBefore(pair,a); pair.appendChild(a); pair.appendChild(b);
-    });
+    // 有欄位計畫的頁面（data-col-plan：以 | 分欄、空白分段落）照計畫排固定欄，不用自動分欄
+    var plan=mc.closest('[data-col-plan]');
+    if(plan){
+      cols.classList.add('planned');
+      plan.dataset.colPlan.split('|').forEach(function(ids){
+        var c=document.createElement('div'); c.className='sec-col'; cols.appendChild(c);
+        ids.trim().split(/\s+/).forEach(function(id){ var e=document.getElementById(id); if(e) c.appendChild(e); });
+      });
+      secs.forEach(function(sec){ if(sec.parentNode===cols) cols.lastChild.appendChild(sec); });
+    }
   });
 }
 
@@ -6820,7 +6799,7 @@ document.addEventListener('scroll',foldReplace,true);
 var FIT_MQ=window.matchMedia('(min-width:1280px)');
 function fitColumns(){
   var cols=document.querySelector('.page.visible .sec-cols');
-  if(!cols) return;
+  if(!cols||cols.classList.contains('planned')) return;
   cols.classList.remove('scroll');
   if(!FIT_MQ.matches){ cols.style.columnCount=''; return; }
   for(var n=3;n<=5;n++){
