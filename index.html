@@ -367,6 +367,18 @@ kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;bac
 .ind-free{width:100%;font-family:var(--sans);font-size:14px;padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);outline:none;height:34px}
 .ind-free:focus{border-color:var(--teal);background:var(--field);box-shadow:0 0 0 3px var(--teal-light)}
 
+/* ── 細項面板裡的共用樣式（原本是各處重複的行內 style） ── */
+.mini-btn{padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chips6{display:flex;flex-wrap:wrap;gap:6px}
+.row-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.sub-panel{width:100%;margin:4px 0 4px 0;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px}
+.sub-panel.warn{background:var(--warn-light)}
+.sub-panel.danger{background:var(--danger-light)}
+.sub-box{padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px}
+.num-in{width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px}
+.panel-title{font-weight:500;margin-bottom:6px;color:var(--warn)}
+
 /* ── 欄位說明文字（取代 placeholder） ───────── */
 .fh{font-size:11.5px;color:var(--text-faint);margin-top:4px;line-height:1.5}
 
@@ -692,9 +704,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag sel-ok" id="ftag-homo-btn" data-val="homogeneous echotexture" data-lvl="ok" onclick="aTagEchoNormal(this)">Homogeneous echo</span>
           <span class="ftag" data-val="heterogeneous echotexture compatible with parenchymal liver disease" data-lvl="warn" onclick="aTagEchoAbnormal(this)">Heterogeneous</span>
           <span class="ftag" id="ftag-fatty-btn" data-val="" data-lvl="warn" onclick="toggleFattyPanel()">Fatty liver</span>
-          <div id="fatty-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Grade — select one:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="fatty-panel" style="display:none">
+            <div class="panel-title">Grade — select one:</div>
+            <div class="chips6">
               <span class="ftag" id="fatty-mild" data-fgrade="mild" onclick="selectFatty(this)">Mild</span>
               <span class="ftag" id="fatty-moderate" data-fgrade="moderate" onclick="selectFatty(this)">Moderate</span>
               <span class="ftag" id="fatty-severe" data-fgrade="severe" onclick="selectFatty(this)">Severe</span>
@@ -714,37 +726,37 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" id="ftag-lcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Lcyst')">Cyst</span>
           <div id="Lcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div id="Lcyst-list"></div>
-            <button onclick="abdSimplePlusAdd('Lcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdSimplePlusAdd('Lcyst')">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-lhem-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Lhem')">Hemangioma</span>
           <div id="Lhem-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div id="Lhem-list"></div>
-            <button onclick="abdSimplePlusAdd('Lhem')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdSimplePlusAdd('Lhem')">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-lnod-btn" data-val="" data-lvl="warn" onclick="toggleAbdNodulePanel()">Nodule</span>
-          <div id="Lnod-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="Lnod-panel" style="display:none">
             <div id="Lnod-list"></div>
-            <button onclick="abdPlusAdd('Lnod')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdPlusAdd('Lnod')">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-lmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdMassPanel()">Tumor / Mass</span>
-          <div id="Lmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="Lmass-panel" style="display:none">
             <div id="Lmass-list"></div>
-            <button onclick="abdPlusAdd('Lmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdPlusAdd('Lmass')">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-lcalc-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Lcalc')">Calcification</span>
-          <div id="Lcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="Lcalc-panel" style="display:none">
             <div id="Lcalc-list"></div>
-            <button onclick="abdSimplePlusAdd('Lcalc')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdSimplePlusAdd('Lcalc')">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-lpvt-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Lpvt')">PV thrombosis</span>
-          <div id="Lpvt-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="Lpvt-panel" style="display:none">
             <div id="Lpvt-list"></div>
-            <button onclick="abdSimplePlusAdd('Lpvt')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="abdSimplePlusAdd('Lpvt')">+ Add lesion</button>
           </div>
 
         </div></div>
@@ -761,21 +773,21 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="contracted gallbladder" data-lvl="warn" onclick="tagMutex(this,'gb','gallbladder normal')">Contracted</span>
 
           <span class="ftag" id="ftag-gbstone-btn" data-val="" data-lvl="warn" onclick="toggleGbStonePanel()">Stone</span>
-          <div id="gbstone-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="gbstone-panel" style="display:none">
             <div id="gbstone-list"></div>
-            <button onclick="gbStoneAdd()" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="gbStoneAdd()">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-gbpoly-btn" data-val="" data-lvl="warn" onclick="toggleGbPolyPanel()">Polypoid lesion</span>
-          <div id="gbpoly-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="gbpoly-panel" style="display:none">
             <div id="gbpoly-list"></div>
-            <button onclick="gbPolyAdd()" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="gbPolyAdd()">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-gbchol-btn" data-val="" data-lvl="warn" onclick="toggleGbCholPanel()">Cholecystitis</span>
-          <div id="gbchol-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="gbchol-panel" style="display:none">
+            <div class="panel-title">Select type:</div>
+            <div class="chips6">
               <span class="ftag" id="gbchol-acute"   onclick="selectGbChol('acute')">Acute cholecystitis</span>
               <span class="ftag" id="gbchol-chronic"  onclick="selectGbChol('chronic')">Chronic cholecystitis</span>
             </div>
@@ -800,14 +812,14 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="fatty infiltration of pancreas" data-lvl="warn" onclick="tagMutex(this,'pan','pancreas unremarkable')">Fatty infiltration</span>
           <span class="ftag" data-val="main pancreatic duct dilatation (>3mm), nature?" data-lvl="danger" onclick="tagMutex(this,'pan','pancreas unremarkable')">MPD dilatation</span>
           <span class="ftag" id="ftag-pancyst-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Pancyst')">Cystic lesion</span>
-          <div id="Pancyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Pancyst-list"></div><button onclick="abdSimplePlusAdd('Pancyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel warn" id="Pancyst-panel" style="display:none"><div id="Pancyst-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Pancyst')">+ Add lesion</button></div>
           <span class="ftag" id="ftag-panmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Panmass')">Solid mass</span>
-          <div id="Panmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Panmass-list"></div><button onclick="abdSimplePlusAdd('Panmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel danger" id="Panmass-panel" style="display:none"><div id="Panmass-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Panmass')">+ Add lesion</button></div>
 
           <span class="ftag" id="ftag-panitis-btn" data-val="" data-lvl="warn" onclick="togglePanitisPanel()">Pancreatitis</span>
-          <div id="panitis-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="panitis-panel" style="display:none">
+            <div class="panel-title">Select type:</div>
+            <div class="chips6">
               <span class="ftag" id="panitis-acute"   onclick="selectPanitis('acute')">Acute pancreatitis</span>
               <span class="ftag" id="panitis-chronic" onclick="selectPanitis('chronic')">Chronic pancreatitis</span>
             </div>
@@ -825,9 +837,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="splenomegaly" data-lvl="warn" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Splenomegaly</span>
           <span class="ftag" data-val="accessory spleen" data-lvl="ok" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Accessory spleen</span>
           <span class="ftag" id="ftag-splcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Splcyst')">Splenic cyst</span>
-          <div id="Splcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcyst-list"></div><button onclick="abdSimplePlusAdd('Splcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div id="Splcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcyst-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Splcyst')">+ Add lesion</button></div>
           <span class="ftag" id="ftag-splcalc-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Splcalc')">Calcification</span>
-          <div id="Splcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcalc-list"></div><button onclick="abdSimplePlusAdd('Splcalc')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div id="Splcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcalc-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Splcalc')">+ Add lesion</button></div>
           <span class="ftag" data-val="splenic infarction" data-lvl="danger" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Infarction</span>
         </div>
         <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. Spleen 14cm, homogeneous...</div></div>
@@ -841,24 +853,24 @@ body{font-size:calc(14px * var(--fs))}
         <div class="fg" style="margin-bottom:10px">
           <span class="ftag sel-ok" data-val="right kidney unremarkable" data-lvl="ok" onclick="tagNormal(this,'kid','right kidney unremarkable','^right')">Unremarkable</span>
           <span class="ftag" id="ftag-rkcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Rkcyst')">Renal cyst</span>
-          <div id="Rkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkcyst-list"></div><button onclick="abdSimplePlusAdd('Rkcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div id="Rkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkcyst-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Rkcyst')">+ Add lesion</button></div>
           <span class="ftag" id="ftag-rkstone-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Rkstone')">Renal stone</span>
-          <div id="Rkstone-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkstone-list"></div><button onclick="abdSimplePlusAdd('Rkstone')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel warn" id="Rkstone-panel" style="display:none"><div id="Rkstone-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Rkstone')">+ Add lesion</button></div>
           <span class="ftag" data-val="right hydronephrosis" data-lvl="warn" onclick="tagMutex(this,'kid','right kidney unremarkable')">Hydronephrosis</span>
           <span class="ftag" id="ftag-rkmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Rkmass')">Renal mass</span>
-          <div id="Rkmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Rkmass-list"></div><button onclick="abdSimplePlusAdd('Rkmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel danger" id="Rkmass-panel" style="display:none"><div id="Rkmass-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Rkmass')">+ Add lesion</button></div>
           <span class="ftag" data-val="right kidney small (chronic renal disease)" data-lvl="warn" onclick="tagMutex(this,'kid','right kidney unremarkable')">Small kidney</span>
         </div>
         <div class="col-label">Left Kidney</div>
         <div class="fg">
           <span class="ftag sel-ok" data-val="left kidney unremarkable" data-lvl="ok" onclick="tagNormal(this,'kid','left kidney unremarkable','^left')">Unremarkable</span>
           <span class="ftag" id="ftag-lkcyst-btn" data-val="" data-lvl="ok" onclick="toggleAbdSimplePanel('Lkcyst')">Renal cyst</span>
-          <div id="Lkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkcyst-list"></div><button onclick="abdSimplePlusAdd('Lkcyst')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div id="Lkcyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkcyst-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Lkcyst')">+ Add lesion</button></div>
           <span class="ftag" id="ftag-lkstone-btn" data-val="" data-lvl="warn" onclick="toggleAbdSimplePanel('Lkstone')">Renal stone</span>
-          <div id="Lkstone-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkstone-list"></div><button onclick="abdSimplePlusAdd('Lkstone')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel warn" id="Lkstone-panel" style="display:none"><div id="Lkstone-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Lkstone')">+ Add lesion</button></div>
           <span class="ftag" data-val="left hydronephrosis" data-lvl="warn" onclick="tagMutex(this,'kid','left kidney unremarkable')">Hydronephrosis</span>
           <span class="ftag" id="ftag-lkmass-btn" data-val="" data-lvl="danger" onclick="toggleAbdSimplePanel('Lkmass')">Renal mass</span>
-          <div id="Lkmass-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Lkmass-list"></div><button onclick="abdSimplePlusAdd('Lkmass')" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button></div>
+          <div class="sub-panel danger" id="Lkmass-panel" style="display:none"><div id="Lkmass-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Lkmass')">+ Add lesion</button></div>
           <span class="ftag" data-val="left kidney small (chronic renal disease)" data-lvl="warn" onclick="tagMutex(this,'kid','left kidney unremarkable')">Small kidney</span>
         </div>
         <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. bilateral small renal cysts...</div></div>
@@ -956,9 +968,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="diffuse heterogeneity with increased vascularity (Hashimoto's thyroiditis pattern)" data-lvl="warn" data-org="gland" data-group="thy-diffuse" onclick="tTagDiffuse(this)">Hashimoto pattern</span>
           <span class="ftag" data-val="diffuse increased vascularity (Graves' disease pattern)" data-lvl="warn" data-org="gland" data-group="thy-diffuse" onclick="tTagDiffuse(this)">Graves' pattern</span>
           <span class="ftag" id="ftag-thycyst-btn" data-val="" data-lvl="warn" onclick="toggleThyCystPanel()">Cystic lesion</span>
-          <div id="thycyst-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="thycyst-panel" style="display:none">
             <div id="thycyst-list"></div>
-            <button onclick="thyCystAdd()" style="padding:2px 8px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="thyCystAdd()">+ Add lesion</button>
           </div>
         </div></div>
         <div class="ot-field"><label>Other findings</label><textarea id="tot-gland" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. bilateral thyroid lobes symmetric, isthmus 3mm...</div></div>
@@ -1290,9 +1302,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag sel-ok" data-val="No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor." data-lvl="ok" onclick="tagNormal(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Unremarkable</span>
           <span class="ftag" data-val="Mild esophagitis without definite mucosal break." data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Mild esophagitis</span>
           <span class="ftag" id="ftag-la-btn" data-val="" data-lvl="warn" onclick="toggleLaPanel()">Reflux esophagitis</span>
-          <div id="la-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">LA Classification — select one:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="la-panel" style="display:none">
+            <div class="panel-title">LA Classification — select one:</div>
+            <div class="chips6">
               <span class="ftag" id="la-A" data-grade="A" onclick="selectLa(this)">LA grade A</span>
               <span class="ftag" id="la-B" data-grade="B" onclick="selectLa(this)">LA grade B</span>
               <span class="ftag" id="la-C" data-grade="C" onclick="selectLa(this)">LA grade C</span>
@@ -1307,9 +1319,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Inflamed esophagus with poor contraction, suspect eosinophilic esophagitis." data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Eosinophilic esophagitis</span>
           <span class="ftag" data-val="Schatzki ring" data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Schatzki ring</span>
           <span class="ftag" id="ftag-caustic-btn" data-val="" data-lvl="danger" onclick="toggleCausticPanel()">Caustic injury</span>
-          <div id="caustic-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="caustic-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Zargar Classification — select one:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <div class="chips6">
               <span class="ftag" id="caustic-0"    data-grade="0"    data-desc="Normal mucosa"                                         onclick="selectCaustic(this)">Grade 0</span>
               <span class="ftag" id="caustic-I"    data-grade="I"    data-desc="Edema and erythema of the mucosa"                       onclick="selectCaustic(this)">Grade I</span>
               <span class="ftag" id="caustic-IIA"  data-grade="IIA"  data-desc="Hemorrhage, erosions, blisters, superficial ulcers"      onclick="selectCaustic(this)">Grade IIA</span>
@@ -1326,7 +1338,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" id="ftag-esophx-btn" data-val="" data-lvl="warn" onclick="toggleEsophxPanel()">s/p esophagectomy</span>
           <div id="esophx-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">Status post partial esophagectomy with suture stitches retention and anastomosis site at
-              <input id="esophx-cm" type="text" oninput="updateEsophxVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor.
+              <input class="num-in" id="esophx-cm" type="text" oninput="updateEsophxVal()">cm from incisor.
             </span>
           </div>
 
@@ -1337,64 +1349,64 @@ body{font-size:calc(14px * var(--fs))}
         <div class="subsect"><div class="fl">Mucosa / Lesion</div><div class="fg">
 
           <span class="ftag" id="ftag-esml-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('esml')">Submucosal lesion</span>
-          <div id="esml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="esml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('esml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="esml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="esml-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('esml')">+ Add lesion</button>
             </div>
             <div id="esml-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-eeml-btn" data-val="" data-lvl="danger" onclick="toggleEgdMlPanel('eeml')">Mucosal lesion</span>
-          <div id="eeml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="eeml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('eeml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="eeml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="eeml-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('eeml')">+ Add lesion</button>
             </div>
             <div id="eeml-panels"></div>
           </div>
           <span class="ftag" id="ftag-eulcer-btn" data-val="" data-lvl="danger" onclick="toggleEgdMlPanel('eulcer')">Ulcer</span>
-          <div id="eulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="eulcer-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('eulcer')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="eulcer-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="eulcer-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('eulcer')">+ Add lesion</button>
             </div>
             <div id="eulcer-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-epolyp-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('epolyp')">Polyp</span>
-          <div id="epolyp-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="epolyp-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('epolyp')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="epolyp-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="epolyp-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('epolyp')">+ Add lesion</button>
             </div>
             <div id="epolyp-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-papil-btn" data-val="" data-lvl="warn" onclick="togglePapilPanel()">Papilloma</span>
-          <div id="papil-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="papil-panel" style="display:none">
             <div id="papil-list"></div>
-            <button onclick="papilAdd()" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+            <button class="mini-btn" onclick="papilAdd()">+ Add lesion</button>
           </div>
 
           <span class="ftag" id="ftag-eca-btn" data-val="" data-lvl="danger" onclick="toggleEcaPanel()">Cancer</span>
-          <div id="eca-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="eca-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Select type:</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
               <span class="ftag" id="eca-semi"  onclick="selectEca('semi')">Semi-circumferential ulcerative</span>
               <span class="ftag" id="eca-adv"   onclick="selectEca('adv')">Advanced (ulcerative mass)</span>
               <span class="ftag" id="eca-steno" onclick="selectEca('steno')">Stenotic tumor</span>
             </div>
-            <div id="eca-sub-semi" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="eca-sub-semi" style="display:none">
               <span style="line-height:2;">One semi-circumferential ulcerative lesion with easy contact bleeding at
                 <input id="eca-loc1" type="text" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
             </div>
-            <div id="eca-sub-adv" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="eca-sub-adv" style="display:none">
               <span style="line-height:1.8;">Long segment, ulcerative, punch-out esophageal tumor occupying 75% of the circumference, extending from
-                <input id="eca-cm1" type="text" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, cause lumen stenosis at
-                <input id="eca-cm2" type="text" oninput="updateEcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level, s/p biopsy</span>
+                <input class="num-in" id="eca-cm1" type="text" oninput="updateEcaVal()">cm level from incisor, cause lumen stenosis at
+                <input class="num-in" id="eca-cm2" type="text" oninput="updateEcaVal()">cm level, s/p biopsy</span>
             </div>
-            <div id="eca-sub-steno" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="eca-sub-steno" style="display:none">
               <span style="line-height:2;">Stenotic esophageal tumor at
                 <input id="eca-loc3" type="text" oninput="updateEcaVal()" style="width:100px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm from incisor, scope could not pass, s/p biopsy</span>
             </div>
@@ -1404,15 +1416,15 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" id="ftag-inlet-btn" data-val="" data-lvl="warn" onclick="toggleInletPanel()">Cervical inlet patch</span>
           <div id="inlet-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">
-              <input id="inlet-cm1" type="text" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm salmon-colored mucosa patch at
-              <input id="inlet-cm2" type="text" oninput="updateInletVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level from incisor, favor ectopic gastric mucosa.
+              <input class="num-in" id="inlet-cm1" type="text" oninput="updateInletVal()">cm salmon-colored mucosa patch at
+              <input class="num-in" id="inlet-cm2" type="text" oninput="updateInletVal()">cm level from incisor, favor ectopic gastric mucosa.
             </span>
           </div>
 
           <span class="ftag" id="ftag-varices-btn" data-val="" data-lvl="danger" onclick="toggleVaricesPanel()">Esophageal varices</span>
-          <div id="varices-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="varices-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Form classification — select one:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <div class="chips6">
               <span class="ftag" id="varices-F1" data-form="F1" data-shape="tortuous" onclick="selectVarices(this)">F1 — tortuous</span>
               <span class="ftag" id="varices-F2" data-form="F2" data-shape="nodular"  onclick="selectVarices(this)">F2 — nodular</span>
               <span class="ftag" id="varices-F3" data-form="F3" data-shape="tumorous" onclick="selectVarices(this)">F3 — tumorous</span>
@@ -1421,14 +1433,14 @@ body{font-size:calc(14px * var(--fs))}
           </div>
 
           <span class="ftag" id="ftag-eatyp-btn" data-val="" data-lvl="danger" onclick="toggleEatypPanel()">Atypical infection</span>
-          <div id="eatyp-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="eatyp-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Select type:</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
               <span class="ftag" id="eatyp-hcmv"  onclick="selectEatyp('hcmv')">HSV / CMV</span>
               <span class="ftag" id="eatyp-cand"  onclick="selectEatyp('cand')">Esophageal candidiasis</span>
             </div>
             <!-- HSV/CMV sub-panel -->
-            <div id="eatyp-sub-hcmv" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="eatyp-sub-hcmv" style="display:none">
               <div style="margin-bottom:6px;">
                 <span style="font-weight:500;">Location (select one):</span>
                 <span style="display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:8px;">
@@ -1439,7 +1451,7 @@ body{font-size:calc(14px * var(--fs))}
               </div>
             </div>
             <!-- Candidiasis sub-panel -->
-            <div id="eatyp-sub-cand" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="eatyp-sub-cand" style="display:none">
               <div style="margin-bottom:6px;">
                 <span style="font-weight:500;">Location (3 select 1):</span>
                 <span style="display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:8px;">
@@ -1475,18 +1487,18 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="suspected short-segment Barrett's esophagus (&lt;3cm)" data-lvl="warn" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's short (&lt;3cm)</span>
           <span class="ftag" data-val="suspected long-segment Barrett's esophagus (≥3cm)" data-lvl="danger" data-group="ej-barrett" onclick="tagEx(this,'ej','ej-barrett')">Barrett's long (≥3cm)</span>
           <span class="ftag" id="ftag-esem-btn" data-val="" data-lvl="danger" onclick="toggleEsemPanel()">ESEM</span>
-          <div id="esem-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="esem-panel" style="display:none">
             <div style="line-height:2.2;">
-              The hiatus diaphragmaticus is at <input id="esem-hd" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The gastroesophageal junction is at <input id="esem-gej" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The displacement of squamocolumnar junction is at <input id="esem-scj" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
-              The most proximal circumferential extent of suspect columnar metaplasia is at <input id="esem-prox" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm level.<br>
+              The hiatus diaphragmaticus is at <input class="num-in" id="esem-hd" type="text" oninput="updateEsemVal()">cm level.<br>
+              The gastroesophageal junction is at <input class="num-in" id="esem-gej" type="text" oninput="updateEsemVal()">cm level.<br>
+              The displacement of squamocolumnar junction is at <input class="num-in" id="esem-scj" type="text" oninput="updateEsemVal()">cm level.<br>
+              The most proximal circumferential extent of suspect columnar metaplasia is at <input class="num-in" id="esem-prox" type="text" oninput="updateEsemVal()">cm level.<br>
               Biopsy was taken under NBI guidance.
             </div>
             <div style="margin-top:8px;font-size:11px;font-weight:500;color:var(--danger);">Prague classification:</div>
             <div style="line-height:2.2;margin-top:4px;">
-              C <input id="esem-c" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
-              M <input id="esem-m" type="text" oninput="updateEsemVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">
+              C <input class="num-in" id="esem-c" type="text" oninput="updateEsemVal()">
+              M <input class="num-in" id="esem-m" type="text" oninput="updateEsemVal()">
             </div>
           </div>
         </div></div>
@@ -1511,17 +1523,17 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Erythematous mucosa over antrum and body. No obvious ulcer nor mass." data-lvl="warn" data-label="Antral gastritis" onclick="tagMutex(this,'stomach','stomach mucosa normal')">Mild antral gastritis</span>
 
           <span class="ftag" id="ftag-ogastritis-btn" data-val="" data-lvl="warn" onclick="toggleOGastritisPanel()">Other gastritis</span>
-          <div id="ogastritis-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="ogastritis-panel" style="display:none">
+            <div class="panel-title">Select type:</div>
+            <div class="chips6">
               <span class="ftag" id="ogast-chronic"    onclick="selectOGastritis('chronic')">Chronic gastritis</span>
               <span class="ftag" id="ogast-atrophic"   onclick="selectOGastritis('atrophic')">Atrophic gastritis</span>
               <span class="ftag" id="ogast-bile"       onclick="selectOGastritis('bile')">Bile reflux gastritis</span>
               <span class="ftag" id="ogast-hemorrhagic" onclick="selectOGastritis('hemorrhagic')">Hemorrhagic gastritis</span>
             </div>
             <div id="ogast-kt-row" style="display:none;margin-top:8px">
-              <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">萎縮範圍（Kimura-Takemoto，可不選）：</div>
-              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="panel-title">萎縮範圍（Kimura-Takemoto，可不選）：</div>
+              <div class="chips6">
                 <span class="ftag" id="kt-C-1" onclick="selectKimura('C-1')">C-1</span>
                 <span class="ftag" id="kt-C-2" onclick="selectKimura('C-2')">C-2</span>
                 <span class="ftag" id="kt-C-3" onclick="selectKimura('C-3')">C-3</span>
@@ -1538,56 +1550,56 @@ body{font-size:calc(14px * var(--fs))}
         </div></div>
         <div class="subsect"><div class="fl">Lesions</div><div class="fg">
           <span class="ftag" id="ftag-gsml-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('gsml')">Submucosal lesion</span>
-          <div id="gsml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="gsml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('gsml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="gsml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="gsml-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('gsml')">+ Add lesion</button>
             </div>
             <div id="gsml-panels"></div>
           </div>
           <span class="ftag" id="ftag-ulcer-btn" data-val="" data-lvl="danger" onclick="toggleEgdMlPanel('ulcer')">Ulcer</span>
-          <div id="ulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="ulcer-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('ulcer')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="ulcer-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="ulcer-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('ulcer')">+ Add lesion</button>
             </div>
             <div id="ulcer-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-gpolyp-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('gpolyp')">Polyp</span>
-          <div id="gpolyp-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="gpolyp-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('gpolyp')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="gpolyp-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="gpolyp-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('gpolyp')">+ Add lesion</button>
             </div>
             <div id="gpolyp-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-gca-btn" data-val="" data-lvl="danger" onclick="toggleGcaPanel()">Cancer</span>
-          <div id="gca-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="gca-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Select type:</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
               <span class="ftag" id="gca-semi"  onclick="selectGca('semi')">Semi-circumferential ulcerative</span>
               <span class="ftag" id="gca-adv"   onclick="selectGca('adv')">Advanced (ulcerative mass)</span>
               <span class="ftag" id="gca-inf"   onclick="selectGca('inf')">Infiltrative (Borrmann III)</span>
             </div>
-            <div id="gca-sub-semi" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="gca-sub-semi" style="display:none">
               <span style="line-height:2;">One semi-circumferential ulcerative lesion with easy contact bleeding at
                 <input id="gca-loc1" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, s/p biopsy</span>
             </div>
-            <div id="gca-sub-adv" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="gca-sub-adv" style="display:none">
               <span style="line-height:1.8;">Large ulcerative mass with irregular border at
                 <input id="gca-loc2" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect advanced gastric cancer, s/p biopsy</span>
             </div>
-            <div id="gca-sub-inf" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="gca-sub-inf" style="display:none">
               <span style="line-height:2;">One
-                <input id="ginf-cm" type="text" oninput="updateGcaVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm mucosal lesion with fold convergence and central depression at
+                <input class="num-in" id="ginf-cm" type="text" oninput="updateGcaVal()">cm mucosal lesion with fold convergence and central depression at
                 <input id="ginf-loc" type="text" oninput="updateGcaVal()" style="width:120px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect malignancy Borrmann type 3, s/p biopsy</span>
             </div>
           </div>
 
           <span class="ftag" id="ftag-vasc-btn" data-val="" data-lvl="danger" onclick="toggleVascPanel()">Vascular lesion</span>
-          <div id="vasc-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="vasc-panel" style="display:none">
             <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Select type:</div>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
               <span class="ftag" id="vasc-angio"  onclick="selectVasc('angio')">Angiodysplastic lesion</span>
@@ -1596,13 +1608,13 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="vasc-gave"   onclick="selectVasc('gave')">GAVE</span>
             </div>
             <!-- Angiodysplastic sub-panel -->
-            <div id="vasc-angio-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="vasc-angio-sub" style="display:none">
               <span style="line-height:2;">Round reddish mucosal vasculature lesions at
                 <input id="angio-loc" type="text" oninput="updateAngioVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">, suspect angiodysplastic lesion.
               </span>
             </div>
             <!-- Gastric varices sub-panel -->
-            <div id="vasc-gvar-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="vasc-gvar-sub" style="display:none">
               <div style="font-weight:500;margin-bottom:5px;">Sarin classification — select one:</div>
               <div style="display:flex;flex-wrap:wrap;gap:5px;">
                 <span class="ftag" id="gvar-gov1" data-gtype="GOV1" data-gdesc="Tortuous gastric varices along the lesser curvature." onclick="selectGvar(this)">GOV1</span>
@@ -1613,28 +1625,28 @@ body{font-size:calc(14px * var(--fs))}
               <div style="margin-top:5px;font-size:10px;color:var(--text-muted);">GOV1: lesser curvature &nbsp;|&nbsp; GOV2: fundus &nbsp;|&nbsp; IGV1: isolated fundus &nbsp;|&nbsp; IGV2: isolated other</div>
             </div>
             <!-- Giant rugae sub-panel -->
-            <div id="vasc-rugae-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="vasc-rugae-sub" style="display:none">
               <span style="line-height:2;">Giant gastric rugae over
                 <input id="rugae-loc" type="text" oninput="updateRugaeVal()" style="width:140px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;"> was noted under full insufflation, r/o infiltrative disease, s/p biopsy.
               </span>
             </div>
             <!-- GAVE sub-panel -->
-            <div id="vasc-gave-sub" style="display:none;padding:6px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;margin-top:4px;font-size:11px;">
+            <div class="sub-box" id="vasc-gave-sub" style="display:none">
               Erythematous radial stripes over the antrum and the pylorus, resembling the rind of a watermelon, compatible with gastric antral vascular ectasia (GAVE).
             </div>
           </div>
           <span class="ftag" id="ftag-xanth-btn" data-val="" data-lvl="warn" onclick="toggleXanthPanel()">Xanthoma</span>
           <div id="xanth-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:6px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <span style="line-height:2;">Small
-              <input id="xanth-cm" type="text" oninput="updateXanthVal()" style="width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px;">cm yellow nodules in the gastric fundus, s/p biopsy.
+              <input class="num-in" id="xanth-cm" type="text" oninput="updateXanthVal()">cm yellow nodules in the gastric fundus, s/p biopsy.
             </span>
           </div>
           <span class="ftag" data-val="Snake-skin like mucosal pattern over antrum and low body." data-lvl="warn" onclick="tag(this,'stomach')">Portal hypertensive gastropathy</span>
           <span class="ftag" data-val="Pepper and salt like mucosal pattern with polyps formation at antrum, GC side, favor ectopic gastric mucosa." data-lvl="warn" onclick="tag(this,'stomach')">Ectopic gastric mucosa</span>
           <span class="ftag" id="ftag-spop-btn" data-val="" data-lvl="warn" onclick="toggleSpopPanel()">s/p OP</span>
-          <div id="spop-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select reconstruction type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="spop-panel" style="display:none">
+            <div class="panel-title">Select reconstruction type:</div>
+            <div class="chips6">
               <span class="ftag" id="spop-bii" data-type="BII" onclick="selectSpop(this)">Billroth II</span>
               <span class="ftag" id="spop-roux" data-type="ROUX" onclick="selectSpop(this)">Roux-en-Y</span>
             </div>
@@ -1652,28 +1664,28 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag sel-ok" data-val="No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)" data-lvl="ok" onclick="tagNormal(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">Unremarkable</span>
 
           <span class="ftag" id="ftag-dulcer-btn" data-val="" data-lvl="danger" onclick="toggleEgdMlPanel('dulcer')">Ulcer</span>
-          <div id="dulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="dulcer-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('dulcer')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="dulcer-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="dulcer-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('dulcer')">+ Add lesion</button>
             </div>
             <div id="dulcer-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-dpolyp-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('dpolyp')">Polyp</span>
-          <div id="dpolyp-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="dpolyp-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('dpolyp')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="dpolyp-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="dpolyp-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('dpolyp')">+ Add lesion</button>
             </div>
             <div id="dpolyp-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-dsml-btn" data-val="" data-lvl="warn" onclick="toggleEgdMlPanel('dsml')">Submucosal lesion</span>
-          <div id="dsml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="dsml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="egdMlAdd('dsml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="dsml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="dsml-tabs"></div>
+              <button class="mini-btn" onclick="egdMlAdd('dsml')">+ Add lesion</button>
             </div>
             <div id="dsml-panels"></div>
           </div>
@@ -1702,9 +1714,9 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
           <span class="ftag" id="ftag-incomp-btn" data-val="" data-lvl="warn" onclick="toggleIncompPanel()">Incomplete study</span>
-          <div id="incomp-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Reason (select all that apply):</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="incomp-panel" style="display:none">
+            <div class="panel-title">Reason (select all that apply):</div>
+            <div class="chips6">
               <span class="ftag" id="incomp-food"  onclick="toggleIncompReason('food stasis',this)">Food stasis</span>
               <span class="ftag" id="incomp-prep"  onclick="toggleIncompReason('unsatisfied preparation',this)">Unsatisfied preparation</span>
               <span class="ftag" id="incomp-blood" onclick="toggleIncompReason('bloody content stasis',this)">Bloody content stasis</span>
@@ -1713,14 +1725,14 @@ body{font-size:calc(14px * var(--fs))}
           </div>
           <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="tag(this,'eoth')">EMR</span>
           <span class="ftag" id="ftag-efb-btn" data-val="" data-lvl="warn" onclick="toggleEfbPanel()">Foreign body retrieval</span>
-          <div id="efb-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="efb-panel" style="display:none">
             <div style="margin-bottom:6px;">Instrument:
               <span class="ftag" id="efb-alli" data-tool="alligator forceps" onclick="selectEfbTool(this)">Alligator forceps</span>
               <span class="ftag" id="efb-snare" data-tool="snare" onclick="selectEfbTool(this)">Snare</span>
             </div>
           </div>
           <span class="ftag" id="ftag-ehemo-btn" data-val="" data-lvl="danger" onclick="toggleEhemoPanel()">Endoscopic hemostasis</span>
-          <div id="ehemo-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="ehemo-panel" style="display:none">
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
               <span class="ftag" id="ehemo-epi-btn" onclick="toggleEhemoOpt('epi',this)">Epinephrine injection</span>
               <span class="ftag" id="ehemo-clip" onclick="toggleEhemoOpt('clip',this)">Hemoclips applied</span>
@@ -1741,7 +1753,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
           <span class="ftag" id="ftag-eband-btn" data-val="" data-lvl="danger" onclick="toggleEbandPanel()">Band ligation</span>
-          <div id="eband-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="eband-panel" style="display:none">
             <div style="line-height:2;">Count of band(s): <input id="eband-n" type="text" value="3" oninput="updateEband()" style="width:32px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px"></div>
           </div>
         </div>
@@ -1919,9 +1931,9 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag sel-ok" data-val="colonic mucosa normal throughout" data-lvl="ok" onclick="tagNormal(this,'colon','colonic mucosa normal throughout')">Mucosa normal</span>
 
           <span class="ftag" id="ftag-ccolitis-btn" data-val="" data-lvl="warn" onclick="toggleCcolitisPanel()">Colitis</span>
-          <div id="ccolitis-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Select type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="ccolitis-panel" style="display:none">
+            <div class="panel-title">Select type:</div>
+            <div class="chips6">
               <span class="ftag" id="ccolitis-mild"     data-cgroup="ccolitis-grade" onclick="selectCcolitis('mild')">Mild colitis</span>
               <span class="ftag" id="ccolitis-moderate" data-cgroup="ccolitis-grade" onclick="selectCcolitis('moderate')">Moderate colitis</span>
               <span class="ftag" id="ccolitis-severe"   data-cgroup="ccolitis-grade" onclick="selectCcolitis('severe')">Severe colitis</span>
@@ -1938,37 +1950,37 @@ body{font-size:calc(14px * var(--fs))}
 
         <div class="subsect"><div class="fl">Lesions</div><div class="fg">
           <span class="ftag" id="ftag-cpolyp-btn" data-val="" data-lvl="warn" onclick="toggleCpolypPanel()">Polyp</span>
-          <div id="cpolyp-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="cpolyp-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="cpolypAdd()" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="cpolyp-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="cpolyp-tabs"></div>
+              <button class="mini-btn" onclick="cpolypAdd()">+ Add lesion</button>
             </div>
             <div id="cpolyp-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-culcer-btn" data-val="" data-lvl="danger" onclick="toggleCulcerPanel()">Ulcer</span>
-          <div id="culcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="culcer-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="culcerAdd()" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="culcer-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="culcer-tabs"></div>
+              <button class="mini-btn" onclick="culcerAdd()">+ Add lesion</button>
             </div>
             <div id="culcer-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-csml-btn" data-val="" data-lvl="warn" onclick="toggleCMlPanel('csml')">Submucosal lesion</span>
-          <div id="csml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="csml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="cMlAdd('csml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="csml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="csml-tabs"></div>
+              <button class="mini-btn" onclick="cMlAdd('csml')">+ Add lesion</button>
             </div>
             <div id="csml-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-cmal-btn" data-val="" data-lvl="danger" onclick="toggleCMlPanel('cmal')">Suspicious malignancy</span>
-          <div id="cmal-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="cmal-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="cMlAdd('cmal')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="cmal-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="cmal-tabs"></div>
+              <button class="mini-btn" onclick="cMlAdd('cmal')">+ Add lesion</button>
             </div>
             <div id="cmal-panels"></div>
           </div>
@@ -1988,7 +2000,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" id="ftag-hemo-btn" data-val="" data-lvl="ok" onclick="toggleHemoPanel()">Hemorrhoids</span>
           <div id="hemo-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;">
             <div style="font-weight:500;margin-bottom:6px;color:var(--text-muted);">Select type:</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <div class="chips6">
               <span class="ftag" id="hemo-mixed"  onclick="selectHemo('mixed')">Mixed</span>
               <span class="ftag" id="hemo-int"    onclick="selectHemo('int')">Internal</span>
               <span class="ftag" id="hemo-ext"    onclick="selectHemo('ext')">External</span>
@@ -2002,37 +2014,37 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="rectal proctitis" data-lvl="warn" onclick="tagMutex(this,'rectum','rectum unremarkable')">Proctitis</span>
 
           <span class="ftag" id="ftag-rulcer-btn" data-val="" data-lvl="danger" onclick="toggleRulcerPanel()">Ulcer</span>
-          <div id="rulcer-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="rulcer-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="rulcerAdd()" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="rulcer-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="rulcer-tabs"></div>
+              <button class="mini-btn" onclick="rulcerAdd()">+ Add lesion</button>
             </div>
             <div id="rulcer-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-rpolyp-btn" data-val="" data-lvl="warn" onclick="toggleRpolypPanel()">Polyp</span>
-          <div id="rpolyp-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="rpolyp-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="rpolypAdd()" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="rpolyp-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="rpolyp-tabs"></div>
+              <button class="mini-btn" onclick="rpolypAdd()">+ Add lesion</button>
             </div>
             <div id="rpolyp-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-rsml-btn" data-val="" data-lvl="warn" onclick="toggleCMlPanel('rsml')">Submucosal lesion</span>
-          <div id="rsml-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="rsml-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="cMlAdd('rsml')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel warn" id="rsml-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="rsml-tabs"></div>
+              <button class="mini-btn" onclick="cMlAdd('rsml')">+ Add lesion</button>
             </div>
             <div id="rsml-panels"></div>
           </div>
 
           <span class="ftag" id="ftag-rmal-btn" data-val="" data-lvl="danger" onclick="toggleCMlPanel('rmal')">Suspicious malignancy</span>
-          <div id="rmal-panel" style="display:none;width:100%;margin:4px 0 6px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-              <div id="rmal-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
-              <button onclick="cMlAdd('rmal')" style="padding:2px 9px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border);border-radius:3px;background:var(--bg);color:var(--text-muted)">+ Add lesion</button>
+          <div class="sub-panel danger" id="rmal-panel" style="display:none">
+            <div class="row-head">
+              <div class="chips" id="rmal-tabs"></div>
+              <button class="mini-btn" onclick="cMlAdd('rmal')">+ Add lesion</button>
             </div>
             <div id="rmal-panels"></div>
           </div>
@@ -2048,14 +2060,14 @@ body{font-size:calc(14px * var(--fs))}
         <div class="fg">
           <span class="ftag" data-val="Endoscopic mucosal resection(EMR) was performed with submucosal injection &amp; lifting, followed by resection using a snare technique. There was no immediate complication." data-lvl="ok" onclick="tag(this,'polyp')">EMR</span>
           <span class="ftag" id="ftag-cfb-btn" data-val="" data-lvl="warn" onclick="toggleCfbPanel()">Foreign body retrieval</span>
-          <div id="cfb-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel warn" id="cfb-panel" style="display:none">
             <div style="margin-bottom:6px;">Instrument:
               <span class="ftag" id="cfb-alli" data-tool="alligator forceps" onclick="selectCfbTool(this)">Alligator forceps</span>
               <span class="ftag" id="cfb-snare" data-tool="snare" onclick="selectCfbTool(this)">Snare</span>
             </div>
           </div>
           <span class="ftag" id="ftag-chemo-btn" data-val="" data-lvl="danger" onclick="toggleChemoPanel()">Endoscopic hemostasis</span>
-          <div id="chemo-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--danger-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
+          <div class="sub-panel danger" id="chemo-panel" style="display:none">
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
               <span class="ftag" id="chemo-epi-btn" onclick="toggleChemoOpt('epi',this)">Epinephrine injection</span>
               <span class="ftag" id="chemo-clip" onclick="toggleChemoOpt('clip',this)">Hemoclips applied</span>
@@ -2076,9 +2088,9 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
           <span class="ftag" id="ftag-cincomp-btn" data-val="" data-lvl="warn" onclick="toggleCincompPanel()">Incomplete study</span>
-          <div id="cincomp-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--warn-light);border:1px solid var(--border);border-radius:4px;font-size:12px;">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">Reason (select all that apply):</div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <div class="sub-panel warn" id="cincomp-panel" style="display:none">
+            <div class="panel-title">Reason (select all that apply):</div>
+            <div class="chips6">
               <span class="ftag" id="cincomp-food"  onclick="toggleCincompReason('food stasis',this)">Food stasis</span>
               <span class="ftag" id="cincomp-prep"  onclick="toggleCincompReason('unsatisfied preparation',this)">Unsatisfied preparation</span>
               <span class="ftag" id="cincomp-blood" onclick="toggleCincompReason('bloody content stasis',this)">Bloody content stasis</span>
@@ -2293,7 +2305,7 @@ var PH={
     // 已勾膽囊切除：膽囊（不含膽管）的異常片語點不下去，閃紅框提示
     guard:function(el,g){
       if(g==='gb'&&gbIsPostChole()&&gbIsGbVal(el.dataset.val)){
-        el.style.outline='2px solid var(--danger)'; setTimeout(function(){el.style.outline='';},600); return false;
+        flash(el); return false;
       }
       return true;
     },
@@ -2749,7 +2761,7 @@ function aTagPanNormal(el){
   Object.keys(aS.pan).forEach(function(v){
     if(v==='pancreas unremarkable')return;
     delete aS.pan[v];
-    document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(function(e){clrCls(e);});
+    document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(clrCls);
   });
   // Close pancreatitis panel
   var pp=gEl('panitis-panel');if(pp)pp.style.display='none';
@@ -2847,16 +2859,14 @@ function toggleAbdSimplePanel(id){
   var cfg=abdSimpleCfg[id];
   if(!cfg)return;
   var org=cfg.org;
-  var panel=gEl(id+'-panel'),btn=gEl('ftag-'+id.toLowerCase()+'-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-'+id.toLowerCase()+'-btn'),opening=panelFlip(id+'-panel');
+  if(opening===null)return;
   if(opening){
     if(org==='liver')aTagNoFL(null);
     // Clear the normalVal (unremarkable) for this org
     if(cfg.normalVal){
       delete aS[org][cfg.normalVal];
-      document.querySelectorAll('#page-abd .ftag[data-val="'+cfg.normalVal+'"]').forEach(function(e){clrCls(e);});
+      document.querySelectorAll('#page-abd .ftag[data-val="'+cfg.normalVal+'"]').forEach(clrCls);
     }
     if(!abdPlusItems[id])abdPlusItems[id]=[];
     if(!abdPlusItems[id].length)abdSimplePlusAdd(id);
@@ -2910,10 +2920,8 @@ function abdPlusRenderSimple(id){
 
 // Nodule panel
 function toggleAbdNodulePanel(){
-  var panel=gEl('Lnod-panel'),btn=gEl('ftag-lnod-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-lnod-btn'),opening=panelFlip('Lnod-panel');
+  if(opening===null)return;
   if(opening){
     aTagNoFL(null);
     if(!abdPlusItems.Lnod.length) abdPlusAdd('Lnod'); // auto-add first lesion
@@ -2928,10 +2936,8 @@ function toggleAbdNodulePanel(){
 }
 // Mass panel
 function toggleAbdMassPanel(){
-  var panel=gEl('Lmass-panel'),btn=gEl('ftag-lmass-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-lmass-btn'),opening=panelFlip('Lmass-panel');
+  if(opening===null)return;
   if(opening){
     aTagNoFL(null);
     if(!abdPlusItems.Lmass.length)abdPlusAdd('Lmass');
@@ -2953,7 +2959,7 @@ function aTagNoFL(el){
     // Clear all lesion selections then select NFL
     ['hepatic cyst','hepatic hemangioma','hepatic calcification','portal vein thrombosis'].forEach(function(v){
       delete aS.liver[v];
-      document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(function(e){clrCls(e);});
+      document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(clrCls);
     });
     delete aS.liver['__Lnod__'];delete aS.liver['__Lmass__'];
     ['lnod-hypo','lnod-iso','lnod-hyper','lnod-mixed','lmass-tumor','lmass-mass'].forEach(function(id){clrCls(gEl(id));});
@@ -2971,7 +2977,7 @@ function aTagNoFL(el){
     tag(el,'liver');
   } else {
     var nflBtn=gEl('ftag-nfl-btn');
-    if(nflBtn){['sel-ok','sel-warn','sel-danger'].forEach(c=>nflBtn.classList.remove(c));delete aS.liver['no focal lesion'];}
+    if(nflBtn){clrCls(nflBtn);delete aS.liver['no focal lesion'];}
   }
 }
 // ---- end ABD Liver Lesion panels ----
@@ -2988,17 +2994,13 @@ var gbStoneOpts=[
 ];
 function toggleGbStonePanel(){
   if(gbIsPostChole()){
-    var btn=gEl('ftag-gbstone-btn');if(btn){btn.style.outline='2px solid var(--danger)';setTimeout(function(){btn.style.outline='';},600);}
+    flash(gEl('ftag-gbstone-btn'));
     return;
   }
-  var panel=gEl('gbstone-panel'),btn=gEl('ftag-gbstone-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-gbstone-btn'),opening=panelFlip('gbstone-panel');
+  if(opening===null)return;
   if(opening){
-    var nEl=document.querySelector('#page-abd .ftag[data-val="gallbladder normal"]');
-    if(nEl){['sel-ok','sel-warn','sel-danger'].forEach(c=>nEl.classList.remove(c));}
-    delete aS.gb['gallbladder normal'];
+    unselect('abd','gb','gallbladder normal');
     if(!gbStoneItems.length)gbStoneAdd();
     gbStoneRender();setCls(btn,'warn');
   } else {
@@ -3054,17 +3056,13 @@ var gbCholVals={
 };
 function toggleGbCholPanel(){
   if(gbIsPostChole()){
-    var btn=gEl('ftag-gbchol-btn');if(btn){btn.style.outline='2px solid var(--danger)';setTimeout(function(){btn.style.outline='';},600);}
+    flash(gEl('ftag-gbchol-btn'));
     return;
   }
-  var panel=gEl('gbchol-panel'),btn=gEl('ftag-gbchol-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-gbchol-btn'),opening=panelFlip('gbchol-panel');
+  if(opening===null)return;
   if(opening){
-    var nEl=document.querySelector('#page-abd .ftag[data-val="gallbladder normal"]');
-    if(nEl){['sel-ok','sel-warn','sel-danger'].forEach(c=>nEl.classList.remove(c));}
-    delete aS.gb['gallbladder normal'];
+    unselect('abd','gb','gallbladder normal');
     setCls(btn,'warn');
   } else {
     if(gbCholType){delete aS.gb[gbCholVals[gbCholType].val];gbCholType=null;}
@@ -3119,14 +3117,10 @@ var panitisVals={
   }
 };
 function togglePanitisPanel(){
-  var panel=gEl('panitis-panel'),btn=gEl('ftag-panitis-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-panitis-btn'),opening=panelFlip('panitis-panel');
+  if(opening===null)return;
   if(opening){
-    var nEl=document.querySelector('#page-abd .ftag[data-val="pancreas unremarkable"]');
-    if(nEl){['sel-ok','sel-warn','sel-danger'].forEach(c=>nEl.classList.remove(c));}
-    delete aS.pan['pancreas unremarkable'];
+    unselect('abd','pan','pancreas unremarkable');
     setCls(btn,'warn');
   } else {
     if(panitisType){delete aS.pan[panitisVals[panitisType].val];panitisType=null;}
@@ -3171,18 +3165,14 @@ var gbPolyOpts=[
 ];
 function toggleGbPolyPanel(){
   if(gbIsPostChole()){
-    var btn=gEl('ftag-gbpoly-btn');if(btn){btn.style.outline='2px solid var(--danger)';setTimeout(function(){btn.style.outline='';},600);}
+    flash(gEl('ftag-gbpoly-btn'));
     return;
   }
-  var panel=gEl('gbpoly-panel'),btn=gEl('ftag-gbpoly-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-gbpoly-btn'),opening=panelFlip('gbpoly-panel');
+  if(opening===null)return;
   if(opening){
     // Remove GB normal (mutex)
-    var normalEl=document.querySelector('#page-abd .ftag[data-val="gallbladder normal"]');
-    if(normalEl){['sel-ok','sel-warn','sel-danger'].forEach(c=>normalEl.classList.remove(c));}
-    delete aS.gb['gallbladder normal'];
+    unselect('abd','gb','gallbladder normal');
     if(!gbPolyItems.length)gbPolyAdd();
     gbPolyRender();setCls(btn,'warn');
   } else {
@@ -3268,7 +3258,7 @@ function _clearEchoAbnormals(){
    'cirrhotic change with heterogeneous echotexture and irregular surface',
    'polycystic liver disease (PLD)'].forEach(function(v){
     delete aS.liver[v];
-    document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(function(e){clrCls(e);});
+    document.querySelectorAll('#page-abd .ftag[data-val="'+v+'"]').forEach(clrCls);
   });
 }
 function aTagEchoNormal(el){
@@ -3303,10 +3293,8 @@ function aTagEchoAbnormal(el){
 // ---- end echotexture ----
 
 function toggleFattyPanel(){
-  var panel=document.getElementById('fatty-panel'),btn=document.getElementById('ftag-fatty-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-fatty-btn'),opening=panelFlip('fatty-panel');
+  if(opening===null)return;
   if(opening){
     // Clear homogeneous echo
     clrCls(gEl('ftag-homo-btn'));
@@ -3314,14 +3302,14 @@ function toggleFattyPanel(){
     aUpdSt('liver');abdAutoPreview();
   } else {
     if(fattyGrade){delete aS.liver[fattyVals[fattyGrade].val];fattyGrade=null;}
-    ['sel-ok','sel-warn','sel-danger'].forEach(c=>btn.classList.remove(c));
-    ['fatty-mild','fatty-moderate','fatty-severe'].forEach(function(id){var e=document.getElementById(id);if(e)['sel-ok','sel-warn','sel-danger'].forEach(c=>e.classList.remove(c));});
+    clrCls(btn);
+    ['fatty-mild','fatty-moderate','fatty-severe'].forEach(function(id){var e=document.getElementById(id);if(e)clrCls(e);});
     aUpdSt('liver');abdAutoPreview();
   }
 }
 function selectFatty(el){
   var grade=el.dataset.fgrade;
-  ['fatty-mild','fatty-moderate','fatty-severe'].forEach(function(id){var e=document.getElementById(id);if(e)['sel-ok','sel-warn','sel-danger'].forEach(c=>e.classList.remove(c));});
+  ['fatty-mild','fatty-moderate','fatty-severe'].forEach(function(id){var e=document.getElementById(id);if(e)clrCls(e);});
   if(fattyGrade){delete aS.liver[fattyVals[fattyGrade].val];}
   if(fattyGrade===grade){fattyGrade=null;['sel-ok','sel-warn','sel-danger'].forEach(c=>document.getElementById('ftag-fatty-btn').classList.remove(c));aUpdSt('liver');abdAutoPreview();return;}
   fattyGrade=grade;
@@ -3329,7 +3317,7 @@ function selectFatty(el){
   aS.liver[info.val]=info.lv;
   el.classList.add('sel-'+info.lv);
   var btn=document.getElementById('ftag-fatty-btn');
-  ['sel-ok','sel-warn','sel-danger'].forEach(c=>btn.classList.remove(c));
+  clrCls(btn);
   btn.classList.add('sel-'+info.lv);
   // Remove homogeneous echo (already cleared on panel open, but ensure consistency)
   gEl('ftag-homo-btn').classList.remove('sel-ok','sel-warn','sel-danger');
@@ -3514,14 +3502,11 @@ function tTagDiffuse(el){
 // ---- Thyroid cystic lesion panel ----
 var thyCystItems=[];
 function toggleThyCystPanel(){
-  var panel=gEl('thycyst-panel'),btn=gEl('ftag-thycyst-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-thycyst-btn'),opening=panelFlip('thycyst-panel');
+  if(opening===null)return;
   if(opening){
     // Clear normal echo (tTagMutexOrg effect)
-    var normalEl=document.querySelector('#page-thy .ftag[data-val="normal echogenicity and homogeneous texture"]');
-    if(normalEl){clrCls(normalEl);delete tS.gland['normal echogenicity and homogeneous texture'];}
+    unselect('thy','gland','normal echogenicity and homogeneous texture');
     if(!thyCystItems.length)thyCystItems=[{note:''}];
     thyCystRender();setCls(btn,'warn');
     tUpdSt('gland');thyAutoPreview();
@@ -4211,6 +4196,12 @@ var causticLvMap={'0':'ok','I':'warn','IIA':'warn','IIB':'warn','IIIA':'danger',
 // Generic helpers
 function gEl(id){return document.getElementById(id);}
 function gVal(id){return (gEl(id)||{value:''}).value.trim()||'__';}
+/* 細項面板開關：切換面板顯示，回傳 true＝剛打開、false＝剛關上、null＝找不到面板 */
+function panelFlip(id){ var p=gEl(id); if(!p) return null; var o=p.style.display==='none'; p.style.display=o?'block':'none'; return o; }
+/* 取消某個片語（外觀與報告狀態都清掉），例如打開異常面板時取消同段的「正常」 */
+function unselect(tool,g,val){ document.querySelectorAll('#page-'+tool+' .ftag[data-val="'+val+'"]').forEach(clrCls); PH[tool].del(g,val); }
+/* 不能點的片語閃一下紅框 */
+function flash(el){ if(!el) return; el.style.outline='2px solid var(--danger)'; setTimeout(function(){ el.style.outline=''; },600); }
 function clrCls(el){if(el)el.classList.remove('sel-ok','sel-warn','sel-danger');}
 function setCls(el,lv){if(el){clrCls(el);el.classList.add('sel-'+lv);}}
 function removeFillVal(key){
@@ -4224,10 +4215,8 @@ function esophRefresh(){egdUpdStatus('esoph');egdAutoPreview();}
 
 // Generic toggle for simple grade-based panels (KODSI/LA/Varices/Caustic)
 function toggleGradePanel(panelId,btnId,childIds,stateRef,clearFn){
-  var panel=gEl(panelId),btn=gEl(btnId);
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl(btnId),opening=panelFlip(panelId);
+  if(opening===null)return;
   if(!opening){clearFn();clrCls(btn);childIds.forEach(function(id){clrCls(gEl(id));});esophRefresh();}
 }
 
@@ -4236,7 +4225,7 @@ var ESOPH_UNREM='No obvious mucosa lesion nor mass along the lumen. The squamous
 function clearEsophUnrem(){
   var idx=egdSel.esoph.indexOf(ESOPH_UNREM);
   if(idx>-1){egdSel.esoph.splice(idx,1);delete egdSelText.esoph[ESOPH_UNREM];}
-  document.querySelectorAll('#page-egd .ftag[data-val="'+ESOPH_UNREM+'"]').forEach(function(e){clrCls(e);});
+  document.querySelectorAll('#page-egd .ftag[data-val="'+ESOPH_UNREM+'"]').forEach(clrCls);
 }
 function toggleLaPanel(){
   var opening=gEl('la-panel')&&gEl('la-panel').style.display==='none';
@@ -4276,10 +4265,8 @@ function selectVarices(el){
 // Esophageal cancer
 var ecaType=null;
 function toggleEcaPanel(){
-  var panel=gEl('eca-panel'),btn=gEl('ftag-eca-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-eca-btn'),opening=panelFlip('eca-panel');
+  if(opening===null)return;
   if(!opening){
     ecaType=null;
     removeEcaFromSel();clrCls(btn);
@@ -4335,10 +4322,8 @@ function selectCaustic(el){
 
 // Generic fillable mini-panels
 function toggleFillPanel(panelId,btnId,key){
-  var panel=gEl(panelId),btn=gEl(btnId);
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl(btnId),opening=panelFlip(panelId);
+  if(opening===null)return;
   if(!opening){removeFillVal(key);clrCls(btn);esophRefresh();}
 }
 
@@ -4360,10 +4345,8 @@ function updateEFill(key){
 // ---- Papilloma multi-lesion ----
 var papilItems=[];
 function togglePapilPanel(){
-  var panel=gEl('papil-panel'),btn=gEl('ftag-papil-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-papil-btn'),opening=panelFlip('papil-panel');
+  if(opening===null)return;
   if(opening){
     clearEsophUnrem();
     if(!papilItems.length)papilItems=[{cm:'',lv:''}];
@@ -4403,10 +4386,8 @@ function papilUpdate(){
 // ---- Atypical Infection Panel ----
 var eatypType=null, candLoc='', hcmvLoc='', kodsiGradeC=null;
 function toggleEatypPanel(){
-  var panel=gEl('eatyp-panel'),btn=gEl('ftag-eatyp-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-eatyp-btn'),opening=panelFlip('eatyp-panel');
+  if(opening===null)return;
   if(opening){
     clearEsophUnrem();
     setCls(btn,'danger');
@@ -4463,10 +4444,8 @@ function toggleEsophxPanel(){toggleEFill('ESOPHX');}function updateEsophxVal(){u
      function updateSmlVal(){updateEFill('SML');}
 
 function toggleInletPanel(){
-  var panel=gEl('inlet-panel'),btn=gEl('ftag-inlet-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-inlet-btn'),opening=panelFlip('inlet-panel');
+  if(opening===null)return;
   if(opening){ updateInletVal(); }
   else{ removeFillVal('__INLET__');clrCls(btn);['inlet-cm1','inlet-cm2'].forEach(function(id){var e=gEl(id);if(e)e.value='';});esophRefresh(); }
 }
@@ -4492,10 +4471,8 @@ var spopVals = {
   }
 };
 function toggleSpopPanel(){
-  var panel=gEl('spop-panel'),btn=gEl('ftag-spop-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-spop-btn'),opening=panelFlip('spop-panel');
+  if(opening===null)return;
   if(!opening){
     removeStomachFill('__SPOP__');spopType=null;egdSpopActive=false;clrCls(btn);
     ['spop-bii','spop-roux'].forEach(function(id){clrCls(gEl(id));});
@@ -4608,10 +4585,8 @@ Object.keys(egdMlCfg).forEach(function(id){egdMlState[id]={lesions:[],activeIdx:
 function egdMlNewLesion(type){return {grade:'',nice:'',cm:'',cm2:'',loc:'',loc2:'',procs:type==='sml'?['bx']:[]};}
 function toggleEgdMlPanel(id){
   var cfg=egdMlCfg[id];
-  var panel=document.getElementById(id+'-panel'),btn=document.getElementById('ftag-'+id+'-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-'+id+'-btn'),opening=panelFlip(id+'-panel');
+  if(opening===null)return;
   if(opening){
     clearEsophUnrem();
     var st=egdMlState[id];
@@ -4776,10 +4751,8 @@ var oGastVals={
   hemorrhagic:{val:'Reddish spots with much hematin clots and erythematous patches on mucosa over antrum and body.',                            imp:'Hemorrhagic gastritis',lv:'danger'},
 };
 function toggleOGastritisPanel(){
-  var panel=gEl('ogastritis-panel'),btn=gEl('ftag-ogastritis-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-ogastritis-btn'),opening=panelFlip('ogastritis-panel');
+  if(opening===null)return;
   if(opening){setCls(btn,'warn');}
   else{
     if(oGastType){removeStomachFill('__OGAST__');oGastType=null;}
@@ -4821,7 +4794,7 @@ function selectOGastritis(type){
   // Remove mucosa normal
   var ni=egdSel.stomach.indexOf('stomach mucosa normal');
   if(ni>-1){egdSel.stomach.splice(ni,1);delete egdSelText.stomach['stomach mucosa normal'];}
-  document.querySelectorAll('#page-egd .ftag[data-val="stomach mucosa normal"]').forEach(function(e){clrCls(e);});
+  document.querySelectorAll('#page-egd .ftag[data-val="stomach mucosa normal"]').forEach(clrCls);
   egdUpdStatus('stomach');egdAutoPreview();
 }
 // ---- end Other Gastritis Panel ----
@@ -4836,10 +4809,8 @@ function removeAllUlcers(){removeStomachFill('__ULCER__');}
 // Gastric cancer
 var gcaType=null;
 function toggleGcaPanel(){
-  var panel=gEl('gca-panel'),btn=gEl('ftag-gca-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-gca-btn'),opening=panelFlip('gca-panel');
+  if(opening===null)return;
   if(!opening){
     gcaType=null;
     removeStomachFill('__GCA__');clrCls(btn);
@@ -4875,10 +4846,8 @@ var gvarType=null;
 // ---- Vascular Lesion Panel ----
 var vascSel={angio:false,gvar:false,rugae:false,gave:false};
 function toggleVascPanel(){
-  var panel=gEl('vasc-panel'),btn=gEl('ftag-vasc-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-vasc-btn'),opening=panelFlip('vasc-panel');
+  if(opening===null)return;
   if(opening){setCls(btn,'danger');}
   else{
     clearVascState();clrCls(btn);egdUpdStatus('stomach');egdAutoPreview();
@@ -4954,10 +4923,8 @@ var sFillCfg={
 
 };
 function toggleSFill(key){
-  var c=sFillCfg[key],panel=gEl(c.panel),btn=gEl(c.btn);
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var c=sFillCfg[key],btn=gEl(c.btn),opening=panelFlip(c.panel);
+  if(opening===null)return;
   if(!opening){removeStomachFill('__'+key+'__');clrCls(btn);c.inputs.forEach(function(id){var e=gEl(id);if(e)e.value='';});egdUpdStatus('stomach');egdAutoPreview();}
 }
 function updateSFill(key){
@@ -4972,10 +4939,8 @@ function updateRugaeVal(){updateSFill('RUGAE');}
 // ---- end stomach fill panels ----
 
 function toggleEsemPanel(){
-  var panel=gEl('esem-panel'),btn=gEl('ftag-esem-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-esem-btn'),opening=panelFlip('esem-panel');
+  if(opening===null)return;
   if(!opening){
     removeEsemFromSel();clrCls(btn);
     ['esem-hd','esem-gej','esem-scj','esem-prox','esem-c','esem-m'].forEach(function(id){var e=gEl(id);if(e)e.value='';});
@@ -5006,10 +4971,8 @@ function updateEsemVal(){
 // ---- Rapid Urease Test panel ----
 var rutResult=null;
 function toggleRutPanel(){
-  var panel=gEl('rut-panel'),btn=gEl('ftag-rut-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-rut-btn'),opening=panelFlip('rut-panel');
+  if(opening===null)return;
   if(!opening){
     removeEothFill('Rapid Urease Test for H. pylori:');rutResult=null;clrCls(btn);
     clrCls(gEl('rut-pos'));clrCls(gEl('rut-neg'));
@@ -5031,10 +4994,8 @@ function selectRut(result){
 // ---- Incomplete study panel ----
 var incompReasons=[];
 function toggleIncompPanel(){
-  var panel=gEl('incomp-panel'),btn=gEl('ftag-incomp-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-incomp-btn'),opening=panelFlip('incomp-panel');
+  if(opening===null)return;
   if(!opening){
     removeEothFill('Incomplete study due to');incompReasons=[];clrCls(btn);
     ['incomp-food','incomp-prep','incomp-blood','incomp-intol'].forEach(function(id){clrCls(gEl(id));});
@@ -5316,16 +5277,12 @@ var hemoVals={
   gr4:  {val:'internal hemorrhoids (grade 4, permanently prolapsed)',imp:'Hemorrhoids grade 4',lv:'danger'},
 };
 function toggleHemoPanel(){
-  var panel=gEl('hemo-panel'),btn=gEl('ftag-hemo-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-hemo-btn'),opening=panelFlip('hemo-panel');
+  if(opening===null)return;
   if(opening){
     setCfsSel(btn,'ok');
     // Clear rectum unremarkable
-    var ni=cfsSel.rectum.indexOf('rectum unremarkable');
-    if(ni>-1)cfsSel.rectum.splice(ni,1);
-    document.querySelectorAll('#page-cfs .ftag[data-val="rectum unremarkable"]').forEach(function(e){['sel-ok','sel-warn','sel-danger'].forEach(c=>e.classList.remove(c));});
+    unselect('cfs','rectum','rectum unremarkable');
   } else {clearHemoState();clrCfsSel(btn);cfsUpdStatus('rectum');cfsAutoPreview();}
 }
 function clearHemoState(){
@@ -5401,10 +5358,8 @@ var cMlState={csml:{lesions:[],activeIdx:0},cmal:{lesions:[],activeIdx:0},rsml:{
 function cMlNewLesion(type){return type==='sml'?{cm:'',loc:'',procs:['bx']}:{grade:'',nice:'',cm:'',loc:'',procs:[]};}
 function toggleCMlPanel(id){
   var cfg=cMlCfg[id];
-  var panel=gEl(id+'-panel'),btn=gEl('ftag-'+id+'-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-'+id+'-btn'),opening=panelFlip(id+'-panel');
+  if(opening===null)return;
   if(opening){
     var st=cMlState[id];
     if(!st.lesions.length)st.lesions=[cMlNewLesion(cfg.type)];
@@ -5518,14 +5473,10 @@ function cMlUpdate(id){
 // ============================================================
 
 function toggleCcolitisPanel(){
-  var panel=gEl('ccolitis-panel'),btn=gEl('ftag-ccolitis-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-ccolitis-btn'),opening=panelFlip('ccolitis-panel');
+  if(opening===null)return;
   if(opening){
-    var ni=cfsSel.colon.indexOf('colonic mucosa normal throughout');
-    if(ni>-1){cfsSel.colon.splice(ni,1);}
-    document.querySelectorAll('#page-cfs .ftag[data-val="colonic mucosa normal throughout"]').forEach(function(e){['sel-ok','sel-warn','sel-danger'].forEach(c=>e.classList.remove(c));});
+    unselect('cfs','colon','colonic mucosa normal throughout');
     setCfsSel(btn,'warn');
   } else {
     clearCcolitisState();clrCfsSel(btn);cfsUpdStatus('colon');cfsAutoPreview();
@@ -5556,8 +5507,8 @@ function selectCcolitis(type){
   if(hasAny)setCfsSel(gEl('ftag-ccolitis-btn'),'warn');else clrCfsSel(gEl('ftag-ccolitis-btn'));
   cfsUpdStatus('colon');cfsAutoPreview();
 }
-function setCfsSel(el,lv){if(!el)return;['sel-ok','sel-warn','sel-danger'].forEach(c=>el.classList.remove(c));if(lv)el.classList.add('sel-'+lv);}
-function clrCfsSel(el){if(el)['sel-ok','sel-warn','sel-danger'].forEach(c=>el.classList.remove(c));}
+function setCfsSel(el,lv){if(!el)return;clrCls(el);if(lv)el.classList.add('sel-'+lv);}
+function clrCfsSel(el){if(el)clrCls(el);}
 
 // ---- CFS Colon multi-lesion Polyp / Ulcer ----
 var colonLocs=['cecum','A-colon','hepatic flexure','T-colon','splenic flexure','D-colon','S-D junction','S-colon'];
@@ -5583,151 +5534,104 @@ var colonUlcerProcs=[
 ];
 // Colon polyp (Paris classification)
 var cpolypState={lesions:[],activeIdx:0};
-function toggleCpolypPanel(){
-  var panel=gEl('cpolyp-panel'),btn=gEl('ftag-cpolyp-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
-  if(opening){if(!cpolypState.lesions.length)cpolypState.lesions=[colonNewLesion()];cpolypRender();}
-  else{cpolypState={lesions:[],activeIdx:0};clrCfsSel(btn);cfsSel.colon=cfsSel.colon.filter(v=>!v.startsWith('__CPOLYP__'));cfsUpdStatus('colon');cfsAutoPreview();}
-}
-function cpolypAdd(){cpolypState.lesions.push(colonNewLesion());cpolypState.activeIdx=cpolypState.lesions.length-1;cpolypRender();}
-function cpolypRemove(i){cpolypState.lesions.splice(i,1);cpolypState.activeIdx=Math.min(cpolypState.activeIdx,cpolypState.lesions.length-1);if(!cpolypState.lesions.length)cpolypState.lesions=[colonNewLesion()];cpolypRender();cpolypUpdate();}
-function cpolypSetActive(i){cpolypState.activeIdx=i;cpolypRender();}
-function cpolypSetField(field,val,i){
-  cpolypState.lesions[i][field]=val;
-  if(field==='grade')cpolypRender();
-  if(field==='nice')cpolypRender();
-  cpolypUpdate();
-}
-function cpolypToggleProc(i,procId){var l=cpolypState.lesions[i];var idx=l.procs.indexOf(procId);if(idx>-1)l.procs.splice(idx,1);else l.procs.push(procId);cpolypRender();cpolypUpdate();}
-function cpolypRender(){colonRenderPanel('cpolyp',cpolypState,parisOpts,'warn','cpolypSetField','cpolypToggleProc','cpolypRemove','cpolypSetActive');}
-function cpolypUpdate(){
-  cfsSel.colon=cfsSel.colon.filter(v=>!v.startsWith('__CPOLYP__'));
-  Object.keys(cfsPolypLabels).forEach(function(k){if(/^__CPOLYP__/.test(k))delete cfsPolypLabels[k];});
-  var hasAny=cpolypState.lesions.some(l=>l.grade||l.nice);
-  if(!hasAny){clrCfsSel(gEl('ftag-cpolyp-btn'));cfsUpdStatus('colon');cfsAutoPreview();return;}
-  // Collect all locs and unique procs for combined impression
-  var allLocs=[],allProcs=[];
-  cpolypState.lesions.forEach(function(l){
-    if(!l.grade&&!l.nice)return;
-    if(l.loc&&allLocs.indexOf(l.loc)===-1)allLocs.push(l.loc);
-    l.procs.forEach(function(p){
-      var f=colonProcs.find(o=>o.id===p);var label=f?f.label:p;
-      if(allProcs.indexOf(label)===-1)allProcs.push(label);
-    });
-  });
-  var validCount=cpolypState.lesions.filter(l=>l.grade||l.nice).length;
-  var baseLabel=validCount>1?'Colon polyps':'Colon polyp';
-  var locPart=allLocs.length?(' at '+allLocs.join(', ')):'';
-  var procPart=allProcs.length?(' '+allProcs.join(', ')):', s/p biopsy';
-  var sentinelKey='__CPOLYP__IMP__';
-  cfsSel.colon.push(sentinelKey);
-  cfsPolypLabels[sentinelKey]=baseLabel+locPart+procPart;
-  // Push individual findings
-  cpolypState.lesions.forEach(function(l,i){
-    if(!l.grade&&!l.nice)return;
-    var loc=l.loc;var cm=l.cm||'__';
-    var procStr=l.procs.map(p=>{var f=colonProcs.find(o=>o.id===p);return f?f.label:p;}).join(', ');
-    var gradeStr='';
-    if(l.grade){var desc=parisOpts.find(o=>o.g===l.grade);gradeStr='Paris '+l.grade+' ('+(desc?desc.shortDesc||desc.desc:'')+') ';}
-    var niceStr=l.nice?l.nice+' ':'' ;
-    var val='__CPOLYP__'+i+'__One '+cm+'cm '+(gradeStr||niceStr?gradeStr+niceStr:'')+'polypoid lesion'+(loc?' at '+loc:'')+(procStr?', '+procStr:'');
-    cfsSel.colon.push(val);
-    // No label — sentinel handles impression
-  });
-  setCfsSel(gEl('ftag-cpolyp-btn'),'warn');cfsUpdStatus('colon');cfsAutoPreview();
-}
 // Colon ulcer (Forrest classification)
 var culcerState={lesions:[],activeIdx:0};
-function toggleCulcerPanel(){
-  var panel=gEl('culcer-panel'),btn=gEl('ftag-culcer-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
-  if(opening){if(!culcerState.lesions.length)culcerState.lesions=[colonNewLesion()];culcerRender();}
-  else{culcerState={lesions:[],activeIdx:0};clrCfsSel(btn);cfsSel.colon=cfsSel.colon.filter(v=>!v.startsWith('__CULCER__'));cfsUpdStatus('colon');cfsAutoPreview();}
-}
-function culcerAdd(){culcerState.lesions.push(colonNewLesion());culcerState.activeIdx=culcerState.lesions.length-1;culcerRender();}
-function culcerRemove(i){culcerState.lesions.splice(i,1);culcerState.activeIdx=Math.min(culcerState.activeIdx,culcerState.lesions.length-1);if(!culcerState.lesions.length)culcerState.lesions=[colonNewLesion()];culcerRender();culcerUpdate();}
-function culcerSetActive(i){culcerState.activeIdx=i;culcerRender();}
-function culcerSetField(field,val,i){culcerState.lesions[i][field]=val;if(field==='grade')culcerRender();culcerUpdate();}
-function culcerToggleProc(i,procId){var l=culcerState.lesions[i];var idx=l.procs.indexOf(procId);if(idx>-1)l.procs.splice(idx,1);else l.procs.push(procId);culcerRender();culcerUpdate();}
-function culcerRender(){colonRenderPanel('culcer',culcerState,forrestOpts,'danger','culcerSetField','culcerToggleProc','culcerRemove','culcerSetActive',colonLocs,colonUlcerProcs);}
-function culcerUpdate(){
-  cfsSel.colon=cfsSel.colon.filter(v=>!v.startsWith('__CULCER__'));
-  Object.keys(cfsPolypLabels).forEach(function(k){if(/^__CULCER__/.test(k))delete cfsPolypLabels[k];});
-  var hasAny=culcerState.lesions.some(l=>l.grade);
-  if(!hasAny){clrCfsSel(gEl('ftag-culcer-btn'));cfsUpdStatus('colon');cfsAutoPreview();return;}
-  var allLocs=[],allProcs=[];
-  culcerState.lesions.forEach(function(l){
-    if(!l.grade)return;
-    if(l.loc&&allLocs.indexOf(l.loc)===-1)allLocs.push(l.loc);
-    l.procs.forEach(function(p){var f=colonUlcerProcs.find(o=>o.id===p)||colonProcs.find(o=>o.id===p);var label=f?f.label:p;if(allProcs.indexOf(label)===-1)allProcs.push(label);});
-  });
-  var validCount=culcerState.lesions.filter(l=>l.grade).length;
-  var baseLabel=validCount>1?'Colon ulcers':'Colon ulcer';
-  var locPart=allLocs.length?(' at '+allLocs.join(', ')):'';
-  var procPart=allProcs.length?(' '+allProcs.join(', ')):', s/p biopsy';
-  var sentKey='__CULCER__IMP__';cfsSel.colon.push(sentKey);cfsPolypLabels[sentKey]=baseLabel+locPart+procPart;
-  culcerState.lesions.forEach(function(l,i){
-    if(!l.grade)return;
-    var desc=forrestOpts.find(o=>o.g===l.grade);
-    var loc=l.loc;var cm=l.cm||'__';
-    var procStr=l.procs.map(p=>{var f=colonUlcerProcs.find(o=>o.id===p)||colonProcs.find(o=>o.id===p);return f?f.label:p;}).join(', ');
-    var val='__CULCER__'+i+'__One Forrest '+l.grade+' ('+desc.desc+') ulcer around '+cm+'cm'+(loc?' at '+loc:'')+(procStr?', '+procStr:'');
-    cfsSel.colon.push(val);
-  });
-  setCfsSel(gEl('ftag-culcer-btn'),'danger');cfsUpdStatus('colon');cfsAutoPreview();
-}
 var rectumLocs=['rectum','anus'];
 
 // Rectum ulcer (rulcer)
 var rulcerState={lesions:[],activeIdx:0};
-function _rMlToggle(id,state,renderFn,prefix){var panel=gEl(id+'-panel'),btn=gEl('ftag-'+id+'-btn');if(!panel)return;var opening=panel.style.display==='none';panel.style.display=opening?'block':'none';if(opening){if(!state.lesions.length)state.lesions=[colonNewLesion()];renderFn();}else{state.lesions=[];state.activeIdx=0;clrCfsSel(btn);var prx=new RegExp('^'+prefix);cfsSel.rectum=cfsSel.rectum.filter(v=>!prx.test(v));Object.keys(cfsPolypLabels).forEach(k=>{if(prx.test(k))delete cfsPolypLabels[k];});cfsUpdStatus('rectum');cfsAutoPreview();}}
-function _rMlAdd(state,renderFn){state.lesions.push(colonNewLesion());state.activeIdx=state.lesions.length-1;renderFn();}
-function _rMlRemove(i,state,renderFn,updateFn){state.lesions.splice(i,1);state.activeIdx=Math.min(state.activeIdx,state.lesions.length-1);if(!state.lesions.length)state.lesions=[colonNewLesion()];renderFn();updateFn();}
-function toggleRulcerPanel(){_rMlToggle('rulcer',rulcerState,rulcerRender,'__RULCER__');}
-function rulcerAdd(){_rMlAdd(rulcerState,rulcerRender);}
-function rulcerRemove(i){_rMlRemove(i,rulcerState,rulcerRender,rulcerUpdate);}
-function rulcerSetActive(i){rulcerState.activeIdx=i;rulcerRender();}
-function rulcerSetField(field,val,i){rulcerState.lesions[i][field]=val;if(field==='grade')rulcerRender();rulcerUpdate();}
-function rulcerToggleProc(i,procId){var l=rulcerState.lesions[i];var idx=l.procs.indexOf(procId);if(idx>-1)l.procs.splice(idx,1);else l.procs.push(procId);rulcerRender();rulcerUpdate();}
-function rulcerRender(){colonRenderPanel('rulcer',rulcerState,forrestOpts,'danger','rulcerSetField','rulcerToggleProc','rulcerRemove','rulcerSetActive',rectumLocs,colonUlcerProcs);}
-function rulcerUpdate(){
-  cfsSel.rectum=cfsSel.rectum.filter(v=>!v.startsWith('__RULCER__'));Object.keys(cfsPolypLabels).forEach(k=>{if(/^__RULCER__/.test(k))delete cfsPolypLabels[k];});
-  var hasAny=rulcerState.lesions.some(l=>l.grade);
-  if(!hasAny){clrCfsSel(gEl('ftag-rulcer-btn'));cfsUpdStatus('rectum');cfsAutoPreview();return;}
-  var allLocs=[],allProcs=[];
-  rulcerState.lesions.forEach(function(l){if(!l.grade)return;if(l.loc&&allLocs.indexOf(l.loc)===-1)allLocs.push(l.loc);l.procs.forEach(function(p){var f=colonUlcerProcs.find(o=>o.id===p)||colonProcs.find(o=>o.id===p);var label=f?f.label:p;if(allProcs.indexOf(label)===-1)allProcs.push(label);});});
-  var validCount=rulcerState.lesions.filter(l=>l.grade).length;
-  var sentKey='__RULCER__IMP__';cfsSel.rectum.push(sentKey);
-  cfsPolypLabels[sentKey]=(validCount>1?'Rectal ulcers':'Rectal ulcer')+(allLocs.length?' at '+allLocs.join(', '):'')+(allProcs.length?' '+allProcs.join(', '):', s/p biopsy');
-  rulcerState.lesions.forEach(function(l,i){if(!l.grade)return;var desc=forrestOpts.find(o=>o.g===l.grade);var procStr=l.procs.map(p=>{var f=colonUlcerProcs.find(o=>o.id===p)||colonProcs.find(o=>o.id===p);return f?f.label:p;}).join(', ');cfsSel.rectum.push('__RULCER__'+i+'__One Forrest '+l.grade+' ('+desc.desc+') ulcer around '+(l.cm||'__')+'cm'+(l.loc?' at '+l.loc:'')+(procStr?', '+procStr:''));});
-  setCfsSel(gEl('ftag-rulcer-btn'),'danger');cfsUpdStatus('rectum');cfsAutoPreview();
-}
 
 // Rectum polyp (rpolyp)
 var rpolypState={lesions:[],activeIdx:0};
-function toggleRpolypPanel(){_rMlToggle('rpolyp',rpolypState,rpolypRender,'__RPOLYP__');}
-function rpolypAdd(){_rMlAdd(rpolypState,rpolypRender);}
-function rpolypRemove(i){_rMlRemove(i,rpolypState,rpolypRender,rpolypUpdate);}
-function rpolypSetActive(i){rpolypState.activeIdx=i;rpolypRender();}
-function rpolypSetField(field,val,i){rpolypState.lesions[i][field]=val;if(field==='grade'||field==='nice')rpolypRender();rpolypUpdate();}
-function rpolypToggleProc(i,procId){var l=rpolypState.lesions[i];var idx=l.procs.indexOf(procId);if(idx>-1)l.procs.splice(idx,1);else l.procs.push(procId);rpolypRender();rpolypUpdate();}
-function rpolypRender(){colonRenderPanel('rpolyp',rpolypState,parisOpts,'warn','rpolypSetField','rpolypToggleProc','rpolypRemove','rpolypSetActive',rectumLocs,colonProcs);}
-function rpolypUpdate(){
-  cfsSel.rectum=cfsSel.rectum.filter(v=>!v.startsWith('__RPOLYP__'));Object.keys(cfsPolypLabels).forEach(k=>{if(/^__RPOLYP__/.test(k))delete cfsPolypLabels[k];});
-  var hasAny=rpolypState.lesions.some(l=>l.grade||l.nice);
-  if(!hasAny){clrCfsSel(gEl('ftag-rpolyp-btn'));cfsUpdStatus('rectum');cfsAutoPreview();return;}
-  var allLocs=[],allProcs=[];
-  rpolypState.lesions.forEach(function(l){if(!l.grade&&!l.nice)return;if(l.loc&&allLocs.indexOf(l.loc)===-1)allLocs.push(l.loc);l.procs.forEach(function(p){var f=colonProcs.find(o=>o.id===p);var label=f?f.label:p;if(allProcs.indexOf(label)===-1)allProcs.push(label);});});
-  var validCount=rpolypState.lesions.filter(l=>l.grade||l.nice).length;
-  var sentKey='__RPOLYP__IMP__';cfsSel.rectum.push(sentKey);
-  cfsPolypLabels[sentKey]=(validCount>1?'Rectal polyps':'Rectal polyp')+(allLocs.length?' at '+allLocs.join(', '):'')+(allProcs.length?' '+allProcs.join(', '):', s/p biopsy');
-  rpolypState.lesions.forEach(function(l,i){if(!l.grade&&!l.nice)return;var procStr=l.procs.map(p=>{var f=colonProcs.find(o=>o.id===p);return f?f.label:p;}).join(', ');var gradeStr=l.grade?'Paris '+l.grade+' ('+(parisOpts.find(o=>o.g===l.grade)||{shortDesc:''}).shortDesc+') ':'';var niceStr=l.nice?l.nice+' ':'';cfsSel.rectum.push('__RPOLYP__'+i+'__One '+(l.cm||'__')+'cm '+(gradeStr||niceStr?gradeStr+niceStr:'')+'polypoid lesion'+(l.loc?' at '+l.loc:'')+(procStr?', '+procStr:''));});
-  setCfsSel(gEl('ftag-rpolyp-btn'),'warn');cfsUpdStatus('rectum');cfsAutoPreview();
+/* ── 大腸鏡多病灶面板：結腸／直腸 × 瘜肉／潰瘍，四種共用一套 ───────────────
+   瘜肉用 Paris＋NICE 分類，潰瘍用 Forrest 分類；差別寫在 CML 設定表。
+   狀態放在 cpolypState、culcerState、rpolypState、rulcerState（草稿存檔沿用這四個名稱），
+   面板 HTML 與 colonRenderPanel 產生的按鈕仍呼叫 cpolypAdd()、rulcerSetField() 這類名稱，由最下面的迴圈產生。 */
+var CML={
+  cpolyp:{grp:'colon', site:'Colon', polyp:true,  lv:'warn'},
+  culcer:{grp:'colon', site:'Colon', polyp:false, lv:'danger', locs:function(){return colonLocs;}},
+  rpolyp:{grp:'rectum',site:'Rectal',polyp:true,  lv:'warn',   locs:function(){return rectumLocs;}},
+  rulcer:{grp:'rectum',site:'Rectal',polyp:false, lv:'danger', locs:function(){return rectumLocs;}}
+};
+function cmlState(id){ return window[id+'State']; }
+function cmlValid(id,l){ return CML[id].polyp ? !!(l.grade||l.nice) : !!l.grade; }
+function cmlProc(id,p){ var f=(!CML[id].polyp&&colonUlcerProcs.find(function(o){return o.id===p;}))||colonProcs.find(function(o){return o.id===p;}); return f?f.label:p; }
+function cmlClearSel(id){
+  var g=CML[id].grp, P='__'+id.toUpperCase()+'__';
+  cfsSel[g]=cfsSel[g].filter(function(v){ return v.indexOf(P)!==0; });
+  Object.keys(cfsPolypLabels).forEach(function(k){ if(k.indexOf(P)===0) delete cfsPolypLabels[k]; });
 }
+function cmlToggle(id){
+  var st=cmlState(id), btn=gEl('ftag-'+id+'-btn'), opening=panelFlip(id+'-panel');
+  if(opening===null) return;
+  if(opening){ if(!st.lesions.length) st.lesions=[colonNewLesion()]; cmlRender(id); return; }
+  st.lesions=[]; st.activeIdx=0; clrCfsSel(btn); cmlClearSel(id);
+  cfsUpdStatus(CML[id].grp); cfsAutoPreview();
+}
+function cmlAdd(id){ var st=cmlState(id); st.lesions.push(colonNewLesion()); st.activeIdx=st.lesions.length-1; cmlRender(id); }
+function cmlRemove(id,i){
+  var st=cmlState(id); st.lesions.splice(i,1); st.activeIdx=Math.min(st.activeIdx,st.lesions.length-1);
+  if(!st.lesions.length) st.lesions=[colonNewLesion()];
+  cmlRender(id); cmlUpdate(id);
+}
+function cmlSetActive(id,i){ cmlState(id).activeIdx=i; cmlRender(id); }
+function cmlSetField(id,field,val,i){
+  cmlState(id).lesions[i][field]=val;
+  if(field==='grade'||(CML[id].polyp&&field==='nice')) cmlRender(id);
+  cmlUpdate(id);
+}
+function cmlToggleProc(id,i,procId){
+  var l=cmlState(id).lesions[i], k=l.procs.indexOf(procId);
+  if(k>-1) l.procs.splice(k,1); else l.procs.push(procId);
+  cmlRender(id); cmlUpdate(id);
+}
+function cmlRender(id){
+  var c=CML[id];
+  colonRenderPanel(id,cmlState(id),c.polyp?parisOpts:forrestOpts,c.lv,id+'SetField',id+'ToggleProc',id+'Remove',id+'SetActive',
+    c.locs?c.locs():undefined, id==='cpolyp'?undefined:(c.polyp?colonProcs:colonUlcerProcs));
+}
+// 報告：先放一句總結（印象用），再逐顆描述
+function cmlUpdate(id){
+  var c=CML[id], st=cmlState(id), g=c.grp, P='__'+id.toUpperCase()+'__', btn=gEl('ftag-'+id+'-btn');
+  cmlClearSel(id);
+  var valid=st.lesions.filter(function(l){ return cmlValid(id,l); });
+  if(!valid.length){ clrCfsSel(btn); cfsUpdStatus(g); cfsAutoPreview(); return; }
+  var locs=[], procs=[];
+  valid.forEach(function(l){
+    if(l.loc&&locs.indexOf(l.loc)<0) locs.push(l.loc);
+    l.procs.forEach(function(p){ var t=cmlProc(id,p); if(procs.indexOf(t)<0) procs.push(t); });
+  });
+  var key=P+'IMP__';
+  cfsSel[g].push(key);
+  cfsPolypLabels[key]=c.site+' '+(c.polyp?'polyp':'ulcer')+(valid.length>1?'s':'')
+    +(locs.length?' at '+locs.join(', '):'')+(procs.length?' '+procs.join(', '):', s/p biopsy');
+  st.lesions.forEach(function(l,i){
+    if(!cmlValid(id,l)) return;
+    var cm=l.cm||'__', where=(l.loc?' at '+l.loc:''), procStr=l.procs.map(function(p){ return cmlProc(id,p); }).join(', ');
+    var body;
+    if(c.polyp){
+      var d=l.grade?parisOpts.find(function(o){return o.g===l.grade;}):null;
+      var gradeStr=l.grade?'Paris '+l.grade+' ('+(d?d.shortDesc||d.desc:'')+') ':'';
+      var niceStr=l.nice?l.nice+' ':'';
+      body='One '+cm+'cm '+gradeStr+niceStr+'polypoid lesion';
+    } else {
+      body='One Forrest '+l.grade+' ('+forrestOpts.find(function(o){return o.g===l.grade;}).desc+') ulcer around '+cm+'cm';
+    }
+    cfsSel[g].push(P+i+'__'+body+where+(procStr?', '+procStr:''));
+  });
+  setCfsSel(btn,c.lv); cfsUpdStatus(g); cfsAutoPreview();
+}
+// 面板按鈕用的名稱：toggleCpolypPanel、cpolypAdd、cpolypSetField…
+Object.keys(CML).forEach(function(id){
+  window['toggle'+id[0].toUpperCase()+id.slice(1)+'Panel']=function(){ cmlToggle(id); };
+  window[id+'Add']=function(){ cmlAdd(id); };
+  window[id+'Remove']=function(i){ cmlRemove(id,i); };
+  window[id+'SetActive']=function(i){ cmlSetActive(id,i); };
+  window[id+'SetField']=function(f,v,i){ cmlSetField(id,f,v,i); };
+  window[id+'ToggleProc']=function(i,p){ cmlToggleProc(id,i,p); };
+  window[id+'Render']=function(){ cmlRender(id); };
+  window[id+'Update']=function(){ cmlUpdate(id); };
+});
 
 function colonNewLesion(){return {grade:'',nice:'',cm:'',loc:'',procs:[]};}
 function colonRenderPanel(id,state,opts,color,setFieldFn,toggleProcFn,removeFn,setActiveFn,locs,procList){
@@ -5804,9 +5708,8 @@ var cincompReasons=[];
 // ---- Foreign body retrieval (EGD) ----
 var efbTool='';
 function toggleEfbPanel(){
-  var panel=gEl('efb-panel'),btn=gEl('ftag-efb-btn');if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-efb-btn'),opening=panelFlip('efb-panel');
+  if(opening===null)return;
   if(!opening){efbTool='';['efb-alli','efb-snare'].forEach(function(id){clrCls(gEl(id));});removeEothFill('The target was grasped');clrCls(btn);egdUpdStatus('eoth');egdAutoPreview();}
   else{setCls(btn,'warn');}
 }
@@ -5822,9 +5725,8 @@ function selectEfbTool(el){
 // ---- Endoscopic hemostasis (EGD) ----
 var ehemoOpts={epi:false,clip:false,heat:false,apc:false};
 function toggleEhemoPanel(){
-  var panel=gEl('ehemo-panel'),btn=gEl('ftag-ehemo-btn');if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-ehemo-btn'),opening=panelFlip('ehemo-panel');
+  if(opening===null)return;
   if(!opening){
     ehemoOpts={epi:false,clip:false,heat:false,apc:false};
     ['ehemo-epi-btn','ehemo-clip','ehemo-heat','ehemo-apc'].forEach(function(id){clrCls(gEl(id));});
@@ -5861,9 +5763,8 @@ function updateEhemo(){
 
 // ---- Band ligation (EGD) ----
 function toggleEbandPanel(){
-  var panel=gEl('eband-panel'),btn=gEl('ftag-eband-btn');if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-eband-btn'),opening=panelFlip('eband-panel');
+  if(opening===null)return;
   if(!opening){removeEothFill('I applied');clrCls(btn);egdUpdStatus('eoth');egdAutoPreview();}
   else{setCls(btn,'danger');updateEband();}
 }
@@ -5878,9 +5779,8 @@ function updateEband(){
 // ---- Foreign body retrieval (CFS) ----
 var cfbTool='';
 function toggleCfbPanel(){
-  var panel=gEl('cfb-panel'),btn=gEl('ftag-cfb-btn');if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-cfb-btn'),opening=panelFlip('cfb-panel');
+  if(opening===null)return;
   if(!opening){cfbTool='';['cfb-alli','cfb-snare'].forEach(function(id){clrCls(gEl(id));});
     Object.keys(cfsPolypLabels).forEach(function(k){if(/^The target was grasped/.test(k))delete cfsPolypLabels[k];});
     removeCfsPolyp('The target was grasped');clrCls(btn);cfsUpdStatus('polyp');cfsAutoPreview();}
@@ -5900,9 +5800,8 @@ var cfsPolypLabels={}; // val -> short label for impression
 
 var chemoOpts={epi:false,clip:false,heat:false,apc:false};
 function toggleChemoPanel(){
-  var panel=gEl('chemo-panel'),btn=gEl('ftag-chemo-btn');if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-chemo-btn'),opening=panelFlip('chemo-panel');
+  if(opening===null)return;
   if(!opening){
     chemoOpts={epi:false,clip:false,heat:false,apc:false};
     ['chemo-epi-btn','chemo-clip','chemo-heat','chemo-apc'].forEach(function(id){clrCls(gEl(id));});
@@ -5941,10 +5840,8 @@ function updateChemo(){
 // ---- end new others panels ----
 
 function toggleCincompPanel(){
-  var panel=gEl('cincomp-panel'),btn=gEl('ftag-cincomp-btn');
-  if(!panel)return;
-  var opening=panel.style.display==='none';
-  panel.style.display=opening?'block':'none';
+  var btn=gEl('ftag-cincomp-btn'),opening=panelFlip('cincomp-panel');
+  if(opening===null)return;
   if(!opening){
     removeCfsPolyp('Incomplete colonoscopy due to');
     cincompReasons=[];clrCfsSel(btn);
@@ -5954,7 +5851,7 @@ function toggleCincompPanel(){
 }
 function toggleCincompReason(reason,el){
   var idx=cincompReasons.indexOf(reason);
-  if(idx>-1){cincompReasons.splice(idx,1);['sel-ok','sel-warn','sel-danger'].forEach(c=>el.classList.remove(c));}
+  if(idx>-1){cincompReasons.splice(idx,1);clrCls(el);}
   else{cincompReasons.push(reason);el.classList.add('sel-warn');}
   updateCincompVal();
 }
@@ -6431,7 +6328,7 @@ var REVISION_NOTE = [
   '首頁與頁首改成診所標誌加目錄式排版，拿掉卡片、色條與說明文字',
   '點改版日期可以看這次改了什麼',
   '畫面穩定：點片語時段落標題不再換行跳動；甲狀腺結節與頸動脈斑塊的細項改成浮出視窗',
-  '程式精簡：五種報告的片語按鈕改用同一套程式，報告文字不變'
+  '程式精簡：片語按鈕、細項面板開關、大腸鏡四種多病灶面板各改用同一套程式；重複的行內樣式收成 class，報告文字不變'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
