@@ -782,6 +782,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Repeat abdominal ultrasound in 6 months for follow-up." data-lvl="ok" data-group="abd-fu" onclick="abdRecoTagEx(this,'abd-fu')">Repeat US 6 months</span>
           <span class="ftag" data-val="Repeat abdominal ultrasound in 3 months for follow-up." data-lvl="warn" data-group="abd-fu" onclick="abdRecoTagEx(this,'abd-fu')">Repeat US 3 months</span>
           <span class="ftag" data-val="Lifestyle modification recommended for fatty liver management (diet, exercise, weight control)." data-lvl="ok" onclick="abdRecoTag(this)">Fatty liver management</span>
+          <span class="ftag" data-val="Clinical correlation for metabolic dysfunction-associated steatotic liver disease (MASLD) and fibrosis risk assessment (e.g., FIB-4) are suggested." data-lvl="ok" onclick="abdRecoTag(this)">MASLD + FIB-4</span>
           <span class="ftag" data-val="Regular hepatitis B/C surveillance with liver ultrasound and AFP every 6 months recommended." data-lvl="warn" onclick="abdRecoTag(this)">Hepatitis B/C surveillance</span>
           <span class="ftag" data-val="Liver cirrhosis surveillance: repeat ultrasound and AFP in 6 months." data-lvl="warn" onclick="abdRecoTag(this)">Cirrhosis surveillance</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="abdRecoTag(this)">Transfer to hospital</span>
@@ -1410,6 +1411,17 @@ body{font-size:calc(14px * var(--fs))}
               <span class="ftag" id="ogast-bile"       onclick="selectOGastritis('bile')">Bile reflux gastritis</span>
               <span class="ftag" id="ogast-hemorrhagic" onclick="selectOGastritis('hemorrhagic')">Hemorrhagic gastritis</span>
             </div>
+            <div id="ogast-kt-row" style="display:none;margin-top:8px">
+              <div style="font-weight:500;margin-bottom:6px;color:var(--warn);">萎縮範圍（Kimura-Takemoto，可不選）：</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span class="ftag" id="kt-C-1" onclick="selectKimura('C-1')">C-1</span>
+                <span class="ftag" id="kt-C-2" onclick="selectKimura('C-2')">C-2</span>
+                <span class="ftag" id="kt-C-3" onclick="selectKimura('C-3')">C-3</span>
+                <span class="ftag" id="kt-O-1" onclick="selectKimura('O-1')">O-1</span>
+                <span class="ftag" id="kt-O-2" onclick="selectKimura('O-2')">O-2</span>
+                <span class="ftag" id="kt-O-3" onclick="selectKimura('O-3')">O-3</span>
+              </div>
+            </div>
           </div>
 
           <span class="ftag" data-val="Multiple scattered flat or raised erosions over reddish mucosa at antrum." data-lvl="warn" data-label="Gastric erosions" onclick="eTagMutexOrg(this,'stomach','stomach mucosa normal')">Gastric erosions</span>
@@ -1975,12 +1987,15 @@ body{font-size:calc(14px * var(--fs))}
       <div class="sec-head" onclick="tSec('csec-creco')"><span class="sec-num">05</span><span class="sec-title">Recommendation <span class="sec-sub">建議</span></span><span class="sec-status normal" id="cst-creco">—</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="fg">
-          <span class="ftag" data-val="Pending pathology report." data-lvl="ok" onclick="cfTag(this,'creco')">Pending pathology</span>
+          <span class="ftag" id="cfs-pend-tag" data-val="Pending pathology report." data-lvl="ok" onclick="cfsPendManual=true;cfTag(this,'creco')">Pending pathology</span>
           <span class="ftag" data-val="Routine colorectal cancer screening in 5 years (average risk)." data-lvl="ok" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">Routine screening 5 yrs</span>
-          <span class="ftag" data-val="Low-risk lesion(s) removed. Repeat colonoscopy in 3 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">Low-risk lesion – repeat CFS 3 yrs</span>
-          <span class="ftag" data-val="High-risk lesion(s) identified. Repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">High-risk lesion – repeat CFS 1 yr</span>
+          <!-- 追蹤間隔依國健署《大腸癌篩檢指引》2021，與 tools/edu-src/a5.html 衛教單一致 -->
+          <span class="ftag" data-tier="low" data-val="Low-risk adenoma(s) (1–2 adenomas, all &lt;10 mm, without villous component or high-grade dysplasia): repeat colonoscopy in 3–5 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">Low-risk – repeat CFS 3–5 yrs</span>
+          <span class="ftag" data-tier="high" data-val="High-risk adenoma(s) (≥3 adenomas, any ≥10 mm, villous component, or high-grade dysplasia): repeat colonoscopy in 3 years recommended." data-lvl="warn" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">High-risk – repeat CFS 3 yrs</span>
+          <span class="ftag" data-tier="p10" data-val="≥10 adenomas: repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="cfTagEx(this,'creco','cfs-repeat')">≥10 adenomas – repeat CFS 1 yr</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="cfTag(this,'creco')">Transfer to hospital</span>
         </div>
+        <div class="fh" id="cfs-repeat-hint" hidden>已依瘜肉數量與大小自動預選追蹤間隔（國健署 2021），病理回來後請再確認；點選其他間隔即改為手動。</div>
         <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
       </div>
     </div>
@@ -2290,7 +2305,7 @@ function localThyReport(n, d, doc, indication, findings) {
   impression = thyImpItems.map(function(s){ var t=s.trim().replace(/[.!?]+$/,''); return t.charAt(0).toUpperCase()+t.slice(1); }).join('. ')+'.';
 
   var recoFreeThy = (document.getElementById('tot-treco')||{value:''}).value.trim();
-  var recoPartsThy = thyRecoSel.slice();
+  var recoPartsThy = tNods.map(tiAdvice).filter(Boolean).concat(thyRecoSel);
   if(recoFreeThy) recoPartsThy.push(recoFreeThy);
   reco = recoPartsThy.length
     ? recoPartsThy.map(function(s){return ensureDot(s);}).join(' ')
@@ -3237,6 +3252,19 @@ const tiF={
   margin:{label:'Margin',opts:[{v:'smooth',p:0,l:'Smooth'},{v:'ill-defined',p:0,l:'Ill-defined'},{v:'lobulated or irregular',p:2,l:'Lobulated/Irreg'},{v:'extra-thyroidal extension',p:3,l:'Extra-thyroidal'}]},
   foci:{label:'Foci',opts:[{v:'none or comet-tail artifacts',p:0,l:'None/Comet-tail'},{v:'macrocalcifications',p:1,l:'Macrocalc'},{v:'rim calcifications',p:2,l:'Rim calc'},{v:'punctate echogenic foci (microcalcifications)',p:3,l:'Punctate/Micro'}]}
 };
+// ACR TI-RADS 2017 的 FNA 與追蹤門檻（以結節最大徑判斷，單位 cm）。
+// 五項特徵都選完、尺寸也填了才給建議，避免沒計分的結節被當成 TR1。
+const TI_TH={TR3:{fna:2.5,fu:1.5,sch:'at 1, 3, and 5 years'},TR4:{fna:1.5,fu:1.0,sch:'at 1, 2, 3, and 5 years'},TR5:{fna:1.0,fu:0.5,sch:'annually for up to 5 years'}};
+function tiMaxCm(s){const m=String(s||'').match(/\d+(\.\d+)?/g);return m?Math.max.apply(null,m.map(Number)):NaN;}
+function tiAdvice(n,i){
+  if(!n||Object.keys(tiF).some(k=>!n.sc[k]))return '';
+  const cm=tiMaxCm(n.size);if(isNaN(cm))return '';
+  const cat=tiCat(tiScore(n.sc)).l,th=TI_TH[cat],tag='Nodule '+(i+1)+' ('+cat+', '+cm+' cm): ';
+  if(!th)return tag+'benign or not suspicious, no FNA or ultrasound follow-up needed per ACR TI-RADS.';
+  if(cm>=th.fna)return tag+'FNA recommended per ACR TI-RADS (FNA if ≥'+th.fna+' cm).';
+  if(cm>=th.fu)return tag+'ultrasound follow-up '+th.sch+' recommended per ACR TI-RADS (FNA if ≥'+th.fna+' cm).';
+  return tag+'below the ACR TI-RADS follow-up threshold ('+th.fu+' cm), no FNA needed.';
+}
 function tiCat(pts){
   if(pts===0)return{l:'TR1',d:'Benign — No FNA'};
   if(pts<=2)return{l:'TR2',d:'Not suspicious — No FNA'};
@@ -4652,13 +4680,32 @@ function toggleOGastritisPanel(){
     clrCls(btn);egdUpdStatus('stomach');egdAutoPreview();
   }
 }
+// Kimura-Takemoto 只描述萎縮範圍，不在報告裡寫追蹤年數（指引間隔尚未查證）
+var oGastKT=null,KT_GRADES=['C-1','C-2','C-3','O-1','O-2','O-3'];
+function oGastKTReset(){oGastKT=null;KT_GRADES.forEach(function(g){clrCls(gEl('kt-'+g));});}
+function selectKimura(g){
+  if(oGastType!=='atrophic')return;
+  removeStomachFill('__OGAST__');
+  oGastKT=(oGastKT===g)?null:g;
+  KT_GRADES.forEach(function(x){clrCls(gEl('kt-'+x));});
+  var info=oGastVals.atrophic,val=info.val,imp=info.imp;
+  if(oGastKT){
+    setCls(gEl('kt-'+g),'warn');
+    val=val.replace(/\.$/,'')+'; endoscopic atrophic border Kimura-Takemoto '+g+' ('+(g[0]==='O'?'open':'closed')+' type).';
+    imp=imp+' (Kimura-Takemoto '+g+')';
+  }
+  egdSel.stomach.push('__OGAST__'+val);egdSelText.stomach['__OGAST__'+val]=imp;
+  egdUpdStatus('stomach');egdAutoPreview();
+}
 function selectOGastritis(type){
+  oGastKTReset();
   ['ogast-chronic','ogast-atrophic','ogast-bile','ogast-hemorrhagic'].forEach(function(id){clrCls(gEl(id));});
   if(oGastType)removeStomachFill('__OGAST__');
   if(oGastType===type){
     oGastType=null;clrCls(gEl('ftag-ogastritis-btn'));egdUpdStatus('stomach');egdAutoPreview();return;
   }
   oGastType=type;
+  var ktRow=gEl('ogast-kt-row');if(ktRow)ktRow.style.display=type==='atrophic'?'block':'none';
   var info=oGastVals[type];
   egdSel.stomach.push('__OGAST__'+info.val);
   egdSelText.stomach['__OGAST__'+info.val]=info.imp;
@@ -4972,7 +5019,7 @@ function eTagNormal(el,grp,normalVal){
       clrCls(document.getElementById('ftag-'+id+'-btn'));
       ['tabs','panels'].forEach(function(s){var e=document.getElementById(id+'-'+s);if(e)e.innerHTML='';});
     });
-    oGastType=null;var ogp=gEl('ogastritis-panel');if(ogp)ogp.style.display='none';
+    oGastType=null;oGastKTReset();var ogp=gEl('ogastritis-panel');if(ogp)ogp.style.display='none';
     clrCls(gEl('ftag-ogastritis-btn'));
     ['ogast-chronic','ogast-atrophic','ogast-bile','ogast-hemorrhagic'].forEach(function(id){clrCls(gEl(id));});
   }
@@ -5962,7 +6009,32 @@ function cfTagEx(el,grp,group){
     if(idx>-1)cfsSel[grp].splice(idx,1);
   });
   if(!wasOn){cfsSel[grp].push(v);el.classList.add('sel-'+l);}
+  if(group==='cfs-repeat'&&!cfsRepeatAuto){cfsRepeatManual=true;var h=gEl('cfs-repeat-hint');if(h)h.hidden=true;}
   cfsUpdStatus(grp);cfsAutoPreview();
+}
+// 依瘜肉數量與大小預選追蹤間隔（國健署《大腸癌篩檢指引》2021）。
+// 病理還沒出來，只能用數量與大小判斷；醫師手動點過間隔之後就不再自動改。
+var cfsRepeatManual=false,cfsRepeatAuto=false,cfsPendManual=false;
+function cfsRepeatTier(){
+  var ls=cpolypState.lesions.concat(rpolypState.lesions).filter(function(l){return l.grade||l.nice;});
+  if(!ls.length)return '';
+  if(ls.length>=10)return 'p10';
+  var big=ls.some(function(l){var c=parseFloat(l.cm);return c>=1;});
+  return (ls.length>=3||big)?'high':'low';
+}
+function cfsAutoRepeat(){
+  if(cfsRepeatManual)return;
+  var tier=cfsRepeatTier(),hint=gEl('cfs-repeat-hint');
+  var cur=document.querySelector('#page-cfs .ftag[data-group="cfs-repeat"].sel-ok, #page-cfs .ftag[data-group="cfs-repeat"].sel-warn, #page-cfs .ftag[data-group="cfs-repeat"].sel-danger');
+  var want=tier?document.querySelector('#page-cfs .ftag[data-tier="'+tier+'"]'):null;
+  var pend=gEl('cfs-pend-tag');
+  if(tier&&!cfsPendManual&&pend&&cfsSel.creco.indexOf(pend.dataset.val)<0)cfTag(pend,'creco');
+  if(cur!==want){
+    cfsRepeatAuto=true;
+    if(want)cfTagEx(want,'creco','cfs-repeat');else if(cur)cfTagEx(cur,'creco','cfs-repeat');
+    cfsRepeatAuto=false;
+  }
+  if(hint)hint.hidden=!tier;
 }
 function cfTag(el, grp) {
   var v = el.dataset.val, lv = el.dataset.lvl||'ok';
@@ -5972,7 +6044,9 @@ function cfTag(el, grp) {
   cfsUpdStatus(grp);
   cfsAutoPreview();
 }
+var cfsRepeatBusy=false;
 function cfsAutoPreview(){
+  if(!cfsRepeatBusy){cfsRepeatBusy=true;try{cfsAutoRepeat();}finally{cfsRepeatBusy=false;}}
   var out=document.getElementById('cfs-rtxt'); if(!out)return;
   // reuse cfsGenerate logic without scroll/button animation
   var chk=(document.getElementById('cfs-ptchk')||{}).checked;
@@ -6034,13 +6108,8 @@ function cfsAutoPreview(){
   }
   var impression=impItems.length?impItems.map(function(s){var t=s.trim().replace(/[.!?]+$/,'');return t.charAt(0).toUpperCase()+t.slice(1);}).join('. ')+'.':'No significant abnormality detected on colonoscopy.';
   var recoArr=cfsSel.creco.slice();var recoOt=getOt('creco');if(recoOt)recoArr.push(recoOt);
-  var hasAdenoma=/adenoma/i.test(polyp); var hasHighRisk=/high-grade|HGD|tubulovillous|malign|≥10mm|large polyp/i.test(polyp); var hasNoPolyp=!hasPolyp;
-  var reco;
-  if(recoArr.length)reco=recoArr.join(' ');
-  else if(hasHighRisk)reco='High-risk adenoma identified. Repeat colonoscopy in 1 year recommended. Pathology results pending.';
-  else if(hasAdenoma)reco='Low-risk adenoma(s) removed. Repeat colonoscopy in 3 years recommended. Pathology results pending.';
-  else if(hasNoPolyp)reco='No adenoma identified. Routine colorectal cancer screening in 5 years (average risk).';
-  else reco='Clinical correlation recommended. Follow-up as clinically indicated.';
+  // 建議段只在有勾選或自由輸入時才出現；追蹤間隔由 cfsAutoRepeat() 預選
+  var reco=recoArr.join(' ');
   var lines=['COLONOSCOPY (CFS) REPORT'];
   if(chk&&(n!=='—'||d!=='—'||doc!=='—'))lines.push(['Patient: '+n,'Date: '+d,'Physician: '+doc].join('  '));
   if(indication)lines.push('Indication: '+indication);
@@ -6075,6 +6144,8 @@ function cfsScroll(id){
 }
 function cfsClear() {
   cfsSel = {cprep:[],term:[],colon:[],rectum:[],polyp:[],creco:[]};
+  cfsRepeatManual=false;cfsPendManual=false;
+  var rh=gEl('cfs-repeat-hint');if(rh)rh.hidden=true;
   document.querySelectorAll('#page-cfs .ftag').forEach(function(t){ t.className='ftag'; });
   clearHemoState();
   var hp=gEl('hemo-panel');if(hp)hp.style.display='none';
@@ -6402,7 +6473,7 @@ function cfsGenerate() {
 /* ── 最後改版日期 ──────────────────────────────────────────────
    每次改版請一併更新這一行，會顯示在首頁左下角。
    同時當作草稿的版本戳記：版本一變，舊草稿一律不還原。 */
-var APP_REVISION = '2026-10-27';
+var APP_REVISION = '2026-11-18';
 function renderAppRevision(){
   var el=document.getElementById('app-revision');
   if(el) el.textContent='最後改版：'+APP_REVISION;
