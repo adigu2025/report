@@ -399,7 +399,6 @@ body{font-size:calc(14px * var(--fs))}
   .section,.section[style]{scroll-margin-top:calc(var(--nav-h) + var(--bar-h) + 12px) !important}
   .main-content{padding:20px clamp(16px,2vw,36px) 40px}
 }
-.sec-col{display:contents}
 @media (min-width:1280px){
   .main-content>.report-out{top:calc(var(--nav-h) + var(--bar-h) + 20px);height:calc(100vh - var(--nav-h) - var(--bar-h) - 40px)}
 }
@@ -407,14 +406,51 @@ body{font-size:calc(14px * var(--fs))}
   .sb-title span,.nav-item>span:first-child{display:none}
 }
 @media (max-width:1100px){ .tc-secs{display:none} }
-@media (min-width:1500px){
-  .sec-flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
-  .sec-col{display:block;min-width:0}
-  .main-content:has(>.report-out){grid-template-columns:minmax(0,1fr) minmax(440px,34%)}
+
+/* ── 一頁版面（1280px 以上）──────────────────────────────
+   一個工具的所有片語排在一個畫面裡，不用整頁捲動：
+   頂端一行病人欄位；適應症當成第一段；片語區由 fitColumns() 依內容排 3 至 5 欄，
+   放不下才在片語區裡上下捲動；報告固定在右側。細項面板浮在觸發片語旁（見 popSync）。 */
+.sec-flow{display:block}
+@media (min-width:1280px){
+  html,body{overflow:hidden}
+  .page.visible .main-content:has(>.report-out){display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,24%);
+    grid-template-rows:auto minmax(0,1fr);column-gap:16px;row-gap:8px;align-items:stretch;
+    height:calc(100vh - var(--nav-h) - var(--bar-h));padding:8px clamp(12px,1.2vw,24px);box-sizing:border-box;overflow:hidden}
+  .main-content>.pt-bar{grid-column:1;grid-row:1;display:flex;align-items:end;gap:10px;margin:0;padding:6px 12px}
+  .main-content>.pt-bar .pt-field{flex:1 1 0;min-width:0}
+  .main-content>.pt-bar .pt-field label{margin-bottom:2px}
+  .main-content>.pt-bar .pt-field input{height:30px}
+  .main-content>.pt-bar .pt-bar-check label br{display:none}
+  .main-content>.sec-flow{grid-column:1;grid-row:2;min-height:0;overflow-y:auto;scrollbar-width:thin}
+  .sec-cols{column-gap:12px;height:100%}
+  .sec-cols.scroll{height:auto}
+  .sec-cols>.ind-bar,.sec-cols>.section{margin:0 0 10px !important}
+  .sec-cols>.ind-bar{padding:8px 12px}
+  .sec-cols .sec-head{break-after:avoid;padding-top:7px;padding-bottom:7px}
+  .sec-cols .sec-body{padding-top:6px;padding-bottom:8px}
+  .sec-cols .subsect,.sec-cols .fg>*,.sec-cols .ot-field{break-inside:avoid}
+  .sec-cols .fg{gap:5px}
+  .sec-cols .ftag{padding:calc(4.5px * var(--fs)) calc(10px * var(--fs));line-height:1.3}
+  .sec-cols .subsect{margin:2px 0 6px}
+  .sec-cols .fl{margin-bottom:3px}
+  .sec-cols .ot-field{margin-top:6px}
+  /* 自由輸入的標籤與提示字只給讀屏軟體，畫面上省一行 */
+  .sec-cols .ot-field>label,.sec-cols .ot-field>.fh,.sec-cols .ind-bar>.fh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .sec-cols .ind-bar .fl{margin-bottom:4px}
+  .sec-cols .ind-free{height:28px;margin-top:6px}
+  .sec-cols .ot-field textarea{height:calc(1.5em + 10px);min-height:0;transition:height .15s}
+  .sec-cols .ot-field textarea:focus,.sec-cols .ot-field textarea.has-text{height:5.5em}
+  .main-content>.report-out{grid-column:2;grid-row:1 / span 2;position:static;height:auto;min-height:0}
+  /* 細項面板：浮在觸發片語旁，收起時保留內容 */
+  .pop-panel{position:fixed !important;z-index:400;width:min(460px,calc(100vw - 32px)) !important;margin:0 !important;
+    max-height:calc(100vh - 24px);overflow:auto;box-shadow:0 12px 32px rgba(21,40,49,.22)}
+  .pop-panel.pop-min{display:none !important}
+  .pop-done{display:block;margin:8px 0 0 auto;padding:4px 14px;border:1px solid var(--border);border-radius:6px;
+    background:var(--surface);color:var(--text);font:inherit;font-size:13px;cursor:pointer}
+  .ftag.pop-has{box-shadow:inset 0 -3px 0 var(--teal)}
 }
-@media (min-width:1900px){
-  .main-content:has(>.report-out){grid-template-columns:minmax(0,1fr) minmax(520px,32%)}
-}
+@media (max-width:1279px){ .pop-done{display:none} }
 
 /* ── 平板與手機 ─────────────────────────────── */
 @media (max-width:1100px){
@@ -2045,6 +2081,7 @@ function showPage(id){
   var changed=currentTool!==id;
   currentTool=id;
   window.scrollTo(0,0);
+  if(typeof fitColumns==='function') requestAnimationFrame(fitColumns);
   if(changed && !navFromHistory){ try{ history.pushState({tool:id},''); }catch(e){} }
 }
 var navFromHistory=false;
@@ -6818,6 +6855,7 @@ window.addEventListener('popstate',function(e){
 var FS_KEY='ytlin-report-fs';
 function setFontScale(v){
   document.documentElement.style.setProperty('--fs',v);
+  if(typeof fitColumns==='function') requestAnimationFrame(fitColumns);
   document.querySelectorAll('.fs-switch button').forEach(function(b){
     b.classList.toggle('on',+b.dataset.fs===+v);
   });
@@ -6836,20 +6874,81 @@ function initFontScale(){
 function layoutSections(){
   document.querySelectorAll('.main-content').forEach(function(mc){
     if(mc.querySelector(':scope>.sec-flow')) return;
-    var secs=Array.prototype.filter.call(mc.children,function(c){ return c.classList.contains('section'); });
+    var secs=Array.prototype.filter.call(mc.children,function(c){ return c.classList.contains('section')||c.classList.contains('ind-bar'); });
     if(secs.length<2) return;
-    var w=secs.map(function(sec){
-      return 3+sec.querySelectorAll('.ftag,.cert-phrase,textarea,input,table').length;
-    });
-    var total=w.reduce(function(a,b){ return a+b; },0), acc=0, cut=secs.length-1;
-    for(var i=0;i<secs.length-1;i++){ acc+=w[i]; if(acc>=total/2){ cut=i+1; break; } }
     var flow=document.createElement('div'); flow.className='sec-flow';
-    var L=document.createElement('div'), R=document.createElement('div');
-    L.className=R.className='sec-col';
-    flow.appendChild(L); flow.appendChild(R);
-    mc.insertBefore(flow,secs[0]);
-    secs.forEach(function(sec,i){ (i<cut?L:R).appendChild(sec); });
+    var cols=document.createElement('div'); cols.className='sec-cols';
+    flow.appendChild(cols); mc.insertBefore(flow,secs[0]);
+    secs.forEach(function(sec){ cols.appendChild(sec); });
   });
+}
+/* 一頁版面：從 3 欄試到 5 欄，第一個塞得下的就用；都塞不下就 4 欄、片語區上下捲動 */
+var FIT_MQ=window.matchMedia('(min-width:1280px)');
+function fitColumns(){
+  var cols=document.querySelector('.page.visible .sec-cols');
+  if(!cols) return;
+  cols.classList.remove('scroll');
+  if(!FIT_MQ.matches){ cols.style.columnCount=''; return; }
+  for(var n=3;n<=5;n++){
+    cols.style.columnCount=n;
+    if(cols.scrollWidth<=cols.clientWidth+2) return;
+  }
+  cols.style.columnCount=4; cols.classList.add('scroll');
+}
+/* 細項面板浮出：面板打開（JS 把 display 改成 block）時，移到觸發片語旁邊。
+   點面板外面、按「完成」或 Esc 只是收起，選的內容保留；再點觸發片語就叫回來。
+   面板顯示中再點觸發片語，維持原本「關閉並清除」的行為。 */
+function popOpen(p){ return !!p.style.display && p.style.display!=='none'; }
+function popPlace(p){
+  var t=p.previousElementSibling; if(!t) return;
+  var r=t.getBoundingClientRect(), w=p.offsetWidth||460, h=p.offsetHeight||200;
+  var x=Math.min(Math.max(8,r.left), window.innerWidth-w-8);
+  var y=r.bottom+6; if(y+h>window.innerHeight-8) y=Math.max(8, r.top-h-6);
+  p.style.left=x+'px'; p.style.top=y+'px';
+}
+function popSync(p){
+  var t=p.previousElementSibling, on=FIT_MQ.matches && popOpen(p);
+  p.classList.toggle('pop-panel',on);
+  if(!on){ p.classList.remove('pop-min'); if(t) t.classList.remove('pop-has'); return; }
+  if(!p.querySelector(':scope>.pop-done')){
+    var b=document.createElement('button'); b.type='button'; b.className='pop-done'; b.textContent='完成';
+    b.addEventListener('click',function(e){ e.stopPropagation(); popMin(p); });
+    p.appendChild(b);
+  }
+  if(!p.classList.contains('pop-min')){
+    document.querySelectorAll('.pop-panel:not(.pop-min)').forEach(function(o){ if(o!==p) popMin(o); });
+    popPlace(p);
+  }
+}
+function popMin(p){ p.classList.add('pop-min'); var t=p.previousElementSibling; if(t) t.classList.add('pop-has'); }
+function popInit(){
+  // 監聽整個 body：草稿還原會整頁換掉 HTML，個別掛在面板上的監聽會失效
+  var allPanels=function(){ return document.querySelectorAll('.section [id$="-panel"]'); };
+  new MutationObserver(function(list){ list.forEach(function(m){
+    var p=m.target; if(!/-panel$/.test(p.id)||!p.closest('.section')) return;
+    if(m.oldValue!==p.getAttribute('style')) popSync(p);
+  }); }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['style'],attributeOldValue:true});
+  // 收起中的面板：點觸發片語只叫回來，不執行原本的關閉清除
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('.ftag'); var p=t&&t.nextElementSibling;
+    if(p && p.classList.contains('pop-min')){
+      e.stopPropagation(); e.preventDefault();
+      p.classList.remove('pop-min'); t.classList.remove('pop-has'); popSync(p); return;
+    }
+    if(!e.target.isConnected) return;
+    document.querySelectorAll('.pop-panel:not(.pop-min)').forEach(function(o){
+      if(!o.contains(e.target) && o.previousElementSibling!==t) popMin(o);
+    });
+  },true);
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape') return;
+    var o=document.querySelector('.pop-panel:not(.pop-min)');
+    if(o){ popMin(o); e.preventDefault(); }
+  },true);
+  window.addEventListener('resize',function(){ allPanels().forEach(popSync); fitColumns(); });
+  if(FIT_MQ.addEventListener) FIT_MQ.addEventListener('change',function(){ allPanels().forEach(popSync); fitColumns(); });
+  // 自由輸入有字時保持展開
+  document.addEventListener('input',function(e){ if(e.target.matches&&e.target.matches('.ot-field textarea')) e.target.classList.toggle('has-text',!!e.target.value.trim()); });
 }
 
 
@@ -6883,6 +6982,7 @@ function openSection(tool,i){
 
 window.addEventListener('DOMContentLoaded',function(){
   layoutSections();
+  popInit();
   buildCoverShortcuts();
   renderAppRevision();
   initFontScale();
