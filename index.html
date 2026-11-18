@@ -379,8 +379,28 @@ kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;bac
 .num-in{width:44px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 2px}
 .panel-title{font-weight:500;margin-bottom:6px;color:var(--warn)}
 
-/* ── 欄位說明文字（取代 placeholder） ───────── */
-.fh{font-size:11.5px;color:var(--text-faint);margin-top:4px;line-height:1.5}
+/* ── 診斷書：兩張卡片並排等高，欄位內容區貼在卡片底部並撐滿 ── */
+@media (min-width:821px){
+  #page-cert .sec-cols{display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+  #page-cert .sec-cols>.section{display:flex;flex-direction:column;margin:0 !important}
+  #page-cert .sec-cols>.section>.sec-body{flex:1;display:flex !important;flex-direction:column}
+  #page-cert .sec-cols .report-out{margin-top:auto !important;display:flex;flex-direction:column}
+}
+
+/* ── 自由輸入欄摺疊：按鈕顯示欄位名稱，有內容時接著顯示開頭幾個字；輸入框浮在上層，不推動版面 ── */
+.fold{margin-top:6px}
+.ot-btn{display:block;max-width:100%;padding:3px 10px;border:1px dashed var(--border-strong);border-radius:7px;background:transparent;
+  color:var(--text-muted);font:inherit;font-size:calc(13px * var(--fs));line-height:1.5;text-align:left;cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ot-btn:hover{border-color:var(--teal);color:var(--teal-strong)}
+.ot-btn.has{border-style:solid;border-color:var(--teal-line);background:var(--teal-light);color:var(--text)}
+.fold>textarea,.fold>input{display:none !important}
+.fold.open>textarea,.fold.open>input{display:block !important;position:fixed;z-index:420;margin:0;
+  width:min(480px,calc(100vw - 32px)) !important;box-shadow:var(--pop-shadow);background:var(--field) !important;border-color:var(--teal) !important}
+.fold.open>textarea{height:9em !important;min-height:0;resize:vertical}
+.fold.open>input{height:38px !important}
+.fold>label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
 
 /* ── 未完成報告還原提示 ─────────────────────── */
 .restore-bar{display:none;position:fixed;top:var(--nav-h);left:0;right:0;z-index:190;
@@ -425,7 +445,6 @@ body{font-size:calc(14px * var(--fs))}
 .cert-phrase{font-size:calc(16px * var(--fs));padding:.45em .8em}
 .fg,.ind-tags,.cert-phrases{gap:calc(7px * var(--fs))}
 .fl,.ot-field label,.pt-field label,.cert-phrase-group-label,.imt-box label{font-size:calc(12.5px * var(--fs))}
-.fh{font-size:calc(11.5px * var(--fs))}
 .sec-head{padding:calc(12px * var(--fs)) 18px}
 .sec-title{font-size:calc(15.5px * var(--fs))}
 .sec-sub{font-size:calc(12.5px * var(--fs))}
@@ -491,7 +510,8 @@ body{font-size:calc(14px * var(--fs))}
   .main-content>.sec-flow{grid-column:1;grid-row:2;min-height:0;overflow-y:auto;scrollbar-width:thin}
   .sec-cols{column-gap:12px;height:100%}
   .sec-cols.scroll{height:auto}
-  .sec-cols>.ind-bar,.sec-cols>.section{margin:0 0 10px !important}
+  .sec-cols>.ind-bar,.sec-cols>.section,.sec-pair>.section{margin:0 0 10px !important}
+  .sec-pair{break-inside:avoid}
   .sec-cols>.ind-bar{padding:8px 12px}
   .sec-cols .sec-head{break-after:avoid;padding-top:7px;padding-bottom:7px;cursor:default}
   .sec-cols .sec-head:hover{background:var(--surface)}
@@ -506,12 +526,12 @@ body{font-size:calc(14px * var(--fs))}
   .sec-cols .subsect{margin:2px 0 6px}
   .sec-cols .fl{margin-bottom:3px}
   .sec-cols .ot-field{margin-top:6px}
+  .sec-cols .imt-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   /* 自由輸入的標籤與提示字只給讀屏軟體，畫面上省一行 */
-  .sec-cols .ot-field>label,.sec-cols .ot-field>.fh,.sec-cols .ind-bar>.fh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .sec-cols .ot-field>label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
   .sec-cols .ind-bar .fl{margin-bottom:4px}
   .sec-cols .ind-free{height:28px;margin-top:6px}
-  .sec-cols .ot-field textarea{height:calc(1.5em + 10px);min-height:0;transition:height .15s}
-  .sec-cols .ot-field textarea:focus,.sec-cols .ot-field textarea.has-text{height:5.5em}
+  .sec-cols .ot-field textarea{height:calc(1.5em + 10px);min-height:0}
   .main-content>.report-out{grid-column:2;grid-row:1 / span 2;position:static;height:auto;min-height:0}
   /* 細項面板：浮在觸發片語旁，收起時保留內容 */
   .pop-panel{position:fixed !important;z-index:400;width:min(460px,calc(100vw - 32px)) !important;margin:0 !important;
@@ -580,7 +600,7 @@ body{font-size:calc(14px * var(--fs))}
 <body>
 
 <nav class="topnav">
-  <button class="nav-brand" onclick="showCover()" title="回首頁"><span class="logo" aria-hidden="true"></span><span class="wm">木子澄安</span><span class="wm-sub">診間報告</span></button>
+  <button class="nav-brand" onclick="showCover()" title="回首頁"><span class="wm">木子澄安</span><span class="wm-sub">診間報告</span></button>
   <div class="tool-tabs" role="tablist">
     <div class="tt-group">
       <button class="tt" data-tool="abd" onclick="showTool('abd')">腹部超音波<span class="k">1</span></button>
@@ -691,7 +711,7 @@ body{font-size:calc(14px * var(--fs))}
         <span class="ind-tag" data-val="abdominal mass" onclick="indTag(this)">Abdominal mass</span>
         <span class="ind-tag" data-val="tumor marker elevation" onclick="indTag(this)">Tumor marker ↑</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-abd" oninput="abdAutoPreview()"><div class="fh">其他適應症 free text…</div>
+      <input class="ind-free" type="text" id="ind-free-abd" oninput="abdAutoPreview()">
     </div>
     <!-- LIVER -->
     <div class="section open" id="asec-liver">
@@ -705,7 +725,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="heterogeneous echotexture compatible with parenchymal liver disease" data-lvl="warn" onclick="aTagEchoAbnormal(this)">Heterogeneous</span>
           <span class="ftag" id="ftag-fatty-btn" data-val="" data-lvl="warn" onclick="toggleFattyPanel()">Fatty liver</span>
           <div class="sub-panel warn" id="fatty-panel" style="display:none">
-            <div class="panel-title">Grade — select one:</div>
+            <div class="panel-title">Grade</div>
             <div class="chips6">
               <span class="ftag" id="fatty-mild" data-fgrade="mild" onclick="selectFatty(this)">Mild</span>
               <span class="ftag" id="fatty-moderate" data-fgrade="moderate" onclick="selectFatty(this)">Moderate</span>
@@ -760,7 +780,7 @@ body{font-size:calc(14px * var(--fs))}
           </div>
 
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-liver" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. 2.1cm hyperechoic nodule at S6...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-liver" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- GALLBLADDER -->
@@ -799,7 +819,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="intrahepatic bile duct dilatation" data-lvl="danger" onclick="tagMutex(this,'gb','CBD within normal limits')">IHBD dilatation</span>
           <span class="ftag" data-val="choledocholithiasis" data-lvl="danger" onclick="tagMutex(this,'gb','CBD within normal limits')">Choledocholithiasis</span>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-gb" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. CBD 8mm with distal stone...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-gb" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- PANCREAS -->
@@ -825,7 +845,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-pan" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. 2.5cm hypoechoic mass at pancreatic head, MPD 5mm...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-pan" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- SPLEEN -->
@@ -842,7 +862,7 @@ body{font-size:calc(14px * var(--fs))}
           <div id="Splcalc-panel" style="display:none;width:100%;margin:4px 0 2px 0;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:12px;"><div id="Splcalc-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Splcalc')">+ Add lesion</button></div>
           <span class="ftag" data-val="splenic infarction" data-lvl="danger" onclick="tagMutex(this,'spl','spleen normal in size and echotexture')">Infarction</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. Spleen 14cm, homogeneous...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-spl" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- KIDNEYS -->
@@ -873,7 +893,7 @@ body{font-size:calc(14px * var(--fs))}
           <div class="sub-panel danger" id="Lkmass-panel" style="display:none"><div id="Lkmass-list"></div><button class="mini-btn" onclick="abdSimplePlusAdd('Lkmass')">+ Add lesion</button></div>
           <span class="ftag" data-val="left kidney small (chronic renal disease)" data-lvl="warn" onclick="tagMutex(this,'kid','left kidney unremarkable')">Small kidney</span>
         </div>
-        <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. bilateral small renal cysts...</div></div>
+        <div class="ot-field" style="margin-top:10px"><label>Other findings</label><textarea id="aot-kid" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- OTHERS -->
@@ -890,7 +910,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="limited study due to overlying bowel gas" data-lvl="warn" onclick="tag(this,'aoth')">Limited (gas)</span>
           <span class="ftag" data-val="limited study due to body habitus" data-lvl="warn" onclick="tag(this,'aoth')">Limited (habitus)</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="aot-aoth" oninput="abdAutoPreview()"></textarea><div class="fh">e.g. small perihepatic ascites...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="aot-aoth" oninput="abdAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- RECOMMENDATION -->
@@ -907,7 +927,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Liver cirrhosis surveillance: repeat ultrasound and AFP in 6 months." data-lvl="warn" onclick="abdRecoTag(this)">Cirrhosis surveillance</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="abdRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="aot-areco" oninput="abdAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
+        <div class="ot-field"><label>Free text</label><textarea id="aot-areco" oninput="abdAutoPreview()" rows="2"></textarea></div>
       </div>
     </div>
     <div class="report-out" id="abd-rpt"><div class="rep-head"><span class="rep-title">ABDOMINAL ULTRASOUND REPORT</span><div class="rep-actions"><button class="btn-copy" onclick="copyRpt('abd-rtxt')" title="Ctrl＋Enter">複製</button><button class="btn-copy ghost" onclick="printRpt('abd-rtxt')">列印</button></div></div><div class="rep-edited"><span>報告已手動修改，點片語不會覆蓋你改的字。</span><button onclick="repRegen('abd')">改回片語版本</button></div><textarea class="rep-content" id="abd-rtxt" spellcheck="false"></textarea></div>
@@ -949,7 +969,7 @@ body{font-size:calc(14px * var(--fs))}
         <span class="ind-tag" data-val="goiter evaluation" onclick="indTag(this)">Goiter eval</span>
         <span class="ind-tag" data-val="suspected thyroiditis" onclick="indTag(this)">Thyroiditis</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-thy" oninput="thyAutoPreview()"><div class="fh">其他適應症 free text…</div>
+      <input class="ind-free" type="text" id="ind-free-thy" oninput="thyAutoPreview()">
     </div>
     <!-- THYROID GLAND -->
     <div class="section open" id="tsec-gland">
@@ -973,7 +993,7 @@ body{font-size:calc(14px * var(--fs))}
             <button class="mini-btn" onclick="thyCystAdd()">+ Add lesion</button>
           </div>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="tot-gland" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. bilateral thyroid lobes symmetric, isthmus 3mm...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="tot-gland" oninput="thyAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- NODULE SCORING -->
@@ -1005,7 +1025,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="lymph node calcification" data-lvl="danger" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Node calcification</span>
           <span class="ftag" data-val="cystic changes in cervical lymph node" data-lvl="danger" data-org="lymph" onclick="tagMutex(this,null,'no cervical lymphadenopathy')">Cystic changes</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="tot-lymph" oninput="thyAutoPreview()"></textarea><div class="fh">e.g. level III right cervical node 1.2cm...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="tot-lymph" oninput="thyAutoPreview()"></textarea></div>
       </div>
     </div>
     <!-- RECOMMENDATION -->
@@ -1019,7 +1039,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="FNA biopsy recommended per ACR TI-RADS guideline based on nodule size and category. Clinical correlation advised." data-lvl="warn" onclick="thyRecoTag(this)">FNA biopsy</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="thyRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="tot-treco" oninput="thyAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
+        <div class="ot-field"><label>Free text</label><textarea id="tot-treco" oninput="thyAutoPreview()" rows="2"></textarea></div>
       </div>
     </div>
     <div class="report-out" id="thy-rpt"><div class="rep-head"><span class="rep-title">THYROID ULTRASOUND REPORT (TI-RADS)</span><div class="rep-actions"><button class="btn-copy" onclick="copyRpt('thy-rtxt')" title="Ctrl＋Enter">複製</button><button class="btn-copy ghost" onclick="printRpt('thy-rtxt')">列印</button></div></div><div class="rep-edited"><span>報告已手動修改，點片語不會覆蓋你改的字。</span><button onclick="repRegen('thy')">改回片語版本</button></div><textarea class="rep-content" id="thy-rtxt" spellcheck="false"></textarea></div>
@@ -1065,7 +1085,7 @@ body{font-size:calc(14px * var(--fs))}
         <span class="ind-tag" data-val="carotid bruit" onclick="indTag(this)">Carotid bruit</span>
         <span class="ind-tag" data-val="post-stenting follow-up" onclick="indTag(this)">Post-stenting F/U</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-car" oninput="carAutoPreview()"><div class="fh">其他適應症 free text…</div>
+      <input class="ind-free" type="text" id="ind-free-car" oninput="carAutoPreview()">
     </div>
 
     <!-- IMT -->
@@ -1123,7 +1143,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="asymmetric IMT (right > left)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="tagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric R&gt;L</span>
           <span class="ftag" data-val="asymmetric IMT (left > right)" data-lvl="warn" data-org="imt" data-group="imt-side" onclick="tagEx(this,'imt','imt-side','IMT within normal limits bilaterally')">Asymmetric L&gt;R</span>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-imt" oninput="carAutoPreview()"></textarea><div class="fh">e.g. diffuse intimal thickening of bilateral CCA...</div></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-imt" oninput="carAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1155,7 +1175,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-plaque" oninput="carAutoPreview()"></textarea><div class="fh">e.g. multiple calcified plaques at bilateral carotid bifurcation...</div></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-plaque" oninput="carAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1187,7 +1207,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="dampened waveform" data-lvl="danger" data-org="flow" onclick="tag(this,'flow')">Dampened waveform</span>
           <span class="ftag" data-val="reversed flow" data-lvl="danger" data-org="flow" onclick="tag(this,'flow')">Reversed flow</span>
         </div></div>
-        <div class="ot-field"><label>PSV / EDV values</label><textarea id="cot-flow" oninput="carAutoPreview()"></textarea><div class="fh">e.g. R-ICA PSV 180 cm/s, EDV 60 cm/s, ICA/CCA ratio 3.2...</div></div>
+        <div class="ot-field"><label>PSV / EDV values</label><textarea id="cot-flow" oninput="carAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1206,7 +1226,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="right vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">R not visualized</span>
           <span class="ftag" data-val="left vertebral artery not visualized" data-lvl="warn" data-org="vert" onclick="tagMutex(this,'vert','bilateral vertebral arteries normal flow')">L not visualized</span>
         </div>
-        <div class="ot-field"><label>Other notes</label><textarea id="cot-vert" oninput="carAutoPreview()"></textarea><div class="fh">e.g. right VA PSV 45 cm/s, normal triphasic waveform...</div></div>
+        <div class="ot-field"><label>Other notes</label><textarea id="cot-vert" oninput="carAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1221,7 +1241,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Cardiovascular risk factor modification recommended (lipid management, blood pressure control, lifestyle modification)." data-lvl="ok" onclick="carRecoTag(this)">CV risk modification</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="carRecoTag(this)">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="cot-creco2" oninput="carAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
+        <div class="ot-field"><label>Free text</label><textarea id="cot-creco2" oninput="carAutoPreview()" rows="2"></textarea></div>
       </div>
     </div>
     <div class="report-out" id="car-rpt"><div class="rep-head"><span class="rep-title">CAROTID ULTRASOUND REPORT</span><div class="rep-actions"><button class="btn-copy" onclick="copyRpt('car-rtxt')" title="Ctrl＋Enter">複製</button><button class="btn-copy ghost" onclick="printRpt('car-rtxt')">列印</button></div></div><div class="rep-edited"><span>報告已手動修改，點片語不會覆蓋你改的字。</span><button onclick="repRegen('car')">改回片語版本</button></div><textarea class="rep-content" id="car-rtxt" spellcheck="false"></textarea></div>
@@ -1272,7 +1292,7 @@ body{font-size:calc(14px * var(--fs))}
         <span class="ind-tag" data-val="dysphagia evaluation" onclick="indTag(this)">Dysphagia eval</span>
         <span class="ind-tag" data-val="Barrett's esophagus surveillance" onclick="indTag(this)">Barrett's surveillance</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-egd" oninput="egdAutoPreview()"><div class="fh">其他適應症 free text…</div>
+      <input class="ind-free" type="text" id="ind-free-egd" oninput="egdAutoPreview()">
     </div>
 
     <!-- 00 PREPARATION -->
@@ -1295,7 +1315,7 @@ body{font-size:calc(14px * var(--fs))}
     </div>
 
     <!-- 01 ESOPHAGUS -->
-    <div class="section open" id="esec-esoph">
+    <div class="section open" id="esec-esoph" data-keep-next>
       <div class="sec-head" onclick="tSec('esec-esoph')"><span class="sec-num">01</span><span class="sec-title">Esophagus <span class="sec-sub">食道</span></span><span class="sec-status normal" id="est-esoph">NORMAL</span><span class="sec-chev">▾</span></div>
       <div class="sec-body">
         <div class="subsect"><div class="fl">General</div><div class="fg">
@@ -1303,7 +1323,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Mild esophagitis without definite mucosal break." data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Mild esophagitis</span>
           <span class="ftag" id="ftag-la-btn" data-val="" data-lvl="warn" onclick="toggleLaPanel()">Reflux esophagitis</span>
           <div class="sub-panel warn" id="la-panel" style="display:none">
-            <div class="panel-title">LA Classification — select one:</div>
+            <div class="panel-title">LA Classification</div>
             <div class="chips6">
               <span class="ftag" id="la-A" data-grade="A" onclick="selectLa(this)">LA grade A</span>
               <span class="ftag" id="la-B" data-grade="B" onclick="selectLa(this)">LA grade B</span>
@@ -1320,7 +1340,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Schatzki ring" data-lvl="warn" onclick="tagMutex(this,'esoph','No obvious mucosa lesion nor mass along the lumen. The squamous columnar junction is at 40cm level from incisor.')">Schatzki ring</span>
           <span class="ftag" id="ftag-caustic-btn" data-val="" data-lvl="danger" onclick="toggleCausticPanel()">Caustic injury</span>
           <div class="sub-panel danger" id="caustic-panel" style="display:none">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Zargar Classification — select one:</div>
+            <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Zargar Classification</div>
             <div class="chips6">
               <span class="ftag" id="caustic-0"    data-grade="0"    data-desc="Normal mucosa"                                         onclick="selectCaustic(this)">Grade 0</span>
               <span class="ftag" id="caustic-I"    data-grade="I"    data-desc="Edema and erythema of the mucosa"                       onclick="selectCaustic(this)">Grade I</span>
@@ -1423,7 +1443,7 @@ body{font-size:calc(14px * var(--fs))}
 
           <span class="ftag" id="ftag-varices-btn" data-val="" data-lvl="danger" onclick="toggleVaricesPanel()">Esophageal varices</span>
           <div class="sub-panel danger" id="varices-panel" style="display:none">
-            <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Form classification — select one:</div>
+            <div style="font-weight:500;margin-bottom:6px;color:var(--danger);">Form classification</div>
             <div class="chips6">
               <span class="ftag" id="varices-F1" data-form="F1" data-shape="tortuous" onclick="selectVarices(this)">F1 — tortuous</span>
               <span class="ftag" id="varices-F2" data-form="F2" data-shape="nodular"  onclick="selectVarices(this)">F2 — nodular</span>
@@ -1442,7 +1462,7 @@ body{font-size:calc(14px * var(--fs))}
             <!-- HSV/CMV sub-panel -->
             <div class="sub-box" id="eatyp-sub-hcmv" style="display:none">
               <div style="margin-bottom:6px;">
-                <span style="font-weight:500;">Location (select one):</span>
+                <span style="font-weight:500;">Location</span>
                 <span style="display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:8px;">
                   <span class="ftag" id="hcmv-upper" data-loc="upper third" onclick="selectHcmvLoc(this)">Upper third</span>
                   <span class="ftag" id="hcmv-mid"   data-loc="mid third"   onclick="selectHcmvLoc(this)">Mid third</span>
@@ -1453,7 +1473,7 @@ body{font-size:calc(14px * var(--fs))}
             <!-- Candidiasis sub-panel -->
             <div class="sub-box" id="eatyp-sub-cand" style="display:none">
               <div style="margin-bottom:6px;">
-                <span style="font-weight:500;">Location (3 select 1):</span>
+                <span style="font-weight:500;">Location</span>
                 <span style="display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:8px;">
                   <span class="ftag" id="cand-upper" data-loc="upper third" onclick="selectCandLoc(this)">Upper third</span>
                   <span class="ftag" id="cand-mid"   data-loc="mid third"   onclick="selectCandLoc(this)">Mid third</span>
@@ -1473,7 +1493,7 @@ body{font-size:calc(14px * var(--fs))}
           </div>
 
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-esoph" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. whitish plaques at mid-esophagus...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-esoph" oninput="egdAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1509,7 +1529,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag sel-ok" data-val="cardia closes well" data-lvl="ok" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia closes well</span>
           <span class="ftag" data-val="cardia does not close completely" data-lvl="warn" data-group="ej-cardia" onclick="tagEx(this,'ej','ej-cardia')">Cardia incomplete closure</span>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. 2cm hiatal hernia with bile reflux...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-ej" oninput="egdAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1615,7 +1635,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
             <!-- Gastric varices sub-panel -->
             <div class="sub-box" id="vasc-gvar-sub" style="display:none">
-              <div style="font-weight:500;margin-bottom:5px;">Sarin classification — select one:</div>
+              <div style="font-weight:500;margin-bottom:5px;">Sarin classification</div>
               <div style="display:flex;flex-wrap:wrap;gap:5px;">
                 <span class="ftag" id="gvar-gov1" data-gtype="GOV1" data-gdesc="Tortuous gastric varices along the lesser curvature." onclick="selectGvar(this)">GOV1</span>
                 <span class="ftag" id="gvar-gov2" data-gtype="GOV2" data-gdesc="Tortuous gastric varices along the greater curvature extending toward the gastric fundus." onclick="selectGvar(this)">GOV2</span>
@@ -1652,7 +1672,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
         </div></div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-stomach" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. 1.2cm flat elevated lesion at lesser curvature of body...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-stomach" oninput="egdAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1696,7 +1716,7 @@ body{font-size:calc(14px * var(--fs))}
 
           <span class="ftag" data-val="A diverticulum was noted near major papilla (with food stasis inside), favor juxtapapillary diverticulum." data-lvl="ok" data-label="Juxtapapillary diverticulum (JPDD)" onclick="tagMutex(this,'duo','No active mucosal lesion nor mass of the bulb. Negative findings of the proximal 2nd portion. (papilla not approachable)')">JPDD</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="eot-duo" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. active ulcer 8mm at anterior wall of duodenal bulb...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="eot-duo" oninput="egdAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1715,7 +1735,7 @@ body{font-size:calc(14px * var(--fs))}
           </div>
           <span class="ftag" id="ftag-incomp-btn" data-val="" data-lvl="warn" onclick="toggleIncompPanel()">Incomplete study</span>
           <div class="sub-panel warn" id="incomp-panel" style="display:none">
-            <div class="panel-title">Reason (select all that apply):</div>
+            <div class="panel-title">Reason（可複選）</div>
             <div class="chips6">
               <span class="ftag" id="incomp-food"  onclick="toggleIncompReason('food stasis',this)">Food stasis</span>
               <span class="ftag" id="incomp-prep"  onclick="toggleIncompReason('unsatisfied preparation',this)">Unsatisfied preparation</span>
@@ -1757,7 +1777,7 @@ body{font-size:calc(14px * var(--fs))}
             <div style="line-height:2;">Count of band(s): <input id="eband-n" type="text" value="3" oninput="updateEband()" style="width:32px;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:3px;margin:0 3px"></div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings / Notes</label><textarea id="eot-eoth" oninput="egdAutoPreview()"></textarea><div class="fh">e.g. CLO test result: positive. Pathology pending...</div></div>
+        <div class="ot-field"><label>Other findings / Notes</label><textarea id="eot-eoth" oninput="egdAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1773,7 +1793,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="Barrett's esophagus surveillance endoscopy recommended per guidelines." data-lvl="warn" onclick="tag(this,'ereco')">Barrett's surveillance</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="tag(this,'ereco')">Transfer to hospital</span>
         </div>
-        <div class="ot-field"><label>Free text</label><textarea id="eot-ereco" oninput="egdAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
+        <div class="ot-field"><label>Free text</label><textarea id="eot-ereco" oninput="egdAutoPreview()" rows="2"></textarea></div>
       </div>
     </div>
 
@@ -1824,7 +1844,7 @@ body{font-size:calc(14px * var(--fs))}
         <span class="ind-tag" data-val="IBD follow-up" onclick="indTag(this)">IBD follow-up</span>
         <span class="ind-tag" data-val="family history of colorectal cancer" onclick="indTag(this)">Family Hx CRC</span>
       </div>
-      <input class="ind-free" type="text" id="ind-free-cfs" oninput="cfsAutoPreview()"><div class="fh">其他適應症 free text…</div>
+      <input class="ind-free" type="text" id="ind-free-cfs" oninput="cfsAutoPreview()">
     </div>
 
     <!-- 00 PREPARATION -->
@@ -1919,7 +1939,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-val="stricture of terminal ileum" data-lvl="danger" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Stricture</span>
           <span class="ftag" data-val="backwash ileitis" data-lvl="warn" onclick="tagMutex(this,'term','terminal ileum unremarkable')">Backwash ileitis</span>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-term" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. multiple aphthous ulcers at TI, Crohn's disease suspected...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-term" oninput="cfsAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -1986,7 +2006,7 @@ body{font-size:calc(14px * var(--fs))}
           </div>
         </div></div>
 
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-colon" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. multiple sigmoid diverticula without signs of active inflammation...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-colon" oninput="cfsAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -2049,7 +2069,7 @@ body{font-size:calc(14px * var(--fs))}
             <div id="rmal-panels"></div>
           </div>
         </div>
-        <div class="ot-field"><label>Other findings</label><textarea id="cot-rectum" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. grade 2 internal hemorrhoids with contact bleeding...</div></div>
+        <div class="ot-field"><label>Other findings</label><textarea id="cot-rectum" oninput="cfsAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -2089,7 +2109,7 @@ body{font-size:calc(14px * var(--fs))}
           </div>
           <span class="ftag" id="ftag-cincomp-btn" data-val="" data-lvl="warn" onclick="toggleCincompPanel()">Incomplete study</span>
           <div class="sub-panel warn" id="cincomp-panel" style="display:none">
-            <div class="panel-title">Reason (select all that apply):</div>
+            <div class="panel-title">Reason（可複選）</div>
             <div class="chips6">
               <span class="ftag" id="cincomp-food"  onclick="toggleCincompReason('food stasis',this)">Food stasis</span>
               <span class="ftag" id="cincomp-prep"  onclick="toggleCincompReason('unsatisfied preparation',this)">Unsatisfied preparation</span>
@@ -2098,7 +2118,7 @@ body{font-size:calc(14px * var(--fs))}
             </div>
           </div>
         </div>
-        <div class="ot-field"><label>Notes</label><textarea id="cot-polyp" oninput="cfsAutoPreview()"></textarea><div class="fh">e.g. 8mm sessile polyp at sigmoid, removed by cold snare...</div></div>
+        <div class="ot-field"><label>Notes</label><textarea id="cot-polyp" oninput="cfsAutoPreview()"></textarea></div>
       </div>
     </div>
 
@@ -2115,8 +2135,7 @@ body{font-size:calc(14px * var(--fs))}
           <span class="ftag" data-tier="p10" data-val="≥10 adenomas: repeat colonoscopy in 1 year recommended." data-lvl="danger" data-group="cfs-repeat" onclick="tagEx(this,'creco','cfs-repeat')">≥10 adenomas – repeat CFS 1 yr</span>
           <span class="ftag" data-val="Transfer to hospital for further evaluation and management." data-lvl="danger" onclick="tag(this,'creco')">Transfer to hospital</span>
         </div>
-        <div class="fh" id="cfs-repeat-hint" hidden>已依瘜肉數量與大小自動預選追蹤間隔（國健署 2021），病理回來後請再確認；點選其他間隔即改為手動。</div>
-        <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" rows="2"></textarea><div class="fh">其他建議…</div></div>
+        <div class="ot-field"><label>Free text</label><textarea id="cot-creco" oninput="cfsAutoPreview()" rows="2"></textarea></div>
       </div>
     </div>
 
@@ -6069,7 +6088,7 @@ function cfsGenerate() {
     <div class="section open" id="csec-dx" style="scroll-margin-top:14px">
       <div class="sec-head" onclick="tSec('csec-dx')">
         <span class="sec-num">01</span>
-        <span class="sec-title">診斷 <span class="sec-sub">Diagnosis — 點選片語即時帶入，亦可自行輸入</span></span>
+        <span class="sec-title">診斷 <span class="sec-sub">Diagnosis</span></span>
         <span class="sec-chev">▾</span>
       </div>
       <div class="sec-body">
@@ -6127,7 +6146,7 @@ function cfsGenerate() {
     <div class="section open" id="csec-order" style="scroll-margin-top:14px">
       <div class="sec-head" onclick="tSec('csec-order')">
         <span class="sec-num">02</span>
-        <span class="sec-title">醫囑 <span class="sec-sub">Orders — 點選片語即時帶入，亦可自行輸入</span></span>
+        <span class="sec-title">醫囑 <span class="sec-sub">Orders</span></span>
         <span class="sec-chev">▾</span>
       </div>
       <div class="sec-body">
@@ -6141,7 +6160,6 @@ function cfsGenerate() {
             <input type="number" id="cert-day" min="1" max="31" style="width:36px;height:24px;font-family:var(--mono);font-size:14px;text-align:center;padding:0 3px;border:none;border-bottom:1px solid var(--border);background:transparent;color:var(--text);outline:none" oninput="certDateChanged()">日
           </span>
           就醫
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text-faint);margin-left:8px">（民國年 — 自動帶入今日）</span>
         </div>
 
         <!-- Order phrases -->
@@ -6198,7 +6216,7 @@ function cfsGenerate() {
         <span class="sec-chev">▾</span>
       </div>
       <div class="sec-body">
-        <div class="fl">Symptoms — 點選複選</div>
+        <div class="fl">Symptoms（可複選）</div>
         <div class="fg" id="opd-fg-s" style="margin-bottom:5px">
           <span class="ftag" data-grp="s" data-val="persistent abdominal pain" onclick="opdTag(this,'s')">persistent abdominal pain</span>
           <span class="ftag" data-grp="s" data-val="off and on abdominal pain" onclick="opdTag(this,'s')">off and on abdominal pain</span>
@@ -6217,7 +6235,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:6px">
           <label>Free text</label>
-          <textarea id="opd-s-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('s');opdAutoPreview()"></textarea><div class="fh">其他症狀補充…</div>
+          <textarea id="opd-s-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('s');opdAutoPreview()"></textarea>
         </div>
       </div>
     </div>
@@ -6263,7 +6281,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:8px">
           <label>Free text</label>
-          <textarea id="opd-o-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('o');opdAutoPreview()"></textarea><div class="fh">其他理學檢查補充…</div>
+          <textarea id="opd-o-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('o');opdAutoPreview()"></textarea>
         </div>
       </div>
     </div>
@@ -6277,7 +6295,7 @@ function cfsGenerate() {
         <span class="sec-chev">▾</span>
       </div>
       <div class="sec-body">
-        <div class="fl">Management Plan — 點選複選</div>
+        <div class="fl">Management Plan（可複選）</div>
         <div class="fg" id="opd-fg-p" style="margin-bottom:5px">
           <span class="ftag" data-grp="p" data-val="Abdominal symptoms workup with echo" onclick="opdTag(this,'p')">echo workup</span>
           <span class="ftag" data-grp="p" data-val="Upper-GI symptoms workup with EGD" onclick="opdTag(this,'p')">EGD workup</span>
@@ -6298,7 +6316,7 @@ function cfsGenerate() {
         </div>
         <div class="ot-field" style="margin-top:6px">
           <label>Free text</label>
-          <textarea id="opd-p-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('p');opdAutoPreview()"></textarea><div class="fh">其他處置補充…</div>
+          <textarea id="opd-p-free" rows="2" style="min-height:40px" oninput="opdUpdStatus('p');opdAutoPreview()"></textarea>
         </div>
       </div>
     </div>
@@ -6328,7 +6346,10 @@ var REVISION_NOTE = [
   '首頁與頁首改成診所標誌加目錄式排版，拿掉卡片、色條與說明文字',
   '點改版日期可以看這次改了什麼',
   '畫面穩定：點片語時段落標題不再換行跳動；甲狀腺結節與頸動脈斑塊的細項改成浮出視窗',
-  '程式精簡：片語按鈕、細項面板開關、大腸鏡四種多病灶面板各改用同一套程式；重複的行內樣式收成 class，報告文字不變'
+  '程式精簡：片語按鈕、細項面板開關、大腸鏡四種多病灶面板各改用同一套程式；重複的行內樣式收成 class，報告文字不變',
+  '頁首只留文字；頸動脈 IMT 四格改成兩格一列，不再被遮住；胃鏡 E-G junction 接在 Esophagus 正下方',
+  '門診病歷以外的自由輸入欄平常收成一顆按鈕，點了才浮出輸入框，有內容時按鈕顯示開頭文字',
+  '診斷書兩張卡片等高；七個功能區拿掉灰色說明小字，只留（可複選）'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
@@ -6709,6 +6730,7 @@ function initFontScale(){
    順序不變：左欄由上往下讀完，再讀右欄。窄螢幕時兩欄用 display:contents 還原成單欄。
    已分過欄（例如草稿還原回來的頁面）就不再處理。 */
 function layoutSections(){
+  setTimeout(foldFreeText,0);
   document.querySelectorAll('.main-content').forEach(function(mc){
     if(mc.querySelector(':scope>.sec-flow')) return;
     var secs=Array.prototype.filter.call(mc.children,function(c){ return c.classList.contains('section')||c.classList.contains('ind-bar'); });
@@ -6717,8 +6739,83 @@ function layoutSections(){
     var cols=document.createElement('div'); cols.className='sec-cols';
     flow.appendChild(cols); mc.insertBefore(flow,secs[0]);
     secs.forEach(function(sec){ cols.appendChild(sec); });
+    // 結構相鄰的段落（食道＋食胃接合部）包成一組，排在同一欄上下相接
+    cols.querySelectorAll(':scope>[data-keep-next]').forEach(function(a){
+      var b=a.nextElementSibling; if(!b) return;
+      var pair=document.createElement('div'); pair.className='sec-pair';
+      cols.insertBefore(pair,a); pair.appendChild(a); pair.appendChild(b);
+    });
   });
 }
+
+/* ── 自由輸入欄摺疊（門診病歷與診斷書除外） ──────────────────────
+   每個 .ot-field 與適應症的自由輸入框，平常只顯示一顆按鈕；點了在按鈕下方浮出輸入框，
+   離開輸入框就收起。輸入框本身（id、內容）不變，報告產生的程式不用改。可重複執行（草稿還原後再跑一次）。 */
+function foldLabel(f){
+  var l=f.querySelector(':scope>label'); return f.dataset.foldName||(l?l.textContent.trim():'Other');
+}
+function foldRefresh(f){
+  var b=f.querySelector(':scope>.ot-btn'), x=f.querySelector(':scope>textarea, :scope>input'); if(!b||!x) return;
+  var v=x.value.trim().replace(/\s+/g,' ');
+  b.textContent=v ? foldLabel(f)+'：'+v : '＋ '+foldLabel(f);
+  b.classList.toggle('has',!!v);
+}
+function foldFreeText(){
+  document.querySelectorAll('.ind-free').forEach(function(x){
+    if(x.closest('#page-opd, #page-cert')||x.parentNode.classList.contains('fold')) return;
+    var w=document.createElement('div'); w.className='fold'; w.dataset.foldName='其他適應症';
+    x.parentNode.insertBefore(w,x); w.appendChild(x);
+  });
+  document.querySelectorAll('.ot-field').forEach(function(f){
+    if(f.closest('#page-opd, #page-cert')) return;
+    f.classList.add('fold');
+  });
+  document.querySelectorAll('.fold').forEach(function(f){
+    f.classList.remove('open');
+    if(!f.querySelector(':scope>.ot-btn')){
+      var b=document.createElement('button'); b.type='button'; b.className='ot-btn';
+      var x=f.querySelector(':scope>textarea, :scope>input'); f.insertBefore(b,x);
+    }
+    foldRefresh(f);
+  });
+}
+function foldPlace(f){
+  var b=f.querySelector(':scope>.ot-btn'), x=f.querySelector(':scope>textarea, :scope>input');
+  var r=b.getBoundingClientRect(), w=x.offsetWidth||480, h=x.offsetHeight||140;
+  var ro=document.querySelector('.page.visible .report-out'), lim=ro?ro.getBoundingClientRect().left-8:window.innerWidth-8;
+  if(lim-w<8) lim=window.innerWidth-8;
+  var y=r.bottom+4; if(y+h>window.innerHeight-8) y=Math.max(8,r.top-h-4);
+  x.style.left=Math.min(Math.max(8,r.left),lim-w)+'px'; x.style.top=y+'px';
+}
+function foldClose(f){ f.classList.remove('open'); var x=f.querySelector(':scope>textarea, :scope>input'); if(x){ x.style.left=''; x.style.top=''; } foldRefresh(f); }
+document.addEventListener('mousedown',function(e){
+  // 輸入框開著時按自己的按鈕：不讓輸入框先失焦，交給 click 收起
+  var b=e.target.closest&&e.target.closest('.ot-btn'); if(b&&b.parentNode.classList.contains('open')) e.preventDefault();
+});
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('.ot-btn');
+  if(b){
+    var f=b.parentNode;
+    if(f.classList.contains('open')){ foldClose(f); return; }
+    document.querySelectorAll('.fold.open').forEach(foldClose);
+    f.classList.add('open'); foldPlace(f);
+    var x=f.querySelector(':scope>textarea, :scope>input'); x.focus(); x.setSelectionRange&&x.setSelectionRange(x.value.length,x.value.length);
+    return;
+  }
+  // 「下一位病人」等程式清空欄位後，按鈕上的文字跟著更新
+  setTimeout(function(){ document.querySelectorAll('.fold:not(.open)').forEach(foldRefresh); },0);
+});
+document.addEventListener('focusout',function(e){
+  var f=e.target.parentNode; if(!f||!f.classList||!f.classList.contains('fold')||!f.classList.contains('open')) return;
+  setTimeout(function(){ if(!f.contains(document.activeElement)) foldClose(f); },0);
+});
+document.addEventListener('keydown',function(e){
+  // Enter 在單行輸入框直接收起（注音選字中的 Enter 不算）
+  if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229&&e.target.matches&&e.target.matches('.fold.open>input')){ e.preventDefault(); e.target.blur(); }
+});
+function foldReplace(){ document.querySelectorAll('.fold.open').forEach(foldPlace); }
+window.addEventListener('resize',function(){ foldReplace(); setTimeout(foldReplace,200); });
+document.addEventListener('scroll',foldReplace,true);
 /* 一頁版面：從 3 欄試到 5 欄，第一個塞得下的就用；都塞不下就 4 欄、片語區上下捲動 */
 var FIT_MQ=window.matchMedia('(min-width:1280px)');
 function fitColumns(){
