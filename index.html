@@ -536,6 +536,12 @@ body{font-size:calc(14px * var(--fs))}
   .sec-cols .sec-head{break-after:avoid;padding-top:7px;padding-bottom:7px;cursor:default}
   .sec-cols .sec-head:hover{background:var(--surface)}
   .sec-cols .sec-chev{display:none}
+  /* 欄寬不夠時標題換行，不截字：先讓中文副標掉到下一行，英文最長的字也放不下時狀態標籤才移到第二行。
+     狀態標籤固定寬度，換不換行只看欄寬，點片語不會讓標題跳動 */
+  .sec-cols .sec-head{flex-wrap:wrap;gap:4px 8px;padding-left:12px;padding-right:12px}
+  .sec-cols .sec-title{flex:1 1 0;min-width:min-content;flex-wrap:wrap;white-space:normal;overflow:visible}
+  .sec-cols .sec-title .sec-sub{overflow:visible;white-space:nowrap}
+  .sec-cols .sec-status{margin-left:auto}
   .sec-cols .section .sec-body{display:block}
   .sec-cols .section .sec-head{border-bottom-color:var(--border)}
   .main-content>.sec-flow{scrollbar-gutter:stable}
@@ -6354,7 +6360,8 @@ var REVISION_NOTE = [
   '診斷書的段落導覽與兩張卡片標題只寫「01 診斷」「02 醫囑」',
   '寬螢幕：病人欄位移到報告欄上方，片語區從頂端到底；塞不下時自動縮小間距（字級不變）；胃鏡四欄寬度微調',
   '片語按鈕只有顏色有過場動畫，切換間距時不再抖動',
-  '新增「常用組合」：「下一位病人」旁的按鈕，把選好的片語存成組合（例如腹超全正常），下一位病人一鍵套用；可改名、刪除，只存在這台電腦，病人欄位不存'
+  '新增「常用組合」：「下一位病人」旁的按鈕，把選好的片語存成組合（例如腹超全正常），下一位病人一鍵套用；可改名、刪除，只存在這台電腦，病人欄位不存',
+  '段落標題不再被截字：欄位窄時中文副標換到下一行，再窄時狀態標籤移到標題下方；每欄至少約 210px，1440 寬改成 4 欄'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
@@ -7073,11 +7080,14 @@ function fitColumns(){
     if(flow.scrollHeight>flow.clientHeight+2) cols.classList.add('cmp');
     return;
   }
+  // 每欄至少約 210px（隨字級放大），太窄時片語與標題擠成好幾行，寧可少一欄
+  var fs=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs'))||1;
+  var kmax=Math.max(3,Math.min(5,Math.floor((cols.clientWidth+12)/(210*fs+12))));
   var avail=flow.clientHeight, pick=null;
   for(var c=0;c<2&&!pick;c++){
     cols.classList.toggle('cmp',c===1);
     var cand=null;
-    for(var k=3;k<=5;k++){
+    for(var k=3;k<=kmax;k++){
       // 每段各占一欄，量出這個欄寬下各段的高度（含下方間距）
       cols.style.columnCount=k;
       secs.forEach(function(s){ s.style.breakBefore='column'; });
