@@ -175,6 +175,24 @@ kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:5px;bac
 .btn-clr{width:100%;padding:9px;background:var(--surface);color:var(--danger);
   border:1px solid var(--danger-line);border-radius:8px;font-size:13.5px;cursor:pointer;transition:all .12s}
 .btn-clr:hover{background:var(--danger-light);border-color:var(--danger)}
+.btn-combo{width:100%;padding:9px;margin-bottom:8px;background:var(--surface);color:var(--teal-strong);border:1px solid var(--teal-line);border-radius:8px;font-size:13.5px;cursor:pointer;transition:background-color .12s,border-color .12s}
+.btn-combo:hover,.btn-combo[aria-expanded="true"]{background:var(--teal-light);border-color:var(--teal)}
+.combo-pop{position:fixed;z-index:500;width:min(340px,calc(100vw - 32px));max-height:70vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:12px;font-size:14px;color:var(--text)}
+.combo-pop[hidden]{display:none}
+.cp-head{font-weight:600;color:var(--navy);margin-bottom:10px}
+.cp-row{display:flex;gap:6px;align-items:center;margin-bottom:6px}
+.cp-use{flex:1;min-width:0;text-align:left;padding:8px 10px;border:1px solid var(--border);border-radius:7px;background:var(--surface2);color:var(--text);font-size:14px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp-use:hover,.cp-use:focus-visible{border-color:var(--teal);background:var(--teal-light)}
+.cp-act{padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap}
+.cp-act.warn,.cp-ok.warn{background:var(--danger-light);color:var(--danger);border:1px solid var(--danger)}
+.cp-empty{padding:2px 0 10px;line-height:1.6}
+.cp-save{border-top:1px solid var(--border);padding-top:10px;margin-top:6px}
+.cp-save label{display:block;margin-bottom:6px}
+.cp-saverow{display:flex;gap:6px}
+.combo-pop input{flex:1;min-width:0;height:34px;padding:0 10px;border:1px solid var(--border);border-radius:7px;background:var(--field);color:var(--text);font-size:14px}
+.combo-pop input.bad{border-color:var(--danger);outline:1px solid var(--danger)}
+.cp-ok{padding:0 14px;height:34px;border:1px solid var(--teal);border-radius:7px;background:var(--teal);color:var(--on-accent);font-size:14px;cursor:pointer;white-space:nowrap}
+.cp-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .sb-keys{margin-top:12px;font-size:12px;color:var(--text-faint);line-height:1.9}
 .sb-keys kbd{font-size:12px;padding:1px 5px}
 .main-content{padding:24px 28px 40px;min-width:0}
@@ -473,7 +491,7 @@ body{font-size:calc(14px * var(--fs))}
   .nav-item{margin:0;white-space:nowrap;padding:calc(6px * var(--fs)) 11px;border-radius:20px;gap:7px}
   .nav-item .ndot{margin-left:2px}
   .sb-foot{display:flex;gap:8px;padding:0;border-top:none;background:none;flex-shrink:0}
-  .btn-gen,.btn-clr{width:auto;margin:0;padding:calc(8px * var(--fs)) 16px;white-space:nowrap}
+  .btn-gen,.btn-clr,.btn-combo{width:auto;margin:0;padding:calc(8px * var(--fs)) 16px;white-space:nowrap}
   .sb-keys{display:none}
   .section,.section[style]{scroll-margin-top:calc(var(--nav-h) + var(--bar-h) + 12px) !important}
   .main-content{padding:20px clamp(16px,2vw,36px) 40px}
@@ -581,7 +599,7 @@ body{font-size:calc(14px * var(--fs))}
   .nav-item{padding:6px 10px;margin:0;background:var(--surface2)}
   .sb-foot{display:flex;gap:8px;padding:0;border-top:none;flex:1 1 100%}
   .sb-keys{display:none}
-  .btn-gen,.btn-clr{margin-bottom:0}
+  .btn-gen,.btn-clr,.btn-combo{margin-bottom:0}
   .two-col{grid-template-columns:1fr}
   .imt-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -595,7 +613,7 @@ body{font-size:calc(14px * var(--fs))}
   /* margin:0 是為了讓瀏覽器不要自動加頁首頁尾，紙張留白改由 .report-out 負責 */
   @page{margin:0;size:A4}
   .topnav,.fs-switch,.sidebar,.restore-bar,.ind-bar,.pt-bar,.app-revision,.toast,.rep-edited,.rep-actions,
-  .btn-gen,.btn-clr,.btn-copy,.sec-chev{display:none !important}
+  .btn-gen,.btn-clr,.btn-combo,.combo-pop,.btn-copy,.sec-chev{display:none !important}
   body{background:#fff;font-size:12px;margin:0}
   .report-out,.main-content>.report-out,.rep-content{background:#fff !important;color:#000 !important}
   .page{padding-top:0}
@@ -2165,6 +2183,7 @@ function getIndication(prefix){
 }
 var currentTool='cover';
 function showPage(id){
+  var cp=document.getElementById('combo-pop'); if(cp&&!cp.hidden){ cp.hidden=true; document.querySelectorAll('.btn-combo').forEach(function(b){ b.setAttribute('aria-expanded','false'); }); }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible','with-banner'));
   document.getElementById('page-'+id).classList.add('visible');
   document.querySelectorAll('.tt').forEach(function(t){var on=t.dataset.tool===id;t.classList.toggle('on',on);if(on)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');});
@@ -6334,7 +6353,8 @@ var REVISION_NOTE = [
   '首頁只留「消化內科」，分類標題拿掉英文；診斷書卡片說明改成 Diagnosis, Orders',
   '診斷書的段落導覽與兩張卡片標題只寫「01 診斷」「02 醫囑」',
   '寬螢幕：病人欄位移到報告欄上方，片語區從頂端到底；塞不下時自動縮小間距（字級不變）；胃鏡四欄寬度微調',
-  '片語按鈕只有顏色有過場動畫，切換間距時不再抖動'
+  '片語按鈕只有顏色有過場動畫，切換間距時不再抖動',
+  '新增「常用組合」：「下一位病人」旁的按鈕，把選好的片語存成組合（例如腹超全正常），下一位病人一鍵套用；可改名、刪除，只存在這台電腦，病人欄位不存'
 ];
 function openRev(){
   document.getElementById('rv-title').textContent=APP_REVISION+' 改了什麼';
@@ -6505,6 +6525,7 @@ function draftRestore(){
     stampKeyboard(document);
     layoutSections();
     buildCoverShortcuts();
+    comboButtons();
     renderAppRevision();
     repInitPreviews();
     draftPending=null;
@@ -6519,6 +6540,228 @@ function draftRestore(){
   }
   draftPaused=false;
 }
+
+/* ── 常用組合 ──────────────────────────────────────────────────
+   把目前選好的片語存成組合，下一位病人一鍵套用。只存「和剛開啟時的空白頁不同的地方」
+   （片語選取、細項面板、欄位內容）加上該工具自己的狀態變數；病人欄位、日期與報告本文不存。
+   存在這台電腦的 localStorage，不上傳。每筆差異記下元素特徵，改版後對不上的就跳過，
+   不會套到別的片語上。 */
+var COMBO_KEY='ytlin-report-combos-v1';
+var COMBO_VARS={
+  abd:['abdRecoSel','aS','abdPlusItems','gbStoneItems','gbPolyItems','gbCholType','panitisType','fattyGrade'],
+  thy:['thyRecoSel','tS','tNods','thyCystItems','tActiveN'],
+  car:['carRecoSel','cS','cPlaques','cHasPlaq'],
+  egd:['egdSel','egdSelText','papilItems','egdMlState','vascSel','incompReasons','ehemoOpts','kodsiGrade',
+    'laGrade','varicesForm','causticGrade','ecaType','eatypType','candLoc','hcmvLoc','kodsiGradeC','spopType',
+    'egdSpopActive','oGastType','gcaType','gvarType','rutResult','efbTool'],
+  cfs:['cfsSel','hemoSel','cMlState','cpolypState','culcerState','rulcerState','rpolypState','cincompReasons',
+    'chemoOpts','cfsPolypLabels','cfsInsLevel','ccolitisGrade','ccolitisIschemic','ccolitisDiverti','cfbTool'],
+  opd:['opdSel'],
+  cert:['certDxSel','certOrderSel']
+};
+var COMBO_PREVIEW={abd:'abdAutoPreview',thy:'thyAutoPreview',car:'carAutoPreview',egd:'egdAutoPreview',
+  cfs:'cfsAutoPreview',opd:'opdAutoPreview'};
+var COMBO_BASE={}, comboTool=null, comboBtn=null;
+
+function comboAll(){ try{ return JSON.parse(localStorage.getItem(COMBO_KEY))||{}; }catch(e){ return {}; } }
+function comboWrite(all){
+  try{ localStorage.setItem(COMBO_KEY,JSON.stringify(all)); return true; }
+  catch(e){ showToast('存不進這台電腦（空間不足或無痕模式）',true); return false; }
+}
+function comboPage(t){ return document.getElementById('page-'+t); }
+
+/* 每個工具頁面放一顆「常用組合」按鈕，放在「下一位病人」前面。可重複執行。 */
+function comboButtons(){
+  document.querySelectorAll('.page .sb-foot').forEach(function(f){
+    if(f.querySelector('.btn-combo')) return;
+    var clr=f.querySelector('.btn-clr'), m=clr&&(clr.getAttribute('onclick')||'').match(/^(\w+)Clear/);
+    if(!m||!COMBO_VARS[m[1]]) return;
+    var b=document.createElement('button'); b.type='button'; b.className='btn-combo'; b.textContent='常用組合';
+    b.setAttribute('aria-expanded','false'); b.setAttribute('onclick',"comboOpen('"+m[1]+"',this)");
+    f.insertBefore(b,clr);
+  });
+}
+/* 剛開啟時的空白頁，當成比對基準 */
+function comboCapture(){
+  draftSyncAttrs();
+  Object.keys(COMBO_VARS).forEach(function(t){ var p=comboPage(t); if(p) COMBO_BASE[t]=p.outerHTML; });
+}
+
+function comboSkip(el){
+  return el.matches('.pt-bar, .report-out, .pop-done, input[type="date"], .btn-combo');
+}
+/* 細項面板浮出時程式會補一顆「完成」，不算在結構裡 */
+function comboKids(el){ return [].filter.call(el.children,function(c){ return !c.classList.contains('pop-done'); }); }
+function comboSig(el){
+  var k=el.id||el.getAttribute('data-val')||'';
+  var n=comboKids(el).length;
+  if(!k&&!n&&!el.classList.contains('ot-btn')) k=el.textContent.trim().slice(0,24);
+  return el.tagName+'|'+k+'|'+n;
+}
+function comboDiff(b,c,path,out){
+  if(comboSkip(b)||!c) return;
+  var bc=comboKids(b), cc=comboKids(c), same=bc.length===cc.length;
+  for(var i=0;same&&i<bc.length;i++) if(bc[i].tagName!==cc[i].tagName) same=false;
+  // 版面程式自己會動的屬性不算（分欄、緊湊間距、欄位起點）
+  var layout=c.matches('.sec-cols, .sec-flow'), inCols=c.parentNode&&c.parentNode.matches&&c.parentNode.matches('.sec-cols');
+  var names={}, at={}, d={};
+  if(!layout){
+    [].forEach.call(b.attributes,function(a){ names[a.name]=1; });
+    [].forEach.call(c.attributes,function(a){ names[a.name]=1; });
+    Object.keys(names).forEach(function(n){
+      if(n==='tabindex'||n==='role'||(n==='style'&&inCols)) return;
+      var x=c.getAttribute(n); if(b.getAttribute(n)!==x){ at[n]=x; d.a=at; }
+    });
+  }
+  if(!same) d.h=c.innerHTML;
+  else if(!bc.length&&b.textContent!==c.textContent) d.t=c.textContent;
+  if(d.a||d.h!=null||d.t!=null){ d.p=path; d.s=comboSig(b); out.push(d); }
+  if(same) for(var j=0;j<bc.length;j++) comboDiff(bc[j],cc[j],path.concat(j),out);
+}
+function comboSave(t,name){
+  var p=comboPage(t); if(!p||!COMBO_BASE[t]) return false;
+  document.querySelectorAll('.pop-panel:not(.pop-min)').forEach(function(o){ popMin(o); });
+  draftSyncAttrs();
+  var tp=document.createElement('template'); tp.innerHTML=COMBO_BASE[t];
+  var b=tp.content.firstElementChild, out=[], bk=comboKids(b), pk=comboKids(p);
+  for(var i=0;i<bk.length;i++) comboDiff(bk[i],pk[i],[i],out);
+  var v={};
+  COMBO_VARS[t].forEach(function(n){ var x=draftGet(n); if(x!==undefined) v[n]=JSON.parse(JSON.stringify(x)); });
+  var all=comboAll(), list=(all[t]||[]).filter(function(c){ return c.n!==name; });
+  var old=(all[t]||[]).findIndex(function(c){ return c.n===name; });
+  var item={n:name,d:out,v:v,ts:Date.now()};
+  if(old>-1) list.splice(Math.min(old,list.length),0,item); else list.push(item);
+  all[t]=list;
+  return comboWrite(all);
+}
+function comboApply(t,c){
+  var p=comboPage(t); if(!p) return;
+  // 已經輸入的病人欄位保留，其他照「下一位病人」清空後再套用
+  var keep=[].map.call(p.querySelectorAll('.pt-bar input'),function(i){ return [i,i.type==='checkbox'?i.checked:i.value]; });
+  draftPaused=true;
+  var miss=0;
+  try{
+    if(typeof window[t+'Clear']==='function') window[t+'Clear']();
+    document.querySelectorAll('.fold:not(.open)').forEach(foldRefresh);
+    keep.forEach(function(k){ if(k[0].type==='checkbox') k[0].checked=k[1]; else k[0].value=k[1]; });
+    c.d.forEach(function(d){
+      var el=p;
+      for(var i=0;el&&i<d.p.length;i++) el=comboKids(el)[d.p[i]];
+      if(!el||comboSig(el)!==d.s){ miss++; return; }
+      if(d.a) Object.keys(d.a).forEach(function(n){
+        var x=d.a[n];
+        if(x==null) el.removeAttribute(n); else el.setAttribute(n,x);
+        if(n==='value') el.value=x==null?'':x;
+        if(n==='checked') el.checked=x!=null;
+        if(n==='selected') el.selected=x!=null;
+      });
+      if(d.h!=null) el.innerHTML=d.h;
+      if(d.t!=null){ el.textContent=d.t; if(el.tagName==='TEXTAREA') el.value=d.t; }
+    });
+    COMBO_VARS[t].forEach(function(n){
+      if(!(n in c.v)) return;
+      var x=c.v[n]; if(x&&typeof x==='object') draftPutObj(n,x); else draftPut(n,x);
+    });
+    stampKeyboard(p);
+    document.querySelectorAll('.fold:not(.open)').forEach(foldRefresh);
+    if(t==='cert'){ certRenderDx(); certRenderOrder(); }
+    else if(COMBO_PREVIEW[t]&&typeof window[COMBO_PREVIEW[t]]==='function') window[COMBO_PREVIEW[t]]();
+    fitColumns();
+  }finally{ draftPaused=false; }
+  draftTouch();
+  showToast('已套用「'+c.n+'」'+(miss?'，有 '+miss+' 項因改版沒有套上，請檢查':''),!!miss);
+}
+
+/* 浮出面板 */
+function comboEsc(s){ return String(s).replace(/[<&>"]/g,function(c){ return {'<':'&lt;','&':'&amp;','>':'&gt;','"':'&quot;'}[c]; }); }
+function comboPop(){
+  var el=document.getElementById('combo-pop');
+  if(!el){
+    el=document.createElement('div'); el.id='combo-pop'; el.className='combo-pop';
+    el.setAttribute('role','dialog'); el.setAttribute('aria-label','常用組合'); el.hidden=true;
+    document.body.appendChild(el);
+    el.addEventListener('click',comboClick);
+    el.addEventListener('keydown',function(e){
+      if(e.key!=='Enter'||e.isComposing||e.keyCode===229) return;
+      var b=e.target.closest('.cp-row, .cp-saverow'); b=b&&b.querySelector('.cp-ok');
+      if(b){ e.preventDefault(); b.click(); }
+    });
+  }
+  return el;
+}
+function comboRender(focusSave){
+  var el=comboPop(), list=comboAll()[comboTool]||[];
+  el.innerHTML='<div class="cp-head">常用組合・'+comboEsc(TOOL_NAMES[comboTool])+'</div>'
+    +(list.length?list.map(function(c,i){
+      return '<div class="cp-row" data-i="'+i+'"><button type="button" class="cp-use" title="套用到目前這位病人">'+comboEsc(c.n)+'</button>'
+        +'<button type="button" class="cp-act cp-ren">改名</button><button type="button" class="cp-act cp-del">刪除</button></div>';
+    }).join(''):'<div class="cp-empty">還沒有存過組合。選好片語後，在下面取個名字存起來。</div>')
+    +'<div class="cp-save"><label for="cp-name">把目前的內容存成</label>'
+    +'<div class="cp-saverow"><input type="text" id="cp-name" autocomplete="off"><button type="button" class="cp-ok cp-new">儲存</button></div></div>';
+  if(focusSave) document.getElementById('cp-name').focus();
+}
+function comboPlace(){
+  var el=comboPop(); if(el.hidden||!comboBtn) return;
+  var r=comboBtn.getBoundingClientRect(), w=el.offsetWidth, h=el.offsetHeight;
+  var x=Math.min(Math.max(8,r.right-w),window.innerWidth-w-8);
+  var y=r.bottom+6; if(y+h>window.innerHeight-8) y=Math.max(8,r.top-h-6);
+  el.style.left=x+'px'; el.style.top=y+'px';
+}
+function comboOpen(t,btn){
+  var el=comboPop();
+  if(!el.hidden&&comboTool===t){ comboClose(); return; }
+  comboTool=t; comboBtn=btn;
+  document.querySelectorAll('.btn-combo').forEach(function(b){ b.setAttribute('aria-expanded',b===btn?'true':'false'); });
+  el.hidden=false; comboRender(false); comboPlace();
+}
+function comboClose(){
+  var el=document.getElementById('combo-pop'); if(!el||el.hidden) return;
+  el.hidden=true;
+  document.querySelectorAll('.btn-combo').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+  if(comboBtn&&comboBtn.isConnected) comboBtn.focus();
+}
+function comboClick(e){
+  var b=e.target.closest('button'); if(!b) return;
+  var all=comboAll(), list=all[comboTool]||[], row=b.closest('.cp-row'), i=row?+row.dataset.i:-1;
+  if(b.classList.contains('cp-use')){ var c=list[i]; comboClose(); if(c) comboApply(comboTool,c); return; }
+  if(b.classList.contains('cp-del')){
+    if(!b.classList.contains('warn')){ b.classList.add('warn'); b.textContent='確定刪除'; return; }
+    list.splice(i,1); all[comboTool]=list; comboWrite(all); comboRender(false); comboPlace(); return;
+  }
+  if(b.classList.contains('cp-ren')){
+    row.innerHTML='<label class="cp-sr" for="cp-ren-'+i+'">新名稱</label><input type="text" id="cp-ren-'+i+'" autocomplete="off" value="'+comboEsc(list[i].n)+'">'
+      +'<button type="button" class="cp-ok cp-renok">確定</button>';
+    var x=row.querySelector('input'); x.focus(); x.select(); return;
+  }
+  if(b.classList.contains('cp-renok')){
+    var nx=row.querySelector('input'), nn=nx.value.trim();
+    if(!nn||list.some(function(c,j){ return j!==i&&c.n===nn; })){ nx.classList.add('bad'); nx.focus(); return; }
+    list[i].n=nn; all[comboTool]=list; comboWrite(all); comboRender(false); comboPlace(); return;
+  }
+  if(b.classList.contains('cp-new')){
+    var inp=document.getElementById('cp-name'), name=inp.value.trim();
+    if(!name){ inp.classList.add('bad'); inp.focus(); return; }
+    if(list.some(function(c){ return c.n===name; })&&!b.classList.contains('warn')){
+      b.classList.add('warn'); b.textContent='覆蓋同名'; return;
+    }
+    if(comboSave(comboTool,name)){ showToast('已存成「'+name+'」'); comboRender(false); comboPlace(); }
+  }
+}
+document.addEventListener('input',function(e){
+  if(e.target.closest&&e.target.closest('#combo-pop')){
+    e.target.classList.remove('bad');
+    var w=document.querySelector('#combo-pop .cp-new.warn'); if(w&&e.target.id==='cp-name'){ w.classList.remove('warn'); w.textContent='儲存'; }
+  }
+});
+document.addEventListener('mousedown',function(e){
+  var el=document.getElementById('combo-pop');
+  if(el&&!el.hidden&&!el.contains(e.target)&&!(e.target.closest&&e.target.closest('.btn-combo'))) comboClose();
+},true);
+document.addEventListener('keydown',function(e){
+  var el=document.getElementById('combo-pop');
+  if(e.key==='Escape'&&el&&!el.hidden){ e.preventDefault(); e.stopPropagation(); comboClose(); }
+},true);
+window.addEventListener('resize',comboPlace);
 
 /* ── 列印 ──────────────────────────────────────────────────────
    報告本文放在 textarea，textarea 不會自己長高，
@@ -6952,6 +7195,8 @@ window.addEventListener('DOMContentLoaded',function(){
   initFontScale();
   try{ history.replaceState({tool:currentTool},''); }catch(e){}
   stampKeyboard(document);
+  comboButtons();
+  setTimeout(comboCapture,0);
   draftOffer();
   repInitPreviews();
 
